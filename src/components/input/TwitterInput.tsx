@@ -51,7 +51,6 @@ const InputWrapper = styled.div`
 
 	&:focus-within {
 		border: 2px solid rgb(29, 161, 242);
-		margin: -1px;
 	}
 `;
 
