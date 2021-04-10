@@ -44,7 +44,7 @@ const InputWrapper = styled.div`
 	box-sizing: border-box;
 	${Input}:focus + ${Label} ${Span},
     ${Input}:valid + ${Label} ${Span} {
-		transform: translateY(-90%);
+		transform: translateY(-70%);
 		font-size: 14px;
 		color: rgb(29, 161, 242);
 	}

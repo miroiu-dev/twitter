@@ -36,6 +36,6 @@ export const TwitterButton = styled.button<TwitterButtonProps>`
 	}
 `;
 
-export const TwitterLink: React.FC<
-	TwitterButtonProps & { to: string }
-> = props => <TwitterButton as={Link} {...props} />;
+export const TwitterLink = styled(TwitterButton, {
+	shouldForwardProp: prop => prop !== 'isPrimary',
+})``.withComponent(Link);

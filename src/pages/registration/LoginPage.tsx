@@ -1,29 +1,71 @@
-import styled from '@emotion/styled/macro';
+import { FormEvent, useState } from 'react';
 import TwitterSvg from '../../components/icons/TwitterSvg';
 import { TwitterInput } from '../../components/input/TwitterInput';
-import { Title, Wrapper } from './Atoms';
-import { TwitterButton } from '../../components/buttons/TwitterButton';
+import { useAuth } from '../../hooks/useAuth';
+import {
+	AuthLink,
+	Dot,
+	FlexWrapper,
+	Form,
+	IconWrapper,
+	InputWrapper,
+	LoginButton,
+	Title,
+	Wrapper,
+	ErrorMessage,
+} from './Atoms';
 
-const Form = styled.form``;
-const InputWrapper = styled.div`
-	margin: 0.75rem 0;
-`;
 export const LoginPage: React.FC = () => {
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
+	const [error, setError] = useState('');
+
+	const { login } = useAuth();
+
+	const handleLogin = async (ev: FormEvent) => {
+		ev.preventDefault();
+		const response = await login(username, password);
+
+		if (response.error) {
+			setError(response.error);
+		} else if (response.user) {
+			setError('');
+		}
+	};
+
 	return (
 		<Wrapper>
-			<TwitterSvg maxWidth="40px" fill="rgb(217, 217, 217)"></TwitterSvg>
+			<IconWrapper>
+				<TwitterSvg
+					maxWidth="40px"
+					fill="rgb(217, 217, 217)"
+				></TwitterSvg>
+			</IconWrapper>
 			<Title>Log in to Twitter</Title>
-			<Form>
+			{error && <ErrorMessage>{error}</ErrorMessage>}
+			<Form onSubmit={handleLogin}>
 				<InputWrapper>
-					<TwitterInput label="Phone, email, or username" />
+					<TwitterInput
+						label="Phone, email, or username"
+						value={username}
+						onChange={ev => setUsername(ev.target.value)}
+					/>
 				</InputWrapper>
 				<InputWrapper>
-					<TwitterInput label="Password" type="password" />
+					<TwitterInput
+						label="Password"
+						type="password"
+						value={password}
+						onChange={ev => setPassword(ev.target.value)}
+					/>
 				</InputWrapper>
-				<TwitterButton disabled type="submit">
-					Log in{' '}
-				</TwitterButton>
+				<LoginButton type="submit">Log in</LoginButton>
 			</Form>
+			<FlexWrapper>
+				<AuthLink to="/reset">Forgot password? </AuthLink>
+				<Dot>·</Dot>
+				<AuthLink to="/register">Sign up for Twitter</AuthLink>
+			</FlexWrapper>
 		</Wrapper>
 	);
 };
