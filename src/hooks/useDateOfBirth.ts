@@ -91,7 +91,7 @@ type DateOfBirth = {
 	numberOfDays: number;
 };
 
-export const useDayOfBirth = (initial?: DateOfBirth) => {
+export const useDateOfBirth = (initial?: DateOfBirth) => {
 	const [state, dispatch] = useReducer(
 		dateOfBirthReducer,
 		initial || {

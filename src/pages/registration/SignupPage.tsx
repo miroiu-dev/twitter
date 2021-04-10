@@ -3,7 +3,7 @@ import { useState } from 'react';
 import TwitterSvg from '../../components/icons/TwitterSvg';
 import { TwitterInput } from '../../components/input/TwitterInput';
 import { Option, TwitterSelect } from '../../components/input/TwitterSelect';
-import { useDayOfBirth, Month } from '../../hooks/useDayOfBirth';
+import { useDateOfBirth, Month } from '../../hooks/useDateOfBirth';
 import {
 	AuthLink,
 	Dot,
@@ -38,6 +38,7 @@ const StyledTwitterSelect = styled(TwitterSelect)`
 export const SignupPage: React.FC = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+	const [confirmedPassword, setConfirmedPassword] = useState('');
 	const [error, setError] = useState('');
 	const {
 		day,
@@ -49,7 +50,7 @@ export const SignupPage: React.FC = () => {
 		setMonth,
 		setYear,
 		yearsRange,
-	} = useDayOfBirth();
+	} = useDateOfBirth();
 	return (
 		<Wrapper>
 			<IconWrapper>
@@ -80,8 +81,8 @@ export const SignupPage: React.FC = () => {
 					<TwitterInput
 						label="Confirm password"
 						type="password"
-						value={password}
-						onChange={ev => setPassword(ev.target.value)}
+						value={confirmedPassword}
+						onChange={ev => setConfirmedPassword(ev.target.value)}
 					/>
 				</InputWrapper>
 				<FlexContainer>
@@ -125,7 +126,19 @@ export const SignupPage: React.FC = () => {
 						))}
 					</StyledTwitterSelect>
 				</FlexContainer>
-				<LoginButton type="submit">Sign up</LoginButton>
+				<LoginButton
+					disabled={
+						!username ||
+						!password ||
+						!confirmedPassword ||
+						!month ||
+						!day ||
+						!year
+					}
+					type="submit"
+				>
+					Sign up
+				</LoginButton>
 			</Form>
 			<FlexWrapper>
 				<AuthLink to="/reset">Forgot password? </AuthLink>

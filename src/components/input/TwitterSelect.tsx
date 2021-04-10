@@ -8,6 +8,7 @@ const Arrow = styled(ArrowDown)`
 	top: 50%;
 	right: 12px;
 	margin-top: -0.75em;
+	pointer-events: none;
 `;
 
 const Label = styled.div`
@@ -29,6 +30,7 @@ const Select = styled.select`
 	outline: none;
 	border: none;
 	font-size: 17px;
+	cursor: pointer;
 `;
 
 const SelectWrapper = styled.div`

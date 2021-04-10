@@ -59,7 +59,9 @@ export const LoginPage: React.FC = () => {
 						onChange={ev => setPassword(ev.target.value)}
 					/>
 				</InputWrapper>
-				<LoginButton type="submit">Log in</LoginButton>
+				<LoginButton disabled={!username || !password} type="submit">
+					Log in
+				</LoginButton>
 			</Form>
 			<FlexWrapper>
 				<AuthLink to="/reset">Forgot password? </AuthLink>
