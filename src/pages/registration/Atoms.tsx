@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
 	max-width: 400px;
 	width: 100%;
 	margin: 0 auto;
-	padding-top: 1.25rem;
+	padding: 1.25rem 1rem;
 `;
 
 export const Title = styled.h1`
@@ -15,23 +15,21 @@ export const Title = styled.h1`
 	font-family: Chirp;
 	margin-bottom: 0.75rem;
 	margin-top: 2rem;
-	padding: 0 1rem;
 `;
 
 export const Form = styled.form``;
 
 export const InputWrapper = styled.div`
-	padding: 0.75rem 1rem;
+	padding: 0.75rem 0;
 `;
 
 export const LoginButton = styled(TwitterButton)`
-	margin: 0.75rem;
+	margin: 0.75rem 0;
 	font-size: 0.938rem;
 	outline: none;
+	max-width: 100%;
 `;
-export const IconWrapper = styled.div`
-	padding: 0 1rem;
-`;
+export const IconWrapper = styled.div``;
 export const FlexWrapper = styled.div`
 	display: flex;
 	justify-content: center;
@@ -53,5 +51,4 @@ export const Dot = styled.span`
 export const ErrorMessage = styled.div`
 	color: rgb(224, 36, 94);
 	font-size: 0.938rem;
-	padding: 0 1rem;
 `;

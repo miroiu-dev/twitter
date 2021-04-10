@@ -64,7 +64,7 @@ export const LoginPage: React.FC = () => {
 			<FlexWrapper>
 				<AuthLink to="/reset">Forgot password? </AuthLink>
 				<Dot>·</Dot>
-				<AuthLink to="/register">Sign up for Twitter</AuthLink>
+				<AuthLink to="/signup">Sign up for Twitter</AuthLink>
 			</FlexWrapper>
 		</Wrapper>
 	);
