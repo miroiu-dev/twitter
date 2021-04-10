@@ -1,8 +1,9 @@
 import styled from '@emotion/styled/macro';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import TwitterSvg from '../../components/icons/TwitterSvg';
 import { TwitterInput } from '../../components/input/TwitterInput';
 import { Option, TwitterSelect } from '../../components/input/TwitterSelect';
+import { useAuth } from '../../hooks/useAuth';
 import { useDateOfBirth, Month } from '../../hooks/useDateOfBirth';
 import {
 	AuthLink,
@@ -51,6 +52,30 @@ export const SignupPage: React.FC = () => {
 		setYear,
 		yearsRange,
 	} = useDateOfBirth();
+	const { signup } = useAuth();
+
+	const handleSignup = async (ev: FormEvent) => {
+		ev.preventDefault();
+
+		if (password !== confirmedPassword) {
+			setError('Passwords do not match');
+		} else if (username.length <= 4) {
+			setError('Username is too short');
+		} else if (password.length <= 4) {
+			setError('Password is too short');
+		} else {
+			const response = await signup(username, password, {
+				month,
+				day: day as number,
+				year: day as number,
+			});
+
+			if (response.error) {
+				setError(response.error);
+			}
+		}
+	};
+
 	return (
 		<Wrapper>
 			<IconWrapper>
@@ -61,7 +86,7 @@ export const SignupPage: React.FC = () => {
 			</IconWrapper>
 			<Title>Sign up for Twitter</Title>
 			{error && <ErrorMessage>{error}</ErrorMessage>}
-			<Form>
+			<Form onSubmit={handleSignup}>
 				<InputWrapper>
 					<TwitterInput
 						label="Username"

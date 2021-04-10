@@ -1,6 +1,10 @@
 import { useCallback, useContext } from 'react';
 import { useHistory } from 'react-router';
-import { accountService, LoginResponse } from '../services/account.service';
+import {
+	accountService,
+	DateOfBirth,
+	LoginResponse,
+} from '../services/account.service';
 import { UserContext } from './UserContext';
 
 export const useAuth = () => {
@@ -25,5 +29,27 @@ export const useAuth = () => {
 		[user, setUser, history]
 	);
 
-	return { user, login };
+	const signup = useCallback(
+		async (
+			username: string,
+			password: string,
+			dateOfBirth: DateOfBirth
+		) => {
+			const response = await accountService.signup(
+				username,
+				password,
+				dateOfBirth
+			);
+
+			if (response.user) {
+				setUser(response.user);
+				history.push('/feed');
+			}
+
+			return response;
+		},
+		[setUser, history]
+	);
+
+	return { user, login, signup };
 };

@@ -13,15 +13,15 @@ const login = async (
 	password: string
 ): Promise<LoginResponse> => {
 	try {
-		const response = await axios.post<User | ApiError>(routes.login(), {
+		const response = await axios.post<User>(routes.login(), {
 			username,
 			password,
 		});
 
-		return { user: response.data as User };
+		return { user: response.data };
 	} catch (err) {
 		const error = err as AxiosError;
-		if (error.response) {
+		if (error.response && error.response.status !== 404) {
 			const data = error.response.data as ApiError;
 			if (data) {
 				return { error: data.error };
@@ -32,6 +32,39 @@ const login = async (
 	}
 };
 
+export type DateOfBirth = {
+	month: string;
+	day: number;
+	year: number;
+};
+
+const signup = async (
+	username: string,
+	password: string,
+	dateOfBirth: DateOfBirth
+) => {
+	try {
+		const response = await axios.post<User>(routes.signup(), {
+			username,
+			password,
+			dateOfBirth,
+		});
+
+		return { user: response.data };
+	} catch (err) {
+		const error = err as AxiosError;
+		if (error.response && error.response.status !== 404) {
+			const data = error.response.data as ApiError;
+
+			if (data) {
+				return { error: data.error };
+			}
+		}
+		return { error: 'Something went wrong, try again later' };
+	}
+};
+
 export const accountService = {
 	login,
+	signup,
 };
