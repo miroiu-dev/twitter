@@ -55,7 +55,6 @@ const dateOfBirthReducer = (
 	state: DateOfBirth,
 	action: ActionType
 ): DateOfBirth => {
-	console.log(action);
 	switch (action.type) {
 		case 'SET_MONTH':
 			return {

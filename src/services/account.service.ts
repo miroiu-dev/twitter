@@ -13,10 +13,14 @@ const login = async (
 	password: string
 ): Promise<LoginResponse> => {
 	try {
-		const response = await axios.post<User>(routes.login(), {
-			username,
-			password,
-		});
+		const response = await axios.post<User>(
+			routes.login(),
+			{
+				username,
+				password,
+			},
+			{ withCredentials: true }
+		);
 
 		return { user: response.data };
 	} catch (err) {
@@ -44,11 +48,15 @@ const signup = async (
 	dateOfBirth: DateOfBirth
 ) => {
 	try {
-		const response = await axios.post<User>(routes.signup(), {
-			username,
-			password,
-			dateOfBirth,
-		});
+		const response = await axios.post<User>(
+			routes.signup(),
+			{
+				username,
+				password,
+				dateOfBirth,
+			},
+			{ withCredentials: true }
+		);
 
 		return { user: response.data };
 	} catch (err) {

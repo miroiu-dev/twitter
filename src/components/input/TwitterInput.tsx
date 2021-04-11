@@ -1,4 +1,5 @@
 import styled from '@emotion/styled/macro';
+import { forwardRef } from 'react';
 
 const Input = styled.input`
 	width: 100%;
@@ -54,18 +55,34 @@ const InputWrapper = styled.div`
 	}
 `;
 
-export const TwitterInput: React.FC<
+// export const TwitterInput: React.FC<
+// 	React.DetailedHTMLProps<
+// 		React.InputHTMLAttributes<HTMLInputElement>,
+// 		HTMLInputElement
+// 	> & { label: string }
+// > = ({ label, ...rest }) => {
+// 	return (
+// 		<InputWrapper>
+// 			<Input required autoComplete="off" {...rest} />
+// 			<Label htmlFor={rest.id}>
+// 				<Span>{label}</Span>
+// 			</Label>
+// 		</InputWrapper>
+// 	);
+// };
+export const TwitterInput = forwardRef<
+	HTMLInputElement,
 	React.DetailedHTMLProps<
 		React.InputHTMLAttributes<HTMLInputElement>,
 		HTMLInputElement
 	> & { label: string }
-> = ({ label, ...rest }) => {
+>(({ label, ...rest }, ref) => {
 	return (
 		<InputWrapper>
-			<Input required autoComplete="off" {...rest} />
+			<Input required autoComplete="off" {...rest} ref={ref} />
 			<Label htmlFor={rest.id}>
 				<Span>{label}</Span>
 			</Label>
 		</InputWrapper>
 	);
-};
+});

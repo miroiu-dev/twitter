@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import TwitterSvg from '../../components/icons/TwitterSvg';
 import { TwitterInput } from '../../components/input/TwitterInput';
 import { useAuth } from '../../hooks/useAuth';
@@ -19,7 +19,6 @@ export const LoginPage: React.FC = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
-
 	const { login } = useAuth();
 
 	const handleLogin = async (ev: FormEvent) => {
@@ -28,10 +27,14 @@ export const LoginPage: React.FC = () => {
 
 		if (response.error) {
 			setError(response.error);
-		} else if (response.user) {
-			setError('');
 		}
 	};
+
+	const inputRef = useRef<HTMLInputElement>(null);
+
+	useEffect(() => {
+		inputRef.current?.focus();
+	}, []);
 
 	return (
 		<Wrapper>
@@ -49,6 +52,7 @@ export const LoginPage: React.FC = () => {
 						label="Phone, email, or username"
 						value={username}
 						onChange={ev => setUsername(ev.target.value)}
+						ref={inputRef}
 					/>
 				</InputWrapper>
 				<InputWrapper>

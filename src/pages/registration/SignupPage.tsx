@@ -1,5 +1,5 @@
 import styled from '@emotion/styled/macro';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import TwitterSvg from '../../components/icons/TwitterSvg';
 import { TwitterInput } from '../../components/input/TwitterInput';
 import { Option, TwitterSelect } from '../../components/input/TwitterSelect';
@@ -41,6 +41,7 @@ export const SignupPage: React.FC = () => {
 	const [password, setPassword] = useState('');
 	const [confirmedPassword, setConfirmedPassword] = useState('');
 	const [error, setError] = useState('');
+
 	const {
 		day,
 		year,
@@ -76,6 +77,12 @@ export const SignupPage: React.FC = () => {
 		}
 	};
 
+	const inputRef = useRef<HTMLInputElement>(null);
+
+	useEffect(() => {
+		inputRef.current?.focus();
+	}, []);
+
 	return (
 		<Wrapper>
 			<IconWrapper>
@@ -92,6 +99,7 @@ export const SignupPage: React.FC = () => {
 						label="Username"
 						value={username}
 						onChange={ev => setUsername(ev.target.value)}
+						ref={inputRef}
 					/>
 				</InputWrapper>
 				<InputWrapper>
