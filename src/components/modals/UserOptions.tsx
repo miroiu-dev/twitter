@@ -74,34 +74,32 @@ export const UserOptionsModal = forwardRef<HTMLDivElement, { show: boolean }>(
 			};
 		});
 		return (
-			<>
-				<AnimatePresence>
-					{show && (
-						<UserInfoModal
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							exit={{ opacity: 0 }}
-							transition={{ duration: 0.2 }}
-							ref={ref}
-						>
-							<UserInfo
-								padding="0 0.75rem"
-								backgroundColorHover={false}
-								icon={<CheckmarkSVG />}
-							/>
-							<UserOption>Add an existing account</UserOption>
-							<UserOption onClick={logout}>
-								Log out
-								{' @' +
-									user?.username
-										.split(' ')
-										.join('_')
-										.toLowerCase()}
-							</UserOption>
-						</UserInfoModal>
-					)}
-				</AnimatePresence>
-			</>
+			<AnimatePresence>
+				{show && (
+					<UserInfoModal
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						transition={{ duration: 0.2 }}
+						ref={ref}
+					>
+						<UserInfo
+							padding="0 0.75rem"
+							backgroundColorHover={false}
+							icon={<CheckmarkSVG />}
+						/>
+						<UserOption>Add an existing account</UserOption>
+						<UserOption onClick={logout}>
+							Log out
+							{' @' +
+								user?.username
+									.split(' ')
+									.join('_')
+									.toLowerCase()}
+						</UserOption>
+					</UserInfoModal>
+				)}
+			</AnimatePresence>
 		);
 	}
 );
