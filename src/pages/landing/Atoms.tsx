@@ -1,4 +1,5 @@
 import styled from '@emotion/styled/macro';
+import { TwitterLink } from '../../components/buttons/TwitterButton';
 import TwitterSvg from '../../components/icons/TwitterSvg';
 
 export const AuthScreenWrapper = styled.div`
@@ -40,6 +41,10 @@ export const InspirationalHeadline = styled.h1`
 	line-height: calc(84px);
 	margin: 3rem 0 3rem 0;
 	font-family: Chirp;
+	@media (max-width: 500px) {
+		font-size: 2.5rem;
+		line-height: calc(52.5px);
+	}
 `;
 
 export const Join = styled.h1`
@@ -55,6 +60,12 @@ export const ButtonWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	box-sizing: border-box;
+	@media (max-width: 1000px) {
+		flex-direction: row;
+	}
+	@media (max-width: 500px) {
+		flex-direction: column;
+	}
 `;
 
 export const NavigationLinks = styled.div`
@@ -98,5 +109,15 @@ export const RowsLayout = styled.div`
 			grid-row: 1;
 			margin: 0 auto;
 		}
+	}
+`;
+export const AuthButton = styled(TwitterLink)`
+	@media (max-width: 1000px) {
+		margin-right: 1.25rem;
+		margin-top: 1.25rem;
+	}
+	@media (max-width: 500px) {
+		margin: 0;
+		margin-bottom: 1rem;
 	}
 `;

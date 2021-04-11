@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { forwardRef, useEffect } from 'react';
 const UserInfoModal = styled(motion.div)`
 	user-select: none;
-	pointer-events: all !important; //works
+	pointer-events: all !important;
 	position: relative;
 	transition: 200ms;
 	width: 300px;

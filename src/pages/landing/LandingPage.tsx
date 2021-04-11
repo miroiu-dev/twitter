@@ -1,7 +1,7 @@
 import React from 'react';
-import { TwitterLink } from '../../components/buttons/TwitterButton';
 import TwitterSvg from '../../components/icons/TwitterSvg';
 import {
+	AuthButton,
 	AuthScreenWrapper,
 	AuthWrapper,
 	ButtonWrapper,
@@ -34,10 +34,10 @@ export const LandingPage: React.FC = () => {
 						</InspirationalHeadline>
 						<Join>Join Twitter today.</Join>
 						<ButtonWrapper>
-							<TwitterLink to="/signup">Sign up</TwitterLink>
-							<TwitterLink to="/login" isPrimary>
+							<AuthButton to="/signup">Sign up</AuthButton>
+							<AuthButton to="/login" isPrimary>
 								Log in
-							</TwitterLink>
+							</AuthButton>
 						</ButtonWrapper>
 					</ContentWrapper>
 				</AuthWrapper>
