@@ -21,7 +21,8 @@ export const useAuth = () => {
 
 			if (response.user) {
 				setUser(response.user);
-				history.push('/feed');
+				localStorage.setItem('user', JSON.stringify(response.user));
+				history.push('/home');
 			}
 
 			return response;
@@ -43,7 +44,8 @@ export const useAuth = () => {
 
 			if (response.user) {
 				setUser(response.user);
-				history.push('/feed');
+				localStorage.setItem('user', JSON.stringify(response.user));
+				history.push('/home');
 			}
 
 			return response;

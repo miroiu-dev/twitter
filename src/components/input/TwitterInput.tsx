@@ -55,21 +55,6 @@ const InputWrapper = styled.div`
 	}
 `;
 
-// export const TwitterInput: React.FC<
-// 	React.DetailedHTMLProps<
-// 		React.InputHTMLAttributes<HTMLInputElement>,
-// 		HTMLInputElement
-// 	> & { label: string }
-// > = ({ label, ...rest }) => {
-// 	return (
-// 		<InputWrapper>
-// 			<Input required autoComplete="off" {...rest} />
-// 			<Label htmlFor={rest.id}>
-// 				<Span>{label}</Span>
-// 			</Label>
-// 		</InputWrapper>
-// 	);
-// };
 export const TwitterInput = forwardRef<
 	HTMLInputElement,
 	React.DetailedHTMLProps<

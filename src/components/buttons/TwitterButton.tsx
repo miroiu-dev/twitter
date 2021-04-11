@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 
 type TwitterButtonProps = {
 	isPrimary?: boolean;
+	width?: string;
+	fontSize?: string;
 };
 
 export const TwitterButton = styled.button<TwitterButtonProps>`
-	width: 100%;
+	width: ${props => props.width || '100%'};
 	max-width: 380px;
 	color: ${props => (!props.isPrimary ? '#fff' : 'rgba(29,161,242,1)')};
 	background-color: ${props =>
@@ -19,8 +21,10 @@ export const TwitterButton = styled.button<TwitterButtonProps>`
 	transition: background-color 0.2s;
 	margin-bottom: 1.25rem;
 	border-radius: 9999px;
+	font-size: ${props => props.fontSize};
 	font-weight: 700;
 	text-decoration: none;
+	outline: none;
 	border: 1px solid
 		${props => (props.isPrimary ? 'rgb(29, 161, 242)' : 'transparent')};
 	&:hover {
