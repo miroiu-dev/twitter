@@ -1,7 +1,10 @@
 import styled from '@emotion/styled/macro';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useClickOutside } from '../../hooks/useClickOutside';
 import { TwitterButton } from '../buttons/TwitterButton';
 import { Bookmarks, BookmarksFilled } from '../icons/Bookmarks';
+import { Dots } from '../icons/Dots';
 import { Hashtag, HashtagFilled } from '../icons/Hashtag';
 import { House, HouseFilled } from '../icons/House';
 import { Lists, ListsFilled } from '../icons/Lists';
@@ -10,8 +13,13 @@ import { More } from '../icons/More';
 import { Notifications, NotificationsFilled } from '../icons/Notifications';
 import { Profile, ProfileFilled } from '../icons/Profile';
 import TwitterSvg from '../icons/TwitterSvg';
+import { UserOptionsModal } from '../modals/UserOptions';
 import { UserInfo } from '../user/UserInfo';
 import { SidebarLink } from './SidebarLink';
+
+const UserInfoWrapper = styled.div`
+	position: relative;
+`;
 
 const NavigationWrapper = styled.div`
 	display: flex;
@@ -58,6 +66,11 @@ const BaseIcon = styled.svg`
 	transition: 200ms;
 `;
 
+const DotsSVG = styled(Dots)`
+	fill: rgb(217, 217, 217);
+	height: 1.25em;
+`;
+
 const NotificationsSVG = BaseIcon.withComponent(Notifications);
 
 const HouseSVG = BaseIcon.withComponent(House);
@@ -76,6 +89,18 @@ const ProfileFilledSVG = BaseIcon.withComponent(ProfileFilled);
 const MoreSVG = BaseIcon.withComponent(More);
 
 export const Sidebar: React.FC = () => {
+	const [isShowing, setIsShowing] = useState(false);
+
+	const divRef = useRef<HTMLDivElement | null>(null);
+	const openModal = () => {
+		setIsShowing(true);
+	};
+	const closeModal = () => {
+		if (isShowing) {
+			setIsShowing(false);
+		}
+	};
+	useClickOutside(divRef, closeModal);
 	return (
 		<>
 			<SidebarWrapper>
@@ -142,7 +167,11 @@ export const Sidebar: React.FC = () => {
 						</TwitterButton>
 					</ButtonWrapper>
 				</Wrapper>
-				<UserInfo />
+
+				<UserInfoWrapper>
+					<UserInfo icon={<DotsSVG />} callback={openModal} />
+					<UserOptionsModal show={isShowing} ref={divRef} />
+				</UserInfoWrapper>
 			</SidebarWrapper>
 		</>
 	);

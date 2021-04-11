@@ -21,7 +21,6 @@ export const useAuth = () => {
 
 			if (response.user) {
 				setUser(response.user);
-				localStorage.setItem('user', JSON.stringify(response.user));
 				history.push('/home');
 			}
 
@@ -29,6 +28,15 @@ export const useAuth = () => {
 		},
 		[user, setUser, history]
 	);
+
+	const logout = useCallback(async () => {
+		const response = await accountService.logout();
+		if (response?.error) {
+			console.log(response.error);
+		} else {
+			setUser(undefined);
+		}
+	}, [setUser]);
 
 	const signup = useCallback(
 		async (
@@ -53,5 +61,5 @@ export const useAuth = () => {
 		[setUser, history]
 	);
 
-	return { user, login, signup };
+	return { user, login, logout, signup };
 };

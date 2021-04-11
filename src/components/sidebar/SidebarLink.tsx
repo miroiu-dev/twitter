@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 
-type StyledComponentType = StyledComponent<{
+export type StyledComponentType = StyledComponent<{
 	className?: string;
 }>;
 

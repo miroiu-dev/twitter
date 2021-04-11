@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext } from 'react';
+import React, { ReactNode } from 'react';
 import {
 	BrowserRouter as Router,
 	Switch,
@@ -8,16 +8,18 @@ import {
 
 import { LandingPage } from './pages/landing/LandingPage';
 import { LoginPage } from './pages/registration/LoginPage';
-import { UserContext } from './hooks/UserContext';
 import { SignupPage } from './pages/registration/SignupPage';
 import { useScreenType } from './hooks/useScreenType';
 import styled from '@emotion/styled/macro';
 import { Sidebar } from './components/sidebar/Sidebar';
+import { useAuth } from './hooks/useAuth';
 
 const LeftPanel = styled.div`
 	display: flex;
 	flex-direction: column;
 	width: 275px;
+	//to be removed
+	margin: 0 auto;
 `;
 
 const RightPanel = styled.div`
@@ -73,7 +75,7 @@ const Layout: React.FC<LayoutProps> = ({
 };
 
 const App = () => {
-	const { user } = useContext(UserContext);
+	const { user } = useAuth();
 
 	return (
 		<Router>

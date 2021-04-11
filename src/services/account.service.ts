@@ -72,7 +72,16 @@ const signup = async (
 	}
 };
 
+export const logout = async () => {
+	try {
+		await axios.post(routes.logout(), {}, { withCredentials: true });
+	} catch (err) {
+		return { error: 'Something went wrong, try again later' };
+	}
+};
+
 export const accountService = {
 	login,
+	logout,
 	signup,
 };
