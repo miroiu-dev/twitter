@@ -4,13 +4,19 @@ import { UserInfo } from '../user/UserInfo';
 import { Checkmark } from '../icons/Checkmark';
 import { AnimatePresence, motion } from 'framer-motion';
 import { forwardRef, useEffect } from 'react';
-const UserInfoModal = styled(motion.div)`
+
+const UserInfoModal = styled(motion.div)<{
+	bottom?: string;
+	left?: string;
+	arrowTop?: string;
+	arrowLeft?: string;
+}>`
 	user-select: none;
 	pointer-events: all !important;
 	position: relative;
 	transition: 200ms;
 	width: 300px;
-	background-color: transparent;
+	background-color: #000;
 	color: #fff;
 	border-radius: 6px;
 	padding: 0.75rem 0;
@@ -27,8 +33,8 @@ const UserInfoModal = styled(motion.div)`
 	&::after {
 		content: ' ';
 		position: absolute;
-		top: 100%;
-		left: 50%;
+		top: ${props => props.arrowTop ?? '100%'};
+		left: ${props => props.arrowLeft ?? ' 50%'};
 		transform: rotate(180deg);
 		margin-left: -7px;
 		border-width: 7px;
@@ -37,8 +43,8 @@ const UserInfoModal = styled(motion.div)`
 		filter: drop-shadow(rgb(47, 51, 54) 1px -1px 1px);
 	}
 
-	bottom: 86px;
-	left: 20%;
+	bottom: ${props => props.bottom ?? '86px'};
+	left: ${props => props.left ?? '20%'};
 	margin-left: -60px;
 `;
 
@@ -62,44 +68,52 @@ const CheckmarkSVG = styled(Checkmark)`
 	fill: rgba(29, 161, 242, 1);
 	height: 1.25em;
 `;
-export const UserOptionsModal = forwardRef<HTMLDivElement, { show: boolean }>(
-	({ show }, ref) => {
-		const { user, logout } = useAuth();
-		useEffect(() => {
-			if (show) {
-				document.getElementById('root')!.style.pointerEvents = 'none';
-			}
-			return () => {
-				document.getElementById('root')!.style.pointerEvents = 'all';
-			};
-		});
-		return (
-			<AnimatePresence>
-				{show && (
-					<UserInfoModal
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						transition={{ duration: 0.2 }}
-						ref={ref}
-					>
-						<UserInfo
-							padding="0 0.75rem"
-							backgroundColorHover={false}
-							icon={<CheckmarkSVG />}
-						/>
-						<UserOption>Add an existing account</UserOption>
-						<UserOption onClick={logout}>
-							Log out
-							{' @' +
-								user?.username
-									.split(' ')
-									.join('_')
-									.toLowerCase()}
-						</UserOption>
-					</UserInfoModal>
-				)}
-			</AnimatePresence>
-		);
+export const UserOptionsModal = forwardRef<
+	HTMLDivElement,
+	{
+		show: boolean;
+		modalBottom?: string;
+		modalLeft?: string;
+		arrowTop?: string;
+		arrowLeft?: string;
 	}
-);
+>(({ show, modalBottom, modalLeft, arrowTop, arrowLeft }, ref) => {
+	const { user, logout } = useAuth();
+	useEffect(() => {
+		if (show) {
+			document.getElementById('root')!.style.pointerEvents = 'none';
+		}
+		return () => {
+			document.getElementById('root')!.style.pointerEvents = 'all';
+		};
+	});
+	return (
+		<AnimatePresence>
+			{show && (
+				<UserInfoModal
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					exit={{ opacity: 0 }}
+					transition={{ duration: 0.2 }}
+					ref={ref}
+					bottom={modalBottom}
+					left={modalLeft}
+					arrowLeft={arrowLeft}
+					arrowTop={arrowTop}
+				>
+					<UserInfo
+						padding="0 0.75rem"
+						backgroundColorHover={false}
+						icon={<CheckmarkSVG />}
+					/>
+					<UserOption>Add an existing account</UserOption>
+					<UserOption onClick={logout}>
+						Log out
+						{' @' +
+							user?.username.split(' ').join('_').toLowerCase()}
+					</UserOption>
+				</UserInfoModal>
+			)}
+		</AnimatePresence>
+	);
+});

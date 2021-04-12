@@ -1,21 +1,31 @@
 import styled from '@emotion/styled/macro';
+import TwitterSvg from '../icons/TwitterSvg';
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useClickOutside } from '../../hooks/useClickOutside';
 import { TwitterButton } from '../buttons/TwitterButton';
-import { Bookmarks, BookmarksFilled } from '../icons/Bookmarks';
 import { Dots } from '../icons/Dots';
-import { Hashtag, HashtagFilled } from '../icons/Hashtag';
-import { House, HouseFilled } from '../icons/House';
-import { Lists, ListsFilled } from '../icons/Lists';
-import { Messages, MessagesFilled } from '../icons/Messages';
-import { More } from '../icons/More';
-import { Notifications, NotificationsFilled } from '../icons/Notifications';
-import { Profile, ProfileFilled } from '../icons/Profile';
-import TwitterSvg from '../icons/TwitterSvg';
+
 import { UserOptionsModal } from '../modals/UserOptions';
 import { UserInfo } from '../user/UserInfo';
 import { SidebarLink } from './SidebarLink';
+import {
+	BookmarksFilledSVG,
+	BookmarksSVG,
+	HashtagFilledSVG,
+	HashtagSVG,
+	HouseFilledSVG,
+	HouseSVG,
+	ListsFilledSVG,
+	ListsSVG,
+	MessagesFilledSVG,
+	MessagesSVG,
+	MoreSVG,
+	NotificationsFilledSVG,
+	NotificationsSVG,
+	ProfileFilledSVG,
+	ProfileSVG,
+} from './Atoms';
 
 const UserInfoWrapper = styled.div`
 	position: relative;
@@ -61,32 +71,10 @@ const TwitterSvgIcon = styled(TwitterSvg)`
 	width: 100%;
 `;
 
-const BaseIcon = styled.svg`
-	height: 1.75rem;
-	transition: 200ms;
-`;
-
 const DotsSVG = styled(Dots)`
 	fill: rgb(217, 217, 217);
 	height: 1.25em;
 `;
-
-const NotificationsSVG = BaseIcon.withComponent(Notifications);
-
-const HouseSVG = BaseIcon.withComponent(House);
-const HouseFilledSVG = BaseIcon.withComponent(HouseFilled);
-const HashtagSVG = BaseIcon.withComponent(Hashtag);
-const HashtagFilledSVG = BaseIcon.withComponent(HashtagFilled);
-const NotificationsFilledSVG = BaseIcon.withComponent(NotificationsFilled);
-const MessagesSVG = BaseIcon.withComponent(Messages);
-const MessagesFilledSVG = BaseIcon.withComponent(MessagesFilled);
-const BookmarksSVG = BaseIcon.withComponent(Bookmarks);
-const BookmarksFilledSVG = BaseIcon.withComponent(BookmarksFilled);
-const ListsSVG = BaseIcon.withComponent(Lists);
-const ListsFilledSVG = BaseIcon.withComponent(ListsFilled);
-const ProfileSVG = BaseIcon.withComponent(Profile);
-const ProfileFilledSVG = BaseIcon.withComponent(ProfileFilled);
-const MoreSVG = BaseIcon.withComponent(More);
 
 export const Sidebar: React.FC = () => {
 	const [isShowing, setIsShowing] = useState(false);

@@ -30,7 +30,7 @@ const Label = styled.span`
 type NavigationItemProps = {
 	icon: StyledComponentType;
 	iconFilled: StyledComponentType;
-	label: string;
+	label?: string;
 	path: string;
 };
 
@@ -65,7 +65,7 @@ export const SidebarLink: React.FC<NavigationItemProps> = ({
 		<StyledLink to={path}>
 			<Wrapper isActive={isActive}>
 				{isActive ? <IconFilled /> : <Icon />}
-				<Label>{label}</Label>
+				{label && <Label>{label}</Label>}
 			</Wrapper>
 		</StyledLink>
 	);
