@@ -10,7 +10,7 @@ export type StyledComponentType = StyledComponent<{
 const Wrapper = styled.div<{ isActive: boolean }>`
 	display: flex;
 	width: fit-content;
-	padding: 12px;
+	padding: 0.75rem;
 	transition: 200ms;
 	border-radius: 9999px;
 	color: ${props =>
@@ -48,6 +48,7 @@ export const SidebarLink: React.FC<NavigationItemProps> = ({
 	const StyledLink = useMemo(
 		() => styled(Link)`
 			text-decoration: none;
+			padding: 4px 0;
 			&:hover ${Wrapper} {
 				background-color: rgba(29, 161, 242, 0.1);
 			}

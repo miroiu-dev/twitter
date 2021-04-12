@@ -1,4 +1,5 @@
 import styled from '@emotion/styled/macro';
+import { Link } from 'react-router-dom';
 
 export const TabletSidebarWrapper = styled.div`
 	height: 100vh;
@@ -20,7 +21,7 @@ export const ContainerWrapper = styled.div`
 	padding: 0.75rem;
 	border-radius: 50%;
 	display: flex;
-
+	transition: 200ms;
 	&:hover {
 		background-color: rgba(29, 161, 242, 0.1);
 	}
@@ -35,4 +36,17 @@ export const ProfilePicture = styled.img`
 	border-radius: 9999px;
 	height: 40px;
 	width: 40px;
+`;
+
+export const TwitterSVGWrapper = styled(Link)`
+	display: flex;
+	margin-top: 0.4rem;
+	cursor: pointer;
+	justify-content: center;
+	padding: 0.75rem;
+	transition: 200ms;
+	border-radius: 50%;
+	&:hover {
+		background-color: rgba(29, 161, 242, 0.1);
+	}
 `;

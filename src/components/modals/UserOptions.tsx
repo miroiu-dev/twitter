@@ -3,7 +3,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { UserInfo } from '../user/UserInfo';
 import { Checkmark } from '../icons/Checkmark';
 import { AnimatePresence, motion } from 'framer-motion';
-import { forwardRef, useEffect } from 'react';
+import { forwardRef } from 'react';
 
 const UserInfoModal = styled(motion.div)<{
 	bottom?: string;

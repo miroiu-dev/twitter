@@ -9,6 +9,7 @@ import {
 	ProfilePictureWrapper,
 	TabletSidebarWrapper,
 	TweetButtonWrapper,
+	TwitterSVGWrapper,
 } from './Atoms';
 import default_profile_normal from '../images/default_profile_normal.png';
 import {
@@ -28,11 +29,16 @@ import {
 	ProfileFilledSVG,
 	ProfileSVG,
 } from '../sidebar/Atoms';
+import TwitterSvg from '../icons/TwitterSvg';
+
 export const TabletSidebar: React.FC = () => {
 	const { openModal, show, ref } = useUserOptions();
 	return (
 		<TabletSidebarWrapper>
 			<NavigationWrapper>
+				<TwitterSVGWrapper to="/home">
+					<TwitterSvg maxWidth="1.75rem"></TwitterSvg>
+				</TwitterSVGWrapper>
 				<SidebarLink
 					path="/home"
 					icon={HouseSVG}

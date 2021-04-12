@@ -4,4 +4,6 @@ export const routes = {
 	login: () => `${baseURL}/login`,
 	logout: () => `${baseURL}/logout`,
 	signup: () => `${baseURL}/signup`,
+	people: (text: string, count: number = 10) =>
+		`${baseURL}/people?filter=${text}&count=${count}`,
 };

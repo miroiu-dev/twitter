@@ -40,11 +40,12 @@ const Wrapper = styled.div`
 `;
 
 const SidebarWrapper = styled.div`
-	//experimental
+	margin: 0 0.75rem;
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	width: 275px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -55,7 +56,7 @@ const TwitterSvgWrapper = styled(Link)`
 	background-color: transparent;
 	width: fit-content;
 	display: flex;
-	padding: 0.5rem;
+	padding: 0.75rem;
 	justify-content: center;
 	align-items: center;
 	&:hover {
@@ -78,77 +79,75 @@ const DotsSVG = styled(Dots)`
 export const Sidebar: React.FC = () => {
 	const { openModal, show, ref } = useUserOptions();
 	return (
-		<>
-			<SidebarWrapper>
-				<Wrapper>
-					<TwitterSvgWrapper to="/home">
-						<TwitterSvgIcon
-							maxWidth="30px"
-							fill="rgb(217, 217, 217)"
-						></TwitterSvgIcon>
-					</TwitterSvgWrapper>
-					<NavigationWrapper>
-						<SidebarLink
-							label="Home"
-							path="/home"
-							icon={HouseSVG}
-							iconFilled={HouseFilledSVG}
-						/>
-						<SidebarLink
-							label="Explore"
-							path="/explore"
-							icon={HashtagSVG}
-							iconFilled={HashtagFilledSVG}
-						/>
-						<SidebarLink
-							label="Notifications"
-							path="/notifications"
-							icon={NotificationsSVG}
-							iconFilled={NotificationsFilledSVG}
-						/>
-						<SidebarLink
-							label="Messages"
-							path="/messages"
-							icon={MessagesSVG}
-							iconFilled={MessagesFilledSVG}
-						/>
-						<SidebarLink
-							label="Bookmarks"
-							path="/bookmarks"
-							icon={BookmarksSVG}
-							iconFilled={BookmarksFilledSVG}
-						/>
-						<SidebarLink
-							label="Lists"
-							path="/lists"
-							icon={ListsSVG}
-							iconFilled={ListsFilledSVG}
-						/>
-						<SidebarLink
-							label="Profile"
-							path="/profile"
-							icon={ProfileSVG}
-							iconFilled={ProfileFilledSVG}
-						/>
-						<SidebarLink
-							label="More"
-							path="/more"
-							icon={MoreSVG}
-							iconFilled={MoreSVG}
-						/>
-					</NavigationWrapper>
-					<ButtonWrapper>
-						<TwitterButton width="90%" fontSize="0.938rem">
-							Tweet
-						</TwitterButton>
-					</ButtonWrapper>
-				</Wrapper>
+		<SidebarWrapper>
+			<Wrapper>
+				<TwitterSvgWrapper to="/home">
+					<TwitterSvgIcon
+						maxWidth="30px"
+						fill="rgb(217, 217, 217)"
+					></TwitterSvgIcon>
+				</TwitterSvgWrapper>
+				<NavigationWrapper>
+					<SidebarLink
+						label="Home"
+						path="/home"
+						icon={HouseSVG}
+						iconFilled={HouseFilledSVG}
+					/>
+					<SidebarLink
+						label="Explore"
+						path="/explore"
+						icon={HashtagSVG}
+						iconFilled={HashtagFilledSVG}
+					/>
+					<SidebarLink
+						label="Notifications"
+						path="/notifications"
+						icon={NotificationsSVG}
+						iconFilled={NotificationsFilledSVG}
+					/>
+					<SidebarLink
+						label="Messages"
+						path="/messages"
+						icon={MessagesSVG}
+						iconFilled={MessagesFilledSVG}
+					/>
+					<SidebarLink
+						label="Bookmarks"
+						path="/bookmarks"
+						icon={BookmarksSVG}
+						iconFilled={BookmarksFilledSVG}
+					/>
+					<SidebarLink
+						label="Lists"
+						path="/lists"
+						icon={ListsSVG}
+						iconFilled={ListsFilledSVG}
+					/>
+					<SidebarLink
+						label="Profile"
+						path="/profile"
+						icon={ProfileSVG}
+						iconFilled={ProfileFilledSVG}
+					/>
+					<SidebarLink
+						label="More"
+						path="/more"
+						icon={MoreSVG}
+						iconFilled={MoreSVG}
+					/>
+				</NavigationWrapper>
+				<ButtonWrapper>
+					<TwitterButton width="90%" fontSize="0.938rem">
+						Tweet
+					</TwitterButton>
+				</ButtonWrapper>
+			</Wrapper>
 
-				<UserInfoWrapper>
-					<UserInfo icon={<DotsSVG />} callback={openModal} />
-					<UserOptionsModal show={show} ref={ref} />
-				</UserInfoWrapper>
-			</SidebarWrapper>
-		</>
+			<UserInfoWrapper>
+				<UserInfo icon={<DotsSVG />} callback={openModal} />
+				<UserOptionsModal show={show} ref={ref} />
+			</UserInfoWrapper>
+		</SidebarWrapper>
 	);
 };
