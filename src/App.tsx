@@ -17,8 +17,8 @@ import { TabletSidebar } from './components/table-sidebar/TabletSidebar';
 import { SettingsWheel } from './components/icons/SettingsWheel';
 import { Search } from './components/icons/Search';
 import { UserAvatar } from './components/user/UserAvatar';
-import axios from 'axios';
 import { peopleService, Person } from './services/people.service';
+import { useModal } from './hooks/useModal';
 
 const LeftPanel = styled.div`
 	display: flex;
@@ -224,6 +224,13 @@ const Results = styled.div`
 const Result = styled.div`
 	display: flex;
 	padding: 0.75rem 1rem;
+	cursor: pointer;
+	pointer-events: all !important;
+	transition: 200ms;
+	&:hover {
+		background-color: rgb(21, 24, 28);
+	}
+	border-bottom: 1px solid rgb(47, 51, 54);
 `;
 
 const useSearchResults = (searchText: string) => {
@@ -240,6 +247,8 @@ const useSearchResults = (searchText: string) => {
 		if (searchText.trim()) {
 			const timerId = setTimeout(() => search(searchText), 300);
 			return () => clearTimeout(timerId);
+		} else {
+			setResults([]);
 		}
 	}, [search, searchText]);
 	return results;
@@ -248,13 +257,7 @@ const useSearchResults = (searchText: string) => {
 const SidePanel: React.FC = () => {
 	const [searchText, setSearchText] = useState('');
 	const results = useSearchResults(searchText);
-
-	// const results = Array.from({ length: 20 }).map(() => ({
-	// 	name: 'Gabriel Miroiu',
-	// 	username: 'gabriel_miroiu',
-	// 	profilePicture:
-	// 		'https://pbs.twimg.com/profile_images/1379353354866995202/apI6V404_normal.jpg',
-	// }));
+	const { openModal, ref, show } = useModal();
 
 	return (
 		<SidePanelWrapper>
@@ -268,23 +271,30 @@ const SidePanel: React.FC = () => {
 							placeholder="Search Twitter"
 							value={searchText}
 							onChange={ev => setSearchText(ev.target.value)}
+							onClick={openModal}
 						/>
 					</SearchBarContainer>
 				</SearchBarWrapper>
-				<SearchResults>
-					{results.length === 0 && (
-						<TrySearching>
-							Try searching for people, topics, or keywords
-						</TrySearching>
-					)}
-					<Results>
-						{results.map(result => (
-							<Result>
-								<UserAvatar />
-							</Result>
-						))}
-					</Results>
-				</SearchResults>
+				{show && (
+					<SearchResults ref={ref}>
+						{results.length === 0 && (
+							<TrySearching>
+								Try searching for people, topics, or keywords
+							</TrySearching>
+						)}
+						<Results>
+							{results.map(result => (
+								<Result>
+									<UserAvatar
+										name={result.name}
+										username={result.username}
+										profilePicture={result.profilePicture}
+									/>
+								</Result>
+							))}
+						</Results>
+					</SearchResults>
+				)}
 			</Container>
 			<TrendingTab>
 				<HeaderWrapper>

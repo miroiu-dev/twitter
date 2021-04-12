@@ -1,4 +1,4 @@
-import { useUserOptions } from '../../hooks/useUserOptionsModal';
+import { useModal } from '../../hooks/useModal';
 import { TweetButton } from '../buttons/TweetButton';
 import { UserOptionsModal } from '../modals/UserOptions';
 import { SidebarLink } from '../sidebar/SidebarLink';
@@ -32,7 +32,7 @@ import {
 import TwitterSvg from '../icons/TwitterSvg';
 
 export const TabletSidebar: React.FC = () => {
-	const { openModal, show, ref } = useUserOptions();
+	const { openModal, show, ref } = useModal();
 	return (
 		<TabletSidebarWrapper>
 			<NavigationWrapper>

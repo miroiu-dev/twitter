@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useClickOutside } from './useClickOutside';
 
-export const useUserOptions = () => {
+export const useModal = () => {
 	const [isShowing, setIsShowing] = useState(false);
 
 	const divRef = useRef<HTMLDivElement | null>(null);

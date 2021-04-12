@@ -24,7 +24,7 @@ import {
 	ProfileFilledSVG,
 	ProfileSVG,
 } from './Atoms';
-import { useUserOptions } from '../../hooks/useUserOptionsModal';
+import { useModal } from '../../hooks/useModal';
 
 const UserInfoWrapper = styled.div`
 	position: relative;
@@ -77,7 +77,7 @@ const DotsSVG = styled(Dots)`
 `;
 
 export const Sidebar: React.FC = () => {
-	const { openModal, show, ref } = useUserOptions();
+	const { openModal, show, ref } = useModal();
 	return (
 		<SidebarWrapper>
 			<Wrapper>
