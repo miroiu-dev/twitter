@@ -39,13 +39,11 @@ const LeftPanel = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
-	width: 100%;
 `;
 
 const RightPanel = styled.div`
 	display: flex;
 	flex-direction: column;
-	width: 275px;
 `;
 
 type LayoutProps = {
@@ -56,6 +54,7 @@ type LayoutProps = {
 
 const LayoutWrapper = styled.div`
 	display: flex;
+	justify-content: center;
 `;
 
 const Layout: React.FC<LayoutProps> = ({
@@ -116,6 +115,7 @@ const TweetButtonWrapper = styled.div`
 const ContainerWrapper = styled.div`
 	padding: 0.75rem;
 	border-radius: 50%;
+	display: flex;
 
 	&:hover {
 		background-color: rgba(29, 161, 242, 0.1);
@@ -125,10 +125,6 @@ const ContainerWrapper = styled.div`
 const ProfilePictureWrapper = styled.div`
 	position: relative;
 	margin: 0.75rem 0;
-`;
-
-const ProfileWrapper = styled.div`
-	display: flex;
 `;
 
 const ProfilePicture = styled.img`
@@ -183,13 +179,11 @@ const TabletSidebar: React.FC = () => {
 			</NavigationWrapper>
 			<ProfilePictureWrapper>
 				<ContainerWrapper>
-					<ProfileWrapper>
-						<ProfilePicture src={default_profile_normal} />
-					</ProfileWrapper>
+					<ProfilePicture src={default_profile_normal} />
 				</ContainerWrapper>
 				<UserOptionsModal
-					show={false}
-					arrowLeft="9%"
+					show={true}
+					arrowLeft="11%"
 					arrowTop="100%"
 					modalLeft="60px"
 					modalBottom="60px"
@@ -211,6 +205,7 @@ const App = () => {
 		<Router>
 			{user ? (
 				<Layout
+					rightPanel={<Sidebar />}
 					leftPanel={<Sidebar />}
 					tabletSidebar={<TabletSidebar />}
 				>
