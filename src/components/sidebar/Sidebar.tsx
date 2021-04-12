@@ -1,8 +1,6 @@
 import styled from '@emotion/styled/macro';
 import TwitterSvg from '../icons/TwitterSvg';
-import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useClickOutside } from '../../hooks/useClickOutside';
 import { TwitterButton } from '../buttons/TwitterButton';
 import { Dots } from '../icons/Dots';
 
@@ -26,6 +24,7 @@ import {
 	ProfileFilledSVG,
 	ProfileSVG,
 } from './Atoms';
+import { useUserOptions } from '../../hooks/useUserOptionsModal';
 
 const UserInfoWrapper = styled.div`
 	position: relative;
@@ -77,18 +76,7 @@ const DotsSVG = styled(Dots)`
 `;
 
 export const Sidebar: React.FC = () => {
-	const [isShowing, setIsShowing] = useState(false);
-
-	const divRef = useRef<HTMLDivElement | null>(null);
-	const openModal = () => {
-		setIsShowing(true);
-	};
-	const closeModal = () => {
-		if (isShowing) {
-			setIsShowing(false);
-		}
-	};
-	useClickOutside(divRef, closeModal);
+	const { openModal, show, ref } = useUserOptions();
 	return (
 		<>
 			<SidebarWrapper>
@@ -158,7 +146,7 @@ export const Sidebar: React.FC = () => {
 
 				<UserInfoWrapper>
 					<UserInfo icon={<DotsSVG />} callback={openModal} />
-					<UserOptionsModal show={isShowing} ref={divRef} />
+					<UserOptionsModal show={show} ref={ref} />
 				</UserInfoWrapper>
 			</SidebarWrapper>
 		</>

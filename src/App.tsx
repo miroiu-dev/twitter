@@ -13,27 +13,7 @@ import { useScreenType } from './hooks/useScreenType';
 import styled from '@emotion/styled/macro';
 import { Sidebar } from './components/sidebar/Sidebar';
 import { useAuth } from './hooks/useAuth';
-import default_profile_normal from './components/images/default_profile_normal.png';
-import { SidebarLink } from './components/sidebar/SidebarLink';
-import {
-	BookmarksFilledSVG,
-	BookmarksSVG,
-	HashtagFilledSVG,
-	HashtagSVG,
-	HouseFilledSVG,
-	ListsFilledSVG,
-	ListsSVG,
-	MessagesFilledSVG,
-	MessagesSVG,
-	MoreSVG,
-	NotificationsFilledSVG,
-	NotificationsSVG,
-	ProfileFilledSVG,
-	ProfileSVG,
-	HouseSVG,
-} from './components/sidebar/Atoms';
-import { TweetButton } from './components/buttons/TweetButton';
-import { UserOptionsModal } from './components/modals/UserOptions';
+import { TabletSidebar } from './components/table-sidebar/TabletSidebar';
 
 const LeftPanel = styled.div`
 	display: flex;
@@ -94,103 +74,6 @@ const Layout: React.FC<LayoutProps> = ({
 	}
 
 	return middle;
-};
-
-const TabletSidebarWrapper = styled.div`
-	height: 100vh;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	align-items: center;
-`;
-
-const NavigationWrapper = styled.div``;
-
-const TweetButtonWrapper = styled.div`
-	padding: 0.3rem 0;
-	display: flex;
-	justify-content: center;
-`;
-
-const ContainerWrapper = styled.div`
-	padding: 0.75rem;
-	border-radius: 50%;
-	display: flex;
-
-	&:hover {
-		background-color: rgba(29, 161, 242, 0.1);
-	}
-`;
-
-const ProfilePictureWrapper = styled.div`
-	position: relative;
-	margin: 0.75rem 0;
-`;
-
-const ProfilePicture = styled.img`
-	border-radius: 9999px;
-	height: 40px;
-	width: 40px;
-`;
-
-const TabletSidebar: React.FC = () => {
-	return (
-		<TabletSidebarWrapper>
-			<NavigationWrapper>
-				<SidebarLink
-					path="/home"
-					icon={HouseSVG}
-					iconFilled={HouseFilledSVG}
-				/>
-				<SidebarLink
-					path="/explore"
-					icon={HashtagSVG}
-					iconFilled={HashtagFilledSVG}
-				/>
-				<SidebarLink
-					path="/notifications"
-					icon={NotificationsSVG}
-					iconFilled={NotificationsFilledSVG}
-				/>
-				<SidebarLink
-					path="/messages"
-					icon={MessagesSVG}
-					iconFilled={MessagesFilledSVG}
-				/>
-				<SidebarLink
-					path="/bookmarks"
-					icon={BookmarksSVG}
-					iconFilled={BookmarksFilledSVG}
-				/>
-				<SidebarLink
-					path="/lists"
-					icon={ListsSVG}
-					iconFilled={ListsFilledSVG}
-				/>
-				<SidebarLink
-					path="/profile"
-					icon={ProfileSVG}
-					iconFilled={ProfileFilledSVG}
-				/>
-				<SidebarLink path="/more" icon={MoreSVG} iconFilled={MoreSVG} />
-				<TweetButtonWrapper>
-					<TweetButton></TweetButton>
-				</TweetButtonWrapper>
-			</NavigationWrapper>
-			<ProfilePictureWrapper>
-				<ContainerWrapper>
-					<ProfilePicture src={default_profile_normal} />
-				</ContainerWrapper>
-				<UserOptionsModal
-					show={true}
-					arrowLeft="11%"
-					arrowTop="100%"
-					modalLeft="60px"
-					modalBottom="60px"
-				></UserOptionsModal>
-			</ProfilePictureWrapper>
-		</TabletSidebarWrapper>
-	);
 };
 
 const HomeLayout = styled.div`

@@ -79,14 +79,7 @@ export const UserOptionsModal = forwardRef<
 	}
 >(({ show, modalBottom, modalLeft, arrowTop, arrowLeft }, ref) => {
 	const { user, logout } = useAuth();
-	useEffect(() => {
-		if (show) {
-			document.getElementById('root')!.style.pointerEvents = 'none';
-		}
-		return () => {
-			document.getElementById('root')!.style.pointerEvents = 'all';
-		};
-	});
+
 	return (
 		<AnimatePresence>
 			{show && (
