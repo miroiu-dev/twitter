@@ -34,13 +34,12 @@ import {
 } from './components/sidebar/Atoms';
 import { TweetButton } from './components/buttons/TweetButton';
 import { UserOptionsModal } from './components/modals/UserOptions';
-const LeftPanel = styled.div<{ width?: string }>`
+
+const LeftPanel = styled.div`
 	display: flex;
 	flex-direction: column;
-
-	width: ${props => props.width ?? '275px'};
-	//to be removed
-	margin: 0 auto;
+	align-items: flex-end;
+	width: 100%;
 `;
 
 const RightPanel = styled.div`
@@ -55,6 +54,10 @@ type LayoutProps = {
 	tabletSidebar?: ReactNode;
 };
 
+const LayoutWrapper = styled.div`
+	display: flex;
+`;
+
 const Layout: React.FC<LayoutProps> = ({
 	children,
 	leftPanel,
@@ -66,33 +69,32 @@ const Layout: React.FC<LayoutProps> = ({
 
 	if (screenType === '3-cols') {
 		middle = (
-			<>
+			<LayoutWrapper>
 				<LeftPanel>{leftPanel}</LeftPanel>
 				{children}
 				<RightPanel>{rightPanel}</RightPanel>
-			</>
+			</LayoutWrapper>
 		);
 	} else if (screenType === '2-cols') {
 		middle = (
-			<>
-				<LeftPanel width="52px">{tabletSidebar}</LeftPanel>
+			<LayoutWrapper>
+				<LeftPanel>{tabletSidebar}</LeftPanel>
 				{children}
 				<RightPanel>{rightPanel}</RightPanel>
-			</>
+			</LayoutWrapper>
 		);
 	} else if (screenType === '1-cols') {
 		middle = (
-			<>
-				<LeftPanel width="52px">{tabletSidebar}</LeftPanel>
-
-				<RightPanel>{rightPanel}</RightPanel>
-			</>
+			<LayoutWrapper>
+				<LeftPanel>{tabletSidebar}</LeftPanel>
+				{children}
+			</LayoutWrapper>
 		);
 	} else if (screenType === 'fullscreen') {
-		middle = <>{children}</>;
+		middle = <LayoutWrapper>{children}</LayoutWrapper>;
 	}
 
-	return <>{middle}</>;
+	return middle;
 };
 
 const TabletSidebarWrapper = styled.div`
@@ -100,6 +102,7 @@ const TabletSidebarWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	align-items: center;
 `;
 
 const NavigationWrapper = styled.div``;
@@ -111,30 +114,27 @@ const TweetButtonWrapper = styled.div`
 `;
 
 const ContainerWrapper = styled.div`
-	margin: 0.75rem 0;
-`;
+	padding: 0.75rem;
+	border-radius: 50%;
 
-const Container = styled.div`
-	position: relative;
-`;
-
-const ProfilePictureWrapper = styled.div`
-	border-radius: 9999px;
 	&:hover {
 		background-color: rgba(29, 161, 242, 0.1);
 	}
+`;
+
+const ProfilePictureWrapper = styled.div`
+	position: relative;
 	margin: 0.75rem 0;
 `;
 
 const ProfileWrapper = styled.div`
 	display: flex;
-	justify-content: center;
 `;
 
 const ProfilePicture = styled.img`
 	border-radius: 9999px;
-	height: 2em;
-	width: 2em;
+	height: 40px;
+	width: 40px;
 `;
 
 const TabletSidebar: React.FC = () => {
@@ -187,17 +187,22 @@ const TabletSidebar: React.FC = () => {
 						<ProfilePicture src={default_profile_normal} />
 					</ProfileWrapper>
 				</ContainerWrapper>
+				<UserOptionsModal
+					show={false}
+					arrowLeft="9%"
+					arrowTop="100%"
+					modalLeft="60px"
+					modalBottom="60px"
+				></UserOptionsModal>
 			</ProfilePictureWrapper>
-			<UserOptionsModal
-				show={false}
-				arrowLeft="9%"
-				arrowTop="100%"
-				modalLeft="60px"
-				modalBottom="60px"
-			></UserOptionsModal>
 		</TabletSidebarWrapper>
 	);
 };
+
+const HomeLayout = styled.div`
+	max-width: 600px;
+	width: 100%;
+`;
 
 const App = () => {
 	const { user } = useAuth();
@@ -210,7 +215,9 @@ const App = () => {
 					tabletSidebar={<TabletSidebar />}
 				>
 					<Switch>
-						<Route path="/home"></Route>
+						<Route path="/home">
+							<HomeLayout />
+						</Route>
 						<Route path="/explore"></Route>
 						<Route path="/notifications"></Route>
 						<Route path="/messages"></Route>
