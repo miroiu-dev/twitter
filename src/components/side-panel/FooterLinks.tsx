@@ -10,7 +10,9 @@ export const Links: React.FC = () => {
 			<LinkWrapper>
 				<Link padding="1px">More ...</Link>
 			</LinkWrapper>
-			<Link>&#169; 2021 Twitter, Inc.</Link>
+			<Link cursor="text" hover="none">
+				&#169; 2021 Twitter, Inc.
+			</Link>
 		</TOSLinks>
 	);
 };

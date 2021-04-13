@@ -288,14 +288,18 @@ export const LinkWrapper = styled.div`
 	padding-right: 0.75rem;
 	align-items: center;
 `;
-export const Link = styled.span<{ padding?: string }>`
+export const Link = styled.span<{
+	padding?: string;
+	hover?: string;
+	cursor?: string;
+}>`
 	color: rgb(110, 118, 125);
 	margin-top: 2px;
 	font-size: 0.813rem;
 	font-weight: 400;
-	cursor: pointer;
+	cursor: ${props => props.cursor ?? 'pointer'};
 	padding-right: ${props => props.padding ?? '12px'};
 	&:hover {
-		text-decoration: underline;
+		text-decoration: ${props => props.hover ?? 'underline'};
 	}
 `;
