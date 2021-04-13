@@ -32,15 +32,20 @@ export const SidePanel: React.FC = () => {
 	const [searchText, setSearchText] = useState('');
 	const results = useSearchResults(searchText);
 	const { openModal, ref, show } = useModal();
-	const trends = useRef<Trends[] | null>(null);
-	const toFollow = useRef<WhoToFollow[] | null>(null);
-	const topics = useRef<TopicsToFollow[] | null>(null);
+	const [trends, setTrends] = useState<Trends[]>([]);
+	const [topics, setTopics] = useState<TopicsToFollow[]>([]);
+	const [toFollow, setToFollow] = useState<WhoToFollow[]>([]);
+
+	const getPanelData = async () => {
+		setTrends(await tabsService.trendsForYou());
+		setToFollow(await tabsService.whoToFollow());
+		setTopics(await tabsService.topicsToFollow());
+	};
 
 	useEffect(() => {
-		trends.current = tabsService.trendsForYou();
-		toFollow.current = tabsService.whoToFollow();
-		topics.current = tabsService.topicsToFollow();
+		getPanelData();
 	}, []);
+
 	return (
 		<SidePanelWrapper>
 			<Container ref={ref}>
@@ -79,7 +84,7 @@ export const SidePanel: React.FC = () => {
 				)}
 			</Container>
 			<Tab title="Trends for you" icon={<Settings />}>
-				{trends.current?.map(trend => (
+				{trends.map(trend => (
 					<Trend
 						key={trend.name}
 						name={trend.name}
@@ -88,7 +93,7 @@ export const SidePanel: React.FC = () => {
 				))}
 			</Tab>
 			<Tab title="Who to follow">
-				{toFollow.current?.map(toFollow => (
+				{toFollow.map(toFollow => (
 					<PossibleFollower
 						key={toFollow.username}
 						profilePicture={toFollow.profilePicture}
@@ -98,7 +103,7 @@ export const SidePanel: React.FC = () => {
 				))}
 			</Tab>
 			<Tab title="Topics to follow">
-				{topics.current?.map(topic => (
+				{topics.map(topic => (
 					<Topic
 						key={topic.title}
 						name={topic.title}

@@ -9,7 +9,7 @@ export type Trends = {
 	tweets: string;
 };
 
-const trendsForYou = (): Trends[] => {
+const trendsForYou = async (): Promise<Trends[]> => {
 	const trends = [
 		{ name: 'Earth', tweets: '202K' },
 		{ name: '#model', tweets: '8,417' },
@@ -26,7 +26,7 @@ export type WhoToFollow = {
 	username: string;
 };
 
-const whoToFollow = (): WhoToFollow[] => {
+const whoToFollow = async (): Promise<WhoToFollow[]> => {
 	const toFollow = [
 		{
 			profilePicture:
@@ -56,7 +56,7 @@ export type TopicsToFollow = {
 	category: string;
 };
 
-const topicsToFollow = (): TopicsToFollow[] => {
+const topicsToFollow = async (): Promise<TopicsToFollow[]> => {
 	const topics = [
 		{ title: 'Among Us', category: 'Video Game' },
 		{ title: 'Roblox', category: 'Video Game' },
