@@ -13,7 +13,7 @@ import { useScreenType } from './hooks/useScreenType';
 import styled from '@emotion/styled/macro';
 import { Sidebar } from './components/sidebar/Sidebar';
 import { useAuth } from './hooks/useAuth';
-import { TabletSidebar } from './components/table-sidebar/TabletSidebar';
+import { TabletSidebar } from './components/tablet-sidebar/TabletSidebar';
 
 import { SidePanel } from './components/side-panel/SidePanel';
 

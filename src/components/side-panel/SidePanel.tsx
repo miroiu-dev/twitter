@@ -1,8 +1,6 @@
-import styled from '@emotion/styled/macro';
 import React, { useState } from 'react';
 import { useModal } from '../../hooks/useModal';
 import { useSearchResults } from '../../hooks/useSearchResults';
-import { TwitterFollowButton } from '../buttons/TwitterFollowButton';
 import { UserAvatar } from '../user/UserAvatar';
 import {
 	SidePanelWrapper,
@@ -62,17 +60,17 @@ export const SidePanel: React.FC = () => {
 						</Results>
 					</SearchResults>
 				)}
-				<Tab title="Trends for you" icon={<Settings />}>
-					<Trend name="felix" tweets="181K" />
-					<Trend name="felix" tweets="181K" />
-					<Trend name="felix" tweets="181K" />
-				</Tab>
-				<Tab title="Who to follow">
-					<PossibleFollower />
-					<PossibleFollower />
-					<PossibleFollower />
-				</Tab>
 			</Container>
+			<Tab title="Trends for you" icon={<Settings />}>
+				<Trend name="felix" tweets="181K" />
+				<Trend name="felix" tweets="181K" />
+				<Trend name="felix" tweets="181K" />
+			</Tab>
+			<Tab title="Who to follow">
+				<PossibleFollower />
+				<PossibleFollower />
+				<PossibleFollower />
+			</Tab>
 		</SidePanelWrapper>
 	);
 };
