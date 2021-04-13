@@ -31,7 +31,7 @@ export const UserInfo: React.FC<{
 					<UserProfileImage src={default_profile_normal} />
 				</ImageWrapper>
 				<SideWrapper>
-					<Name>{user?.username}</Name>
+					<Name>{user?.name}</Name>
 					<Username>
 						{'@' +
 							user?.username.split(' ').join('_').toLowerCase()}

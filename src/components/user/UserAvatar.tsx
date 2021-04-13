@@ -10,7 +10,7 @@ import {
 type UserAvatarProps = {
 	name: string;
 	username: string;
-	profilePicture: string;
+	profilePicture?: string;
 };
 
 export const UserAvatar: React.FC<UserAvatarProps> = ({
