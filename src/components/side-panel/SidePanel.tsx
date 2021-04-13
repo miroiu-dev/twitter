@@ -2,6 +2,7 @@ import styled from '@emotion/styled/macro';
 import React, { useState } from 'react';
 import { useModal } from '../../hooks/useModal';
 import { useSearchResults } from '../../hooks/useSearchResults';
+import { TwitterFollowButton } from '../buttons/TwitterFollowButton';
 import { UserAvatar } from '../user/UserAvatar';
 import {
 	SidePanelWrapper,
@@ -17,6 +18,7 @@ import {
 	Result,
 	Settings,
 } from './Atoms';
+import { PossibleFollower } from './PossibleFollower';
 import { Tab } from './Tab';
 import { Trend } from './Trend';
 export const SidePanel: React.FC = () => {
@@ -67,63 +69,10 @@ export const SidePanel: React.FC = () => {
 				</Tab>
 				<Tab title="Who to follow">
 					<PossibleFollower />
+					<PossibleFollower />
+					<PossibleFollower />
 				</Tab>
 			</Container>
 		</SidePanelWrapper>
 	);
 };
-
-const PossibleFollowerWrapper = styled.div`
-	display: flex;
-	justify-content: space-between;
-	border-bottom: 1px solid rgb(47, 51, 54);
-	transition: 200ms;
-	padding: 0.75rem 1rem;
-	cursor: pointer;
-	&:hover {
-		background-color: rgba(255, 255, 255, 0.03);
-	}
-`;
-
-const ProfileWrapper = styled.div`
-	display: flex;
-`;
-
-const FollowButtonWrapper = styled.div`
-	margin-left: 12px;
-	display: flex;
-	align-items: center;
-`;
-
-const FollowButton = styled.button`
-	min-width: 51.52px;
-	min-height: 32px;
-	background-color: rgba(255, 255, 255, 1);
-	padding-left: 1em;
-	padding-right: 1em;
-	border-radius: 9999px;
-	border: 1px solid rgba(0, 0, 0, 0);
-	border-radius: 9999px;
-	color: rgb(15, 20, 25);
-	font-weight: 700;
-	font-size: 0.938rem;
-	outline: none;
-	&:hover {
-		background-color: rgb(230, 230, 230);
-	}
-`;
-
-const PossibleFollower: React.FC = () => {
-	return (
-		<PossibleFollowerWrapper>
-			<ProfileWrapper>
-				<UserAvatar name="asd" username="asd" />
-			</ProfileWrapper>
-			<FollowButtonWrapper>
-				<FollowButton>Follow</FollowButton>
-			</FollowButtonWrapper>
-		</PossibleFollowerWrapper>
-	);
-};
-
-//image width and height 48px and hover on name with underline

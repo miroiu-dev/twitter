@@ -24,12 +24,23 @@ export const Container = styled.div`
 	display: flex;
 `;
 
-export const ImageWrapper = styled.div``;
+export const ImageWrapper = styled.div`
+	display: flex;
+	align-items: center;
+`;
 
-export const UserProfileImage = styled.img`
+export const UserProfileImage = styled.img<{
+	width?: string;
+	height?: string;
+	hover?: string;
+}>`
 	border-radius: 9999px;
-	height: 40px;
-	width: 40px;
+	width: ${props => props.width ?? '40px'};
+	height: ${props => props.height ?? '40px'};
+	transition: 200ms;
+	&:hover {
+		filter: ${props => props.hover && `brightness(${props.hover})`};
+	}
 `;
 
 export const Name = styled.span`
@@ -45,10 +56,14 @@ export const Username = styled.span`
 	font-size: 0.938rem;
 `;
 
-export const SideWrapper = styled.div`
+export const SideWrapper = styled.div<{ hoverDecoration?: string }>`
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	margin: 0 0.75rem;
+	&:hover ${Name} {
+		text-decoration: ${props => props.hoverDecoration};
+	}
 `;
 
 export const MoreWrapper = styled.div`

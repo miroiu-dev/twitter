@@ -11,21 +11,32 @@ type UserAvatarProps = {
 	name: string;
 	username: string;
 	profilePicture?: string;
+	imageWidth?: string;
+	imageHeight?: string;
+	hoverBrightness?: string;
+	hoverDecoration?: string;
 };
 
 export const UserAvatar: React.FC<UserAvatarProps> = ({
 	name,
 	username,
 	profilePicture,
+	imageWidth,
+	imageHeight,
+	hoverBrightness,
+	hoverDecoration,
 }) => {
 	return (
 		<>
 			<ImageWrapper>
 				<UserProfileImage
 					src={profilePicture ?? default_profile_normal}
+					width={imageWidth}
+					height={imageHeight}
+					hover={hoverBrightness}
 				/>
 			</ImageWrapper>
-			<SideWrapper>
+			<SideWrapper hoverDecoration={hoverDecoration}>
 				<Name>{name}</Name>
 				<Username>
 					{'@' + username.split(' ').join('_').toLowerCase()}

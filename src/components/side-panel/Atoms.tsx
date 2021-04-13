@@ -65,6 +65,7 @@ export const IconWrapper = styled.div`
 	align-items: center;
 	padding: 0.5rem;
 	border-radius: 50%;
+	cursor: pointer;
 	&:hover {
 		background-color: rgba(29, 161, 242, 0.1);
 	}
@@ -79,7 +80,7 @@ export const SidePanelWrapper = styled.div`
 export const Settings = styled(SettingsWheel)`
 	width: 1.5em;
 	height: 1.5em;
-	fill: rgba(29, 161, 242, 1); ;
+	fill: rgba(29, 161, 242, 1);
 `;
 
 export const TrendingTab = styled.div`
@@ -211,4 +212,22 @@ export const More = styled.span`
 	font-weight: 400;
 	font-size: 0.938rem;
 	color: rgba(29, 161, 242, 1);
+`;
+
+export const PossibleFollowerWrapper = styled.div`
+	display: flex;
+	justify-content: space-between;
+	border-bottom: 1px solid rgb(47, 51, 54);
+	transition: 200ms;
+	padding: 0.75rem 1rem;
+	cursor: pointer;
+	&:hover {
+		background-color: rgba(255, 255, 255, 0.03);
+	}
+`;
+
+export const ProfileWrapper = styled.div`
+	display: flex;
+	justify-content: center;
+	user-select: none;
 `;
