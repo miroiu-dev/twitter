@@ -276,3 +276,26 @@ export const RemoveButton = styled.div`
 	align-items: center;
 	margin-left: 4px;
 `;
+
+export const TOSLinks = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+	padding-bottom: 64px;
+	padding-left: 1rem;
+`;
+export const LinkWrapper = styled.div`
+	display: flex;
+	padding-right: 12px;
+	align-items: center;
+`;
+export const Link = styled.span<{ padding?: string }>`
+	color: rgb(110, 118, 125);
+	margin-top: 2px;
+	font-size: 13px;
+	font-weight: 400;
+	cursor: pointer;
+	padding-right: ${props => props.padding ?? '12px'};
+	&:hover {
+		text-decoration: underline;
+	}
+`;

@@ -22,6 +22,7 @@ import {
 	Result,
 	Settings,
 } from './Atoms';
+import { Links } from './FooterLinks';
 import { PossibleFollower } from './PossibleFollower';
 import { Tab } from './Tab';
 import { Topic } from './Topic';
@@ -105,6 +106,7 @@ export const SidePanel: React.FC = () => {
 					/>
 				))}
 			</Tab>
+			<Links />
 		</SidePanelWrapper>
 	);
 };
