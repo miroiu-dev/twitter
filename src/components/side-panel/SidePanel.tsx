@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useModal } from '../../hooks/useModal';
 import { useSearchResults } from '../../hooks/useSearchResults';
+import {
+	tabsService,
+	TopicsToFollow,
+	Trends,
+	WhoToFollow,
+} from '../../services/tabs.service';
 import { UserAvatar } from '../user/UserAvatar';
 import {
 	SidePanelWrapper,
@@ -18,12 +24,22 @@ import {
 } from './Atoms';
 import { PossibleFollower } from './PossibleFollower';
 import { Tab } from './Tab';
+import { Topic } from './Topic';
 import { Trend } from './Trend';
+
 export const SidePanel: React.FC = () => {
 	const [searchText, setSearchText] = useState('');
 	const results = useSearchResults(searchText);
 	const { openModal, ref, show } = useModal();
+	const trends = useRef<Trends[] | null>(null);
+	const toFollow = useRef<WhoToFollow[] | null>(null);
+	const topics = useRef<TopicsToFollow[] | null>(null);
 
+	useEffect(() => {
+		trends.current = tabsService.trendsForYou();
+		toFollow.current = tabsService.whoToFollow();
+		topics.current = tabsService.topicsToFollow();
+	}, []);
 	return (
 		<SidePanelWrapper>
 			<Container ref={ref}>
@@ -62,14 +78,23 @@ export const SidePanel: React.FC = () => {
 				)}
 			</Container>
 			<Tab title="Trends for you" icon={<Settings />}>
-				<Trend name="felix" tweets="181K" />
-				<Trend name="felix" tweets="181K" />
-				<Trend name="felix" tweets="181K" />
+				{trends.current?.map(trend => (
+					<Trend name={trend.name} tweets={trend.tweets}></Trend>
+				))}
 			</Tab>
 			<Tab title="Who to follow">
-				<PossibleFollower />
-				<PossibleFollower />
-				<PossibleFollower />
+				{toFollow.current?.map(toFollow => (
+					<PossibleFollower
+						profilePicture={toFollow.profilePicture}
+						name={toFollow.name}
+						username={toFollow.username}
+					></PossibleFollower>
+				))}
+			</Tab>
+			<Tab title="Topics to follow">
+				{topics.current?.map(topic => (
+					<Topic name={topic.title} category={topic.category} />
+				))}
 			</Tab>
 		</SidePanelWrapper>
 	);

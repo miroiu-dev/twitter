@@ -13,7 +13,7 @@ export const UserInfoWrapper = styled.div<UserInfoWrapperProps>`
 	cursor: ${props => props.backgroundColorHover && 'pointer'};
 	margin: 0.75rem 0;
 	border-radius: 9999px;
-
+	transition: 200ms;
 	&:hover {
 		background-color: ${props =>
 			props.backgroundColorHover && 'rgba(29, 161, 242, 0.1)'};

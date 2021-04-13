@@ -7,6 +7,12 @@ import {
 } from '../services/account.service';
 import { UserContext } from './UserContext';
 
+const CountriesByName = new Map([
+	['RO', 'Romania'],
+	['UK', 'United Kingdom'],
+	['US', 'United States'],
+]);
+
 export const useAuth = () => {
 	const { user, setUser } = useContext(UserContext);
 	const history = useHistory();
@@ -18,9 +24,9 @@ export const useAuth = () => {
 			}
 
 			const response = await accountService.login(username, password);
-
+			const country = CountriesByName.get(response.user?.country!);
 			if (response.user) {
-				setUser(response.user);
+				setUser({ ...response.user, country: country });
 				history.push('/home');
 			}
 
@@ -49,9 +55,9 @@ export const useAuth = () => {
 				password,
 				dateOfBirth
 			);
-
+			const country = CountriesByName.get(response.user?.country!);
 			if (response.user) {
-				setUser(response.user);
+				setUser({ ...response.user, country: country });
 				localStorage.setItem('user', JSON.stringify(response.user));
 				history.push('/home');
 			}

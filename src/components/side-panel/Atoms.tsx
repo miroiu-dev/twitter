@@ -1,5 +1,6 @@
 import styled from '@emotion/styled/macro';
 import { Dots } from '../icons/Dots';
+import { Remove } from '../icons/Remove';
 import { Search } from '../icons/Search';
 import { SettingsWheel } from '../icons/SettingsWheel';
 
@@ -58,14 +59,15 @@ export const Wrapper = styled.div`
 	align-items: center;
 	margin-top: 2px;
 `;
-export const IconWrapper = styled.div`
+export const IconWrapper = styled.div<{ padding?: string }>`
 	width: fit-content;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: 0.5rem;
+	padding: ${props => props.padding ?? '0.5rem'};
 	border-radius: 50%;
 	cursor: pointer;
+	transition: 200ms;
 	&:hover {
 		background-color: rgba(29, 161, 242, 0.1);
 	}
@@ -230,4 +232,47 @@ export const ProfileWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	user-select: none;
+`;
+
+export const RemoveSVG = styled(Remove)`
+	fill: rgb(110, 118, 125);
+	width: 1.5em;
+	height: 1.5em;
+`;
+
+export const TopicWrapper = styled.div`
+	display: flex;
+	justify-content: space-between;
+	transition: 200ms;
+	padding: 0.75rem 1rem;
+	border-bottom: 1px solid rgb(47, 51, 54);
+	cursor: pointer;
+	&:hover {
+		background-color: rgba(255, 255, 255, 0.03);
+	}
+`;
+
+export const FlexContainer = styled.div<{ flexDirection?: string }>`
+	display: flex;
+	flex-direction: ${props => props.flexDirection ?? 'row'};
+`;
+
+export const TopicName = styled.span`
+	font-weight: 700;
+	font-size: 0.938rem;
+	color: rgb(217, 217, 217);
+	&:hover {
+		text-decoration: underline;
+	}
+`;
+export const TopicCategory = styled.span`
+	color: rgb(110, 118, 125);
+	font-weight: 400;
+	font-size: 0.938rem;
+	overflow-wrap: break-word;
+`;
+export const RemoveButton = styled.div`
+	display: flex;
+	align-items: center;
+	margin-left: 4px;
 `;
