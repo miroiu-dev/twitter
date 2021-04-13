@@ -79,12 +79,17 @@ export const SidePanel: React.FC = () => {
 			</Container>
 			<Tab title="Trends for you" icon={<Settings />}>
 				{trends.current?.map(trend => (
-					<Trend name={trend.name} tweets={trend.tweets}></Trend>
+					<Trend
+						key={trend.name}
+						name={trend.name}
+						tweets={trend.tweets}
+					></Trend>
 				))}
 			</Tab>
 			<Tab title="Who to follow">
 				{toFollow.current?.map(toFollow => (
 					<PossibleFollower
+						key={toFollow.username}
 						profilePicture={toFollow.profilePicture}
 						name={toFollow.name}
 						username={toFollow.username}
@@ -93,7 +98,11 @@ export const SidePanel: React.FC = () => {
 			</Tab>
 			<Tab title="Topics to follow">
 				{topics.current?.map(topic => (
-					<Topic name={topic.title} category={topic.category} />
+					<Topic
+						key={topic.title}
+						name={topic.title}
+						category={topic.category}
+					/>
 				))}
 			</Tab>
 		</SidePanelWrapper>
