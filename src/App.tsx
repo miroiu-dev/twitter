@@ -16,7 +16,10 @@ import { useAuth } from './hooks/useAuth';
 import { TabletSidebar } from './components/tablet-sidebar/TabletSidebar';
 
 import { SidePanel } from './components/side-panel/SidePanel';
-
+import { DotsSVG, IconWrapper } from './components/side-panel/Atoms';
+import { Sparkles } from './components/icons/Sparkles';
+import { Link } from 'react-router-dom';
+import { CreateTweet } from './pages/home/CreateTweet';
 const LeftPanel = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -85,6 +88,88 @@ const HomeLayout = styled.div`
 	border-right: 1px solid rgb(47, 51, 54);
 `;
 
+const Header = styled.div`
+	height: 53px;
+	padding: 0 1rem;
+	background: #000;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid rgb(47, 51, 54);
+`;
+
+const Icon = styled(Sparkles)`
+	width: 1.5em;
+	height: 1.5em;
+	fill: rgba(29, 161, 242, 1);
+`;
+
+const Title = styled(Link)`
+	font-weight: 800;
+	font-size: 1.25rem;
+	color: rgb(217, 217, 217);
+	text-decoration: none;
+`;
+
+const Separator = styled.div`
+	height: 12px;
+	border-bottom: 1px solid rgb(47, 51, 54);
+	background-color: rgb(21, 24, 28);
+`;
+const TweetsContainer = styled.div``;
+const Tweet = styled.div`
+	display: flex;
+	flex-direction: column;
+	padding: 0 1rem;
+	padding-top: 0.75rem;
+	display: flex;
+`;
+
+const UserImageWrapper = styled.div`
+	height: 24px;
+	margin-right: 12px;
+`;
+const UserImage = styled.img`
+	width: 48px;
+	height: 48px;
+	border-radius: 9999px;
+`;
+
+const TweetHeader = styled.div`
+	display: flex;
+	justify-content: space-between;
+	flex-grow: 1;
+	height: 20px;
+`;
+const FlexContainer = styled.div`
+	display: flex;
+`;
+const Name = styled.span`
+	font-weight: 700;
+	font-size: 0.938rem;
+	color: rgb(217, 217, 217);
+	margin-right: 5px;
+`;
+const Username = styled.span`
+	color: rgb(110, 118, 125);
+	font-weight: 400;
+	font-size: 0.938rem;
+	margin-right: 5px;
+`;
+const HeightWrapper = styled.div`
+	height: 20px;
+`;
+const TweetDate = styled.span`
+	color: rgb(110, 118, 125);
+	font-weight: 400;
+	font-size: 0.938rem;
+`;
+
+const TweetContent = styled.pre`
+	display: flex;
+	flex-grow: 1;
+`;
+
 const App = () => {
 	const { user } = useAuth();
 
@@ -98,7 +183,41 @@ const App = () => {
 				>
 					<Switch>
 						<Route path="/home">
-							<HomeLayout />
+							<HomeLayout>
+								<Header>
+									<Title to="/home">Home</Title>
+									<IconWrapper>
+										<Icon />
+									</IconWrapper>
+								</Header>
+								<CreateTweet />
+								<Separator></Separator>
+								<TweetsContainer>
+									<Tweet>
+										<FlexContainer>
+											<UserImageWrapper>
+												<UserImage
+													src={user.profilePicture}
+												/>
+											</UserImageWrapper>
+											<TweetHeader>
+												<FlexContainer>
+													<Name>{user.name}</Name>
+													<Username>
+														{'@' + user.username}
+													</Username>
+													<TweetDate>· 32m</TweetDate>
+												</FlexContainer>
+												<HeightWrapper>
+													<IconWrapper>
+														<DotsSVG></DotsSVG>
+													</IconWrapper>
+												</HeightWrapper>
+											</TweetHeader>
+										</FlexContainer>
+									</Tweet>
+								</TweetsContainer>
+							</HomeLayout>
 						</Route>
 						<Route path="/explore"></Route>
 						<Route path="/notifications"></Route>
