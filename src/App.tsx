@@ -112,6 +112,9 @@ const Header = styled.div`
 	justify-content: space-between;
 	align-items: center;
 	border-bottom: 1px solid rgb(47, 51, 54);
+	position: sticky;
+	top: 0;
+	z-index: 4;
 `;
 
 const Icon = styled(Sparkles)`
@@ -281,6 +284,10 @@ const App = () => {
 								<CreateTweet />
 								<Separator></Separator>
 								<TweetsContainer>
+									<Tweet />
+									<Tweet />
+									<Tweet />
+									<Tweet />
 									<Tweet />
 									<Tweet />
 									<Tweet />

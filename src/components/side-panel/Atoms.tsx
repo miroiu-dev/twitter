@@ -76,7 +76,6 @@ export const IconWrapper = styled.div<{ padding?: string }>`
 export const SidePanelWrapper = styled.div`
 	width: 350px;
 	margin-left: 1.875rem;
-	margin-top: 4px;
 `;
 
 export const Settings = styled(SettingsWheel)`
@@ -90,6 +89,7 @@ export const TrendingTab = styled.div`
 	border: 1px solid rgb(21, 24, 28);
 	border-radius: 1rem;
 	margin-bottom: 1rem;
+	margin-top: 0.75rem;
 `;
 export const HeaderWrapper = styled.div`
 	display: flex;
@@ -129,7 +129,6 @@ export const SearchIcon = styled(Search)`
 `;
 
 export const SearchBarWrapper = styled.div`
-	margin-bottom: 0.75rem;
 	background-color: rgb(32, 35, 39);
 	border-radius: 9999px;
 	display: flex;
@@ -161,6 +160,11 @@ export const SearchBarContainer = styled.div`
 export const Container = styled.div`
 	position: relative;
 	pointer-events: all !important;
+	position: sticky;
+	top: 0;
+	padding: 4px 0;
+	z-index: 4;
+	background-color: #000;
 `;
 
 export const TrySearching = styled.span`
