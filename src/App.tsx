@@ -38,6 +38,13 @@ const RightPanel = styled.div`
 	flex-direction: column;
 `;
 
+const HomeLayout = styled.div`
+	max-width: 600px;
+	width: 100%;
+	border-left: 1px solid rgb(47, 51, 54);
+	border-right: 1px solid rgb(47, 51, 54);
+`;
+
 type LayoutProps = {
 	leftPanel?: ReactNode;
 	rightPanel?: ReactNode;
@@ -45,8 +52,17 @@ type LayoutProps = {
 };
 
 const LayoutWrapper = styled.div`
-	display: flex;
-	justify-content: center;
+	display: grid;
+	grid-template-columns: 0.9fr auto 1.1fr;
+
+	@media (max-width: 799px) {
+		grid-template-columns: auto;
+
+		${HomeLayout} {
+			width: auto;
+			margin: 0 auto;
+		}
+	}
 `;
 
 const Layout: React.FC<LayoutProps> = ({
@@ -87,13 +103,6 @@ const Layout: React.FC<LayoutProps> = ({
 
 	return middle;
 };
-
-const HomeLayout = styled.div`
-	max-width: 600px;
-	width: 100%;
-	border-left: 1px solid rgb(47, 51, 54);
-	border-right: 1px solid rgb(47, 51, 54);
-`;
 
 const Header = styled.div`
 	height: 53px;
@@ -138,7 +147,6 @@ const TweetContainer = styled.div`
 `;
 
 const UserImageWrapper = styled.div`
-	height: 24px;
 	margin-right: 12px;
 `;
 const UserImage = styled.img`
@@ -274,6 +282,8 @@ const App = () => {
 								<Separator></Separator>
 								<TweetsContainer>
 									<Tweet />
+									<Tweet />
+									<Tweet />
 								</TweetsContainer>
 							</HomeLayout>
 						</Route>
@@ -306,6 +316,10 @@ const App = () => {
 	);
 };
 
+const Dots = styled(DotsSVG)`
+	margin-top: -7px;
+`;
+
 const Tweet: React.FC = () => {
 	const { user } = useAuth();
 	return (
@@ -324,7 +338,7 @@ const Tweet: React.FC = () => {
 						</FlexContainer>
 						<HeightWrapper>
 							<IconWrapper>
-								<DotsSVG></DotsSVG>
+								<Dots></Dots>
 							</IconWrapper>
 						</HeightWrapper>
 					</TweetHeader>
