@@ -7,6 +7,7 @@ import {
 	OptionTitle,
 	OptionWrapper,
 	PersonSVG,
+	RealImage,
 	RemoveSVG,
 	RemoveSVGWrapper,
 	UploadedImage,
@@ -19,6 +20,7 @@ export const ImageOptions: React.FC<{
 	return (
 		<UploadedImage>
 			<ImageWrapper draggable={false} url={image}>
+				<RealImage alt="uploaded-pic" src={image} />
 				<Controls>
 					<RemoveSVGWrapper onClick={callback}>
 						<RemoveSVG />

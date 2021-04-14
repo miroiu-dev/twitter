@@ -20,6 +20,13 @@ import { DotsSVG, IconWrapper } from './components/side-panel/Atoms';
 import { Sparkles } from './components/icons/Sparkles';
 import { Link } from 'react-router-dom';
 import { CreateTweet } from './pages/home/CreateTweet';
+import {
+	Comment,
+	Heart,
+	Retweet,
+	Share,
+} from './components/icons/TweetInteraction';
+import { GridColumn, GridRow } from './pages/home/Atoms';
 const LeftPanel = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -117,12 +124,17 @@ const Separator = styled.div`
 	background-color: rgb(21, 24, 28);
 `;
 const TweetsContainer = styled.div``;
-const Tweet = styled.div`
+const TweetContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding: 0 1rem;
 	padding-top: 0.75rem;
 	display: flex;
+	&:hover {
+		background-color: rgba(255, 255, 255, 0.03);
+	}
+	cursor: pointer;
+	border-bottom: 1px solid rgb(47, 51, 54);
 `;
 
 const UserImageWrapper = styled.div`
@@ -165,9 +177,77 @@ const TweetDate = styled.span`
 	font-size: 0.938rem;
 `;
 
+const TweetContentWrapper = styled.span`
+	display: flex;
+	flex-grow: 1;
+	color: #fff;
+	font-weight: 400;
+	font-size: 15px;
+	margin-top: 1rem;
+`;
+
 const TweetContent = styled.pre`
 	display: flex;
 	flex-grow: 1;
+	color: #fff;
+	font-weight: 400;
+	font-size: 15px;
+	font-family: inherit;
+	margin-top: 1rem;
+`;
+
+const TweetImage = styled.img<{ url?: string }>`
+	max-width: 504px;
+	max-height: 234.92px;
+	width: 100%;
+	cursor: pointer;
+	border-radius: 16px;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+	margin-top: 1rem;
+`;
+
+const TweetInteraction = styled.div`
+	max-width: 425px;
+	width: 100%;
+	margin-top: 12px;
+	justify-content: space-between;
+`;
+
+const BaseIcon = styled.div`
+	width: 1.25em;
+	height: 1.25em;
+	fill: rgb(110, 118, 125);
+`;
+
+const CommentSVG = BaseIcon.withComponent(Comment);
+const RetweetSVG = BaseIcon.withComponent(Retweet);
+const HeartSVG = BaseIcon.withComponent(Heart);
+const ShareSVG = BaseIcon.withComponent(Share);
+
+const IconHover = styled.div`
+	width: fit-content;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	cursor: pointer;
+	transition: 200ms;
+	padding: 0.5rem;
+	/* &:hover {
+		background-color: rgba(29, 161, 242, 1);
+	} */
+`;
+
+const Comments = styled.span`
+	font-size: 13px;
+	color: rgb(110, 118, 125);
+	padding: 0 0.75rem;
+`;
+const Container = styled.div`
+	display: flex;
+	align-items: center;
 `;
 
 const App = () => {
@@ -193,29 +273,7 @@ const App = () => {
 								<CreateTweet />
 								<Separator></Separator>
 								<TweetsContainer>
-									<Tweet>
-										<FlexContainer>
-											<UserImageWrapper>
-												<UserImage
-													src={user.profilePicture}
-												/>
-											</UserImageWrapper>
-											<TweetHeader>
-												<FlexContainer>
-													<Name>{user.name}</Name>
-													<Username>
-														{'@' + user.username}
-													</Username>
-													<TweetDate>· 32m</TweetDate>
-												</FlexContainer>
-												<HeightWrapper>
-													<IconWrapper>
-														<DotsSVG></DotsSVG>
-													</IconWrapper>
-												</HeightWrapper>
-											</TweetHeader>
-										</FlexContainer>
-									</Tweet>
+									<Tweet />
 								</TweetsContainer>
 							</HomeLayout>
 						</Route>
@@ -245,6 +303,54 @@ const App = () => {
 				</Switch>
 			)}
 		</Router>
+	);
+};
+
+const Tweet: React.FC = () => {
+	const { user } = useAuth();
+	return (
+		<TweetContainer>
+			<GridColumn>
+				<UserImageWrapper>
+					<UserImage src={user?.profilePicture} />
+				</UserImageWrapper>
+
+				<GridRow>
+					<TweetHeader>
+						<FlexContainer>
+							<Name>{user?.name}</Name>
+							<Username>{'@' + user?.username}</Username>
+							<TweetDate>· 32m</TweetDate>
+						</FlexContainer>
+						<HeightWrapper>
+							<IconWrapper>
+								<DotsSVG></DotsSVG>
+							</IconWrapper>
+						</HeightWrapper>
+					</TweetHeader>
+					<TweetContentWrapper>
+						<TweetContent>
+							{`$100.00 Cash Giveaway Wrapped present
+
+- Predict the "Total USD earned" for the end of April
+- Reply with your guess & your Freeskins ID
+- Retweet
+
+Rolling on April 30th Money bag`}
+						</TweetContent>
+					</TweetContentWrapper>
+					<TweetImage src="https://pbs.twimg.com/media/Ey6i7jEXIAESWuT?format=jpg&name=small"></TweetImage>
+					<TweetInteraction>
+						<Container>
+							<IconHover>
+								<CommentSVG />
+							</IconHover>
+							<Comments>64</Comments>
+						</Container>
+					</TweetInteraction>
+				</GridRow>
+			</GridColumn>
+		</TweetContainer>
 	);
 };
 

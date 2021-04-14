@@ -6,7 +6,8 @@ import {
 	CalendarIcon,
 	CreateTweetWrapper,
 	EmojiIcon,
-	FlexRow,
+	GridColumn,
+	GridRow,
 	PollIcon,
 	ProfilePicture,
 	ProfilePictureWrapper,
@@ -75,59 +76,62 @@ export const CreateTweet: React.FC = () => {
 	return (
 		<CreateTweetWrapper>
 			<CreateTweetContent>
-				<FlexRow>
+				<GridColumn>
 					<ProfilePictureWrapper to="/profile">
 						<ProfilePicture src={user?.profilePicture} />
 					</ProfilePictureWrapper>
-
-					<TweetInputWrapper>
-						<TweetInput
-							ref={inputText}
-							contentEditable
-							data-placeholder="What's happening?"
-							onInput={() =>
-								setText(inputText.current?.textContent!.trim()!)
-							}
-							onClick={showTweetVisiblityOption}
-						></TweetInput>
-					</TweetInputWrapper>
-				</FlexRow>
-				{image && (
-					<ImageOptions
-						image={image as string}
-						callback={removeImage}
-					/>
-				)}
-				{(isShown || image) && <ContentVisiblity />}
-				<TweetOptionsWrapper>
-					<TweetOptions>
-						<IconWrapperLabel
-							htmlFor="image-upload"
-							onChange={handleImageUpload}
-						>
-							<ImageUploadInput
-								type="file"
-								id="image-upload"
-								accept="image/*"
-								hidden
+					<GridRow>
+						<TweetInputWrapper>
+							<TweetInput
+								ref={inputText}
+								contentEditable
+								data-placeholder="What's happening?"
+								onInput={() =>
+									setText(
+										inputText.current?.textContent!.trim()!
+									)
+								}
+								onClick={showTweetVisiblityOption}
+							></TweetInput>
+						</TweetInputWrapper>
+						{image && (
+							<ImageOptions
+								image={image as string}
+								callback={removeImage}
 							/>
-							<UploadImageIcon />
-						</IconWrapperLabel>
-						<IconWrapperLabel>
-							<UploadGIFIcon />
-						</IconWrapperLabel>
-						<IconWrapperLabel>
-							<PollIcon />
-						</IconWrapperLabel>
-						<EmojiPickerWrapper>
-							<EmojiIcon />
-						</EmojiPickerWrapper>
-						<IconWrapperLabel>
-							<CalendarIcon />
-						</IconWrapperLabel>
-					</TweetOptions>
-					<TweetButton disabled={!text}>Tweet</TweetButton>
-				</TweetOptionsWrapper>
+						)}
+						{(isShown || image) && <ContentVisiblity />}
+						<TweetOptionsWrapper>
+							<TweetOptions>
+								<IconWrapperLabel
+									htmlFor="image-upload"
+									onChange={handleImageUpload}
+								>
+									<ImageUploadInput
+										type="file"
+										id="image-upload"
+										accept="image/*"
+										hidden
+									/>
+									<UploadImageIcon />
+								</IconWrapperLabel>
+								<IconWrapperLabel>
+									<UploadGIFIcon />
+								</IconWrapperLabel>
+								<IconWrapperLabel>
+									<PollIcon />
+								</IconWrapperLabel>
+								<EmojiPickerWrapper>
+									<EmojiIcon />
+								</EmojiPickerWrapper>
+								<IconWrapperLabel>
+									<CalendarIcon />
+								</IconWrapperLabel>
+							</TweetOptions>
+							<TweetButton disabled={!text}>Tweet</TweetButton>
+						</TweetOptionsWrapper>
+					</GridRow>
+				</GridColumn>
 			</CreateTweetContent>
 		</CreateTweetWrapper>
 	);

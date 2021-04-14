@@ -45,8 +45,13 @@ export const TweetInputWrapper = styled.div`
 	overflow-y: auto;
 `;
 
-export const FlexRow = styled.div`
-	display: flex;
+export const GridColumn = styled.div`
+	display: grid;
+	grid-template-columns: auto 1fr;
+`;
+
+export const GridRow = styled.div`
+	display: grid;
 `;
 
 export const TweetInput = styled.div`
@@ -85,7 +90,6 @@ export const TweetOptionsWrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
 	margin-top: 0.75rem;
-	padding-left: 3rem;
 	margin-bottom: 5px;
 `;
 export const TweetOptions = styled.div`
@@ -118,7 +122,6 @@ export const TweetButton = styled.button`
 export const VisiblityWrapper = styled.div`
 	padding-bottom: 0.75rem;
 	border-bottom: 1px solid rgb(47, 51, 54);
-	margin-left: 3.3rem;
 `;
 
 export const VisibilityContent = styled.div`
@@ -153,7 +156,6 @@ export const EveryoneSVG = styled(Everyone)`
 export const UploadedImage = styled.div`
 	display: flex;
 	flex-direction: column;
-	padding-left: 3.5rem;
 	margin: 4px 0;
 	user-select: none;
 `;
@@ -161,14 +163,19 @@ export const UploadedImage = styled.div`
 export const ImageWrapper = styled.div<{ url?: string }>`
 	display: flex;
 	position: relative;
-	width: 502px;
-	height: 282.38px;
 	cursor: pointer;
 	background-image: url(${props => props.url});
 	border-radius: 16px;
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center center;
+`;
+
+export const RealImage = styled.img`
+	max-width: 502px;
+	max-height: 282.38px;
+	width: 100%;
+	opacity: 0;
 `;
 
 export const Controls = styled.div`
