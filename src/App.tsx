@@ -291,6 +291,10 @@ const App = () => {
 									<Tweet />
 									<Tweet />
 									<Tweet />
+									<Tweet />
+									<Tweet />
+									<Tweet />
+									<Tweet />
 								</TweetsContainer>
 							</HomeLayout>
 						</Route>
@@ -323,7 +327,7 @@ const App = () => {
 	);
 };
 
-const Dots = styled(DotsSVG)`
+const Wrapper = styled(IconWrapper)`
 	margin-top: -7px;
 `;
 
@@ -344,9 +348,9 @@ const Tweet: React.FC = () => {
 							<TweetDate>· 32m</TweetDate>
 						</FlexContainer>
 						<HeightWrapper>
-							<IconWrapper>
-								<Dots></Dots>
-							</IconWrapper>
+							<Wrapper>
+								<DotsSVG></DotsSVG>
+							</Wrapper>
 						</HeightWrapper>
 					</TweetHeader>
 					<TweetContentWrapper>

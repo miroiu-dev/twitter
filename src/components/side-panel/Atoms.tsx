@@ -76,6 +76,8 @@ export const IconWrapper = styled.div<{ padding?: string }>`
 export const SidePanelWrapper = styled.div`
 	width: 350px;
 	margin-left: 1.875rem;
+	position: sticky;
+	top: 0;
 `;
 
 export const Settings = styled(SettingsWheel)`
@@ -188,7 +190,6 @@ export const SearchResults = styled.div`
 	flex-direction: column;
 	border-radius: 4px;
 	z-index: 2;
-	margin-top: -11px;
 `;
 
 export const Results = styled.div`

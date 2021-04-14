@@ -25,6 +25,7 @@ const login = async (
 		return { user: response.data };
 	} catch (err) {
 		const error = err as AxiosError;
+		console.log(err);
 		if (error.response && error.response.status !== 404) {
 			const data = error.response.data as ApiError;
 			if (data) {
