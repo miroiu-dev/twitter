@@ -46,7 +46,9 @@ const SidebarWrapper = styled.div`
 	flex-direction: column;
 	justify-content: space-between;
 	width: 275px;
-	position: fixed;
+	/* position: fixed; */
+	position: sticky;
+	top: 0;
 `;
 
 const ButtonWrapper = styled.div`

@@ -8,7 +8,7 @@ export type TweetPreview = {
 	createdAt: string;
 	message: string;
 	attachment: string;
-	comments: number;
+	numberOfComments: number;
 	likes: number;
 	retweet: number;
 };

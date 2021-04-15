@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext } from 'react';
+import React, { ReactNode, useContext, useEffect } from 'react';
 import {
 	BrowserRouter as Router,
 	Switch,
@@ -54,7 +54,7 @@ type LayoutProps = {
 };
 
 const LayoutWrapper = styled.div`
-	display: grid;
+	/* display: grid;
 	grid-template-columns: 0.9fr auto 1.1fr;
 
 	@media (max-width: 799px) {
@@ -64,7 +64,9 @@ const LayoutWrapper = styled.div`
 			width: auto;
 			margin: 0 auto;
 		}
-	}
+	} */
+	display: flex;
+	justify-content: center;
 `;
 
 const Layout: React.FC<LayoutProps> = ({
@@ -206,7 +208,7 @@ const TweetContent = styled.pre`
 	font-weight: 400;
 	font-size: 15px;
 	font-family: inherit;
-	margin-top: 1rem;
+	margin: 0;
 `;
 
 const TweetImage = styled.img<{ url?: string }>`
@@ -265,7 +267,12 @@ const Container = styled.div`
 
 const App = () => {
 	const { user } = useAuth();
-	const { tweets } = useContext(TweetsContext);
+	const { tweets, fetchTweets } = useContext(TweetsContext);
+
+	useEffect(() => {
+		fetchTweets();
+	}, [fetchTweets]);
+
 	return (
 		<Router>
 			{user ? (

@@ -7,4 +7,6 @@ export const routes = {
 	people: (text: string, count: number = 10) =>
 		`${baseURL}/people?filter=${text}&count=${count}`,
 	tweets: () => `${baseURL}/tweets`,
+	fetchTweets: (offset: number, limit: number) =>
+		`${baseURL}/tweets?offset=${offset}&limit=${limit}`,
 };
