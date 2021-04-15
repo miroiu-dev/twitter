@@ -445,8 +445,8 @@ const Tweet: React.FC<TweetPreview> = ({
 					<TweetHeader>
 						<FlexContainer>
 							<Name>{author.name}</Name>
-							<Username>{'@' + author.username}</Username>
-							<TweetDate>{dateDiffDisplay}</TweetDate>
+							<Username>@{author.username}</Username>
+							<TweetDate> · {dateDiffDisplay}</TweetDate>
 						</FlexContainer>
 						<HeightWrapper>
 							<Wrapper>
