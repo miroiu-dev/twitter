@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useContext } from 'react';
 import {
 	BrowserRouter as Router,
 	Switch,
@@ -27,6 +27,8 @@ import {
 	Share,
 } from './components/icons/TweetInteraction';
 import { GridColumn, GridRow } from './pages/home/Atoms';
+import { TweetPreview } from './models/TweetPreview';
+import { TweetsContext } from './hooks/TweetsContext';
 const LeftPanel = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -263,7 +265,7 @@ const Container = styled.div`
 
 const App = () => {
 	const { user } = useAuth();
-
+	const { tweets } = useContext(TweetsContext);
 	return (
 		<Router>
 			{user ? (
@@ -284,17 +286,10 @@ const App = () => {
 								<CreateTweet />
 								<Separator></Separator>
 								<TweetsContainer>
-									<Tweet />
-									<Tweet />
-									<Tweet />
-									<Tweet />
-									<Tweet />
-									<Tweet />
-									<Tweet />
-									<Tweet />
-									<Tweet />
-									<Tweet />
-									<Tweet />
+									{tweets &&
+										tweets.map(tweet => (
+											<Tweet key={tweet._id} {...tweet} />
+										))}
 								</TweetsContainer>
 							</HomeLayout>
 						</Route>
@@ -331,21 +326,33 @@ const Wrapper = styled(IconWrapper)`
 	margin-top: -7px;
 `;
 
-const Tweet: React.FC = () => {
-	const { user } = useAuth();
+const getCreatedAtText = (createdAt: Date) => {
+	const diff = createdAt.getDate() - new Date().getDate();
+	const result = new Date(diff);
+	console.log(result);
+	return '1m';
+};
+
+const Tweet: React.FC<TweetPreview> = ({
+	attachment,
+	author,
+	createdAt,
+	message,
+}) => {
+	const dateDiffDisplay = getCreatedAtText(new Date(createdAt));
 	return (
 		<TweetContainer>
 			<GridColumn>
 				<UserImageWrapper>
-					<UserImage src={user?.profilePicture} />
+					<UserImage src={author.profilePicture} />
 				</UserImageWrapper>
 
 				<GridRow>
 					<TweetHeader>
 						<FlexContainer>
-							<Name>{user?.name}</Name>
-							<Username>{'@' + user?.username}</Username>
-							<TweetDate>· 32m</TweetDate>
+							<Name>{author.name}</Name>
+							<Username>{'@' + author.username}</Username>
+							<TweetDate>{dateDiffDisplay}</TweetDate>
 						</FlexContainer>
 						<HeightWrapper>
 							<Wrapper>
@@ -354,17 +361,9 @@ const Tweet: React.FC = () => {
 						</HeightWrapper>
 					</TweetHeader>
 					<TweetContentWrapper>
-						<TweetContent>
-							{`$100.00 Cash Giveaway Wrapped present
-
-- Predict the "Total USD earned" for the end of April
-- Reply with your guess & your Freeskins ID
-- Retweet
-
-Rolling on April 30th Money bag`}
-						</TweetContent>
+						<TweetContent>{message}</TweetContent>
 					</TweetContentWrapper>
-					<TweetImage src="https://pbs.twimg.com/media/Ey6i7jEXIAESWuT?format=jpg&name=small"></TweetImage>
+					{attachment && <TweetImage src={attachment}></TweetImage>}
 					<TweetInteraction>
 						<Container>
 							<IconHover>

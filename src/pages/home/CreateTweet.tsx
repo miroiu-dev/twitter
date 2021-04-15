@@ -1,5 +1,5 @@
 import styled from '@emotion/styled/macro';
-import React, { FormEvent, useEffect, useRef, useState } from 'react';
+import React, { FormEvent, useContext, useRef, useState } from 'react';
 import { IconWrapper } from '../../components/side-panel/Atoms';
 import { useAuth } from '../../hooks/useAuth';
 import {
@@ -23,6 +23,7 @@ import {
 import { ContentVisiblity } from './ContentVisiblity';
 import { ImageOptions } from './ImageOptions';
 import 'emoji-mart/css/emoji-mart.css';
+import { TweetsContext } from '../../hooks/TweetsContext';
 
 const IconWrapperLabel = IconWrapper.withComponent('label');
 
@@ -59,19 +60,20 @@ export const CreateTweet: React.FC = () => {
 		setImage(null);
 	};
 
-	//tbh i dont know what i am doing anymore
-	useEffect(() => {
-		const onKeyPress = (ev: KeyboardEvent) => {
-			if (ev.key !== '8') {
-				ev.preventDefault();
-			}
-		};
-		if (text.length > 20) {
-			inputText!.current!.addEventListener('keypress', onKeyPress);
-		}
-		return () =>
-			inputText!.current?.removeEventListener('keypress', onKeyPress);
-	}, [text.length]);
+	const { tweets, createTweet } = useContext(TweetsContext);
+	// //tbh i dont know what i am doing anymore
+	// useEffect(() => {
+	// 	const onKeyPress = (ev: KeyboardEvent) => {
+	// 		if (ev.key !== '8') {
+	// 			ev.preventDefault();
+	// 		}
+	// 	};
+	// 	if (text.length > 20) {
+	// 		inputText!.current!.addEventListener('keypress', onKeyPress);
+	// 	}
+	// 	return () =>
+	// 		inputText!.current?.removeEventListener('keypress', onKeyPress);
+	// }, [text.length]);
 
 	return (
 		<CreateTweetWrapper>
@@ -128,7 +130,14 @@ export const CreateTweet: React.FC = () => {
 									<CalendarIcon />
 								</IconWrapperLabel>
 							</TweetOptions>
-							<TweetButton disabled={!text}>Tweet</TweetButton>
+							<TweetButton
+								disabled={!text}
+								onClick={() =>
+									createTweet(text, image as string)
+								}
+							>
+								Tweet
+							</TweetButton>
 						</TweetOptionsWrapper>
 					</GridRow>
 				</GridColumn>

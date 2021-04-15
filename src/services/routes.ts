@@ -6,4 +6,5 @@ export const routes = {
 	signup: () => `${baseURL}/signup`,
 	people: (text: string, count: number = 10) =>
 		`${baseURL}/people?filter=${text}&count=${count}`,
+	tweets: () => `${baseURL}/tweets`,
 };
