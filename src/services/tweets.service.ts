@@ -40,7 +40,19 @@ const getTweets = async (offset: number, limit: number) => {
 	}
 };
 
+const deleteTweet = async (id: string) => {
+	try {
+		await axios.delete(`${routes.tweets()}/${id}`, {
+			withCredentials: true,
+		});
+		return id;
+	} catch (err) {
+		console.log(err);
+	}
+};
+
 export const tweetsService = {
 	createTweet,
 	getTweets,
+	deleteTweet,
 };

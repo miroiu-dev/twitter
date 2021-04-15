@@ -5,6 +5,7 @@ import { tweetsService } from '../services/tweets.service';
 type TweetsContextProps = {
 	tweets: TweetPreview[];
 	isLoading: boolean;
+	deleteTweet: (id: string) => void;
 	fetchTweets: () => void;
 	createTweet: (message: string, attachment: string) => void;
 };
@@ -12,7 +13,8 @@ type TweetsContextProps = {
 export const TweetsContext = createContext<TweetsContextProps>({
 	tweets: [],
 	isLoading: true,
-	createTweet: () => {},
+	deleteTweet: (id: string) => {},
+	createTweet: (message: string, attachment: string) => {},
 	fetchTweets: () => {},
 });
 
@@ -50,10 +52,15 @@ export const TweetsProvider: React.FC = ({ children }) => {
 			offsetRef.current = offsetRef.current + response.results.length;
 		}
 	}, []);
-
+	const deleteTweet = async (id: string) => {
+		const response = await tweetsService.deleteTweet(id);
+		if (response) {
+			setTweets(prev => prev.filter(tweet => tweet._id !== response));
+		}
+	};
 	return (
 		<TweetsContext.Provider
-			value={{ tweets, isLoading, fetchTweets, createTweet }}
+			value={{ tweets, isLoading, fetchTweets, createTweet, deleteTweet }}
 		>
 			{children}
 		</TweetsContext.Provider>

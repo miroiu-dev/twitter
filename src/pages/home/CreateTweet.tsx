@@ -132,6 +132,7 @@ export const CreateTweet: React.FC = () => {
 								disabled={!text}
 								onClick={() => {
 									createTweet(text.trim(), image as string);
+									setImage('');
 									if (inputText.current) {
 										inputText.current.textContent = '';
 									}

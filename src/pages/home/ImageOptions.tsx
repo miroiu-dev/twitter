@@ -1,13 +1,12 @@
+import { ResponsiveImage } from '../../components/ResponsiveImage';
 import {
 	Controls,
 	EditWrapper,
-	ImageWrapper,
 	ListSVG,
 	Options,
 	OptionTitle,
 	OptionWrapper,
 	PersonSVG,
-	RealImage,
 	RemoveSVG,
 	RemoveSVGWrapper,
 	UploadedImage,
@@ -19,15 +18,14 @@ export const ImageOptions: React.FC<{
 }> = ({ image, callback }) => {
 	return (
 		<UploadedImage>
-			<ImageWrapper draggable={false} url={image}>
-				<RealImage alt="uploaded-pic" src={image} />
+			<ResponsiveImage src={image}>
 				<Controls>
 					<RemoveSVGWrapper onClick={callback}>
 						<RemoveSVG />
 					</RemoveSVGWrapper>
 					<EditWrapper>Edit</EditWrapper>
 				</Controls>
-			</ImageWrapper>
+			</ResponsiveImage>
 			<Options>
 				<OptionWrapper>
 					<PersonSVG />

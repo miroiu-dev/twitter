@@ -31,6 +31,9 @@ import { TweetPreview } from './models/TweetPreview';
 import { TweetsContext } from './hooks/TweetsContext';
 import Loader from 'react-loader-spinner';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { ResponsiveImage } from './components/ResponsiveImage';
+import axios from 'axios';
+import { routes } from './services/routes';
 const LeftPanel = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -212,15 +215,7 @@ const TweetContent = styled.pre`
 	margin: 0;
 `;
 
-const TweetImage = styled.img<{ url?: string }>`
-	max-width: 504px;
-	max-height: 234.92px;
-	width: 100%;
-	cursor: pointer;
-	border-radius: 16px;
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-position: center center;
+const TweetImage = styled(ResponsiveImage)`
 	margin-top: 1rem;
 `;
 
@@ -320,20 +315,6 @@ const App = () => {
 											/>
 										</LoaderWrapper>
 									}
-									// below props only if you need pull down functionality
-									refreshFunction={fetchTweets}
-									pullDownToRefresh
-									pullDownToRefreshThreshold={50}
-									pullDownToRefreshContent={
-										<h3 style={{ textAlign: 'center' }}>
-											&#8595; Pull down to refresh
-										</h3>
-									}
-									releaseToRefreshContent={
-										<h3 style={{ textAlign: 'center' }}>
-											&#8593; Release to refresh
-										</h3>
-									}
 								>
 									{tweets &&
 										tweets.map(tweet => (
@@ -432,8 +413,11 @@ const Tweet: React.FC<TweetPreview> = ({
 	createdAt,
 	message,
 	numberOfComments,
+	_id,
 }) => {
 	const dateDiffDisplay = getReadableDate(new Date(createdAt));
+	const { deleteTweet } = useContext(TweetsContext);
+
 	return (
 		<TweetContainer>
 			<GridColumn>
@@ -449,7 +433,7 @@ const Tweet: React.FC<TweetPreview> = ({
 							<TweetDate> · {dateDiffDisplay}</TweetDate>
 						</FlexContainer>
 						<HeightWrapper>
-							<Wrapper>
+							<Wrapper onClick={() => deleteTweet(_id)}>
 								<DotsSVG></DotsSVG>
 							</Wrapper>
 						</HeightWrapper>
