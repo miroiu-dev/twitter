@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { delay } from '../helpers';
 import { TweetPreview } from '../models/TweetPreview';
 import { routes } from './routes';
 
@@ -32,6 +33,7 @@ const getTweets = async (offset: number, limit: number) => {
 				withCredentials: true,
 			}
 		);
+		await delay(500);
 		return response.data;
 	} catch (err) {
 		console.log(err);

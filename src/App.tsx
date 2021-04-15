@@ -29,6 +29,8 @@ import {
 import { GridColumn, GridRow } from './pages/home/Atoms';
 import { TweetPreview } from './models/TweetPreview';
 import { TweetsContext } from './hooks/TweetsContext';
+import Loader from 'react-loader-spinner';
+import InfiniteScroll from 'react-infinite-scroll-component';
 const LeftPanel = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -139,7 +141,6 @@ const Separator = styled.div`
 	border-bottom: 1px solid rgb(47, 51, 54);
 	background-color: rgb(21, 24, 28);
 `;
-const TweetsContainer = styled.div``;
 const TweetContainer = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -255,6 +256,14 @@ const IconHover = styled.div`
 	} */
 `;
 
+const LoaderWrapper = styled.div`
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+`;
+
 const Comments = styled.span`
 	font-size: 13px;
 	color: rgb(110, 118, 125);
@@ -263,6 +272,10 @@ const Comments = styled.span`
 const Container = styled.div`
 	display: flex;
 	align-items: center;
+`;
+
+const InfiniteScrolling = styled(InfiniteScroll)`
+	overflow-x: hidden !important;
 `;
 
 const App = () => {
@@ -292,12 +305,41 @@ const App = () => {
 								</Header>
 								<CreateTweet />
 								<Separator></Separator>
-								<TweetsContainer>
+
+								<InfiniteScrolling
+									dataLength={tweets.length} //This is important field to render the next data
+									next={fetchTweets}
+									hasMore={true}
+									loader={
+										<LoaderWrapper>
+											<Loader
+												type="Oval"
+												color="rgb(29, 161, 242)"
+												height={30}
+												width={30}
+											/>
+										</LoaderWrapper>
+									}
+									// below props only if you need pull down functionality
+									refreshFunction={fetchTweets}
+									pullDownToRefresh
+									pullDownToRefreshThreshold={50}
+									pullDownToRefreshContent={
+										<h3 style={{ textAlign: 'center' }}>
+											&#8595; Pull down to refresh
+										</h3>
+									}
+									releaseToRefreshContent={
+										<h3 style={{ textAlign: 'center' }}>
+											&#8593; Release to refresh
+										</h3>
+									}
+								>
 									{tweets &&
 										tweets.map(tweet => (
 											<Tweet key={tweet._id} {...tweet} />
 										))}
-								</TweetsContainer>
+								</InfiniteScrolling>
 							</HomeLayout>
 						</Route>
 						<Route path="/explore"></Route>
@@ -333,11 +375,55 @@ const Wrapper = styled(IconWrapper)`
 	margin-top: -7px;
 `;
 
-const getCreatedAtText = (createdAt: Date) => {
-	const diff = createdAt.getDate() - new Date().getDate();
-	const result = new Date(diff);
-	console.log(result);
-	return '1m';
+const monthsMap = new Map([
+	[1, 'Jan'],
+	[2, 'Feb'],
+	[3, 'Mar'],
+	[4, 'Apr'],
+	[5, 'May'],
+	[6, 'Jun'],
+	[7, 'Jul'],
+	[8, 'Aug'],
+	[9, 'Sep'],
+	[10, 'Oct'],
+	[11, 'Nov'],
+	[12, 'Dec'],
+]);
+
+const getReadableDate = (createdAt: Date) => {
+	const now = new Date();
+
+	const seconds = now.getSeconds() - createdAt.getSeconds();
+	const minutes = now.getMinutes() - createdAt.getMinutes();
+	const hours = now.getHours() - createdAt.getHours();
+	const days = now.getDay() - createdAt.getDay();
+	const months = now.getMonth() - createdAt.getMonth();
+	const years = now.getFullYear() - createdAt.getFullYear();
+
+	let year = '';
+	let month = '';
+	let day = '';
+
+	if (years > 0) {
+		year = `, ${createdAt.getFullYear()}`;
+	}
+
+	if (months > 0 || years > 0) {
+		month = `${monthsMap.get(createdAt.getMonth())} `;
+		day = createdAt.getDay().toString();
+	} else if (days > 0) {
+		day = `${days}d`;
+	} else if (hours > 0) {
+		day = `${hours}h`;
+	} else if (minutes > 0) {
+		day = `${minutes}m`;
+	} else if (seconds > 3) {
+		day = `${seconds}s`;
+	} else {
+		day = `Now`;
+	}
+
+	return `${month}${day}${year}`;
 };
 
 const Tweet: React.FC<TweetPreview> = ({
@@ -345,8 +431,9 @@ const Tweet: React.FC<TweetPreview> = ({
 	author,
 	createdAt,
 	message,
+	numberOfComments,
 }) => {
-	const dateDiffDisplay = getCreatedAtText(new Date(createdAt));
+	const dateDiffDisplay = getReadableDate(new Date(createdAt));
 	return (
 		<TweetContainer>
 			<GridColumn>
@@ -376,7 +463,7 @@ const Tweet: React.FC<TweetPreview> = ({
 							<IconHover>
 								<CommentSVG />
 							</IconHover>
-							<Comments>64</Comments>
+							<Comments>{numberOfComments}</Comments>
 						</Container>
 					</TweetInteraction>
 				</GridRow>

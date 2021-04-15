@@ -29,6 +29,7 @@ export const TweetsProvider: React.FC = ({ children }) => {
 		const response = await tweetsService.createTweet(message, attachment);
 		if (response) {
 			setTweets(prev => [response, ...prev]);
+			offsetRef.current += 1;
 		}
 
 		setIsLoading(false);
@@ -45,8 +46,8 @@ export const TweetsProvider: React.FC = ({ children }) => {
 		setIsLoading(false);
 
 		if (response && response.results.length > 0) {
-			setTweets(prev => [...response.results, ...prev]);
-			offsetRef.current = response.offset + response.results.length;
+			setTweets(prev => [...prev, ...response.results]);
+			offsetRef.current = offsetRef.current + response.results.length;
 		}
 	}, []);
 

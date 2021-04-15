@@ -60,7 +60,7 @@ export const CreateTweet: React.FC = () => {
 		setImage(null);
 	};
 
-	const { tweets, createTweet } = useContext(TweetsContext);
+	const { createTweet } = useContext(TweetsContext);
 	// //tbh i dont know what i am doing anymore
 	// useEffect(() => {
 	// 	const onKeyPress = (ev: KeyboardEvent) => {
@@ -89,9 +89,7 @@ export const CreateTweet: React.FC = () => {
 								contentEditable
 								data-placeholder="What's happening?"
 								onInput={() =>
-									setText(
-										inputText.current?.textContent!.trim()!
-									)
+									setText(inputText.current?.textContent!)
 								}
 								onClick={showTweetVisiblityOption}
 							></TweetInput>
@@ -132,9 +130,12 @@ export const CreateTweet: React.FC = () => {
 							</TweetOptions>
 							<TweetButton
 								disabled={!text}
-								onClick={() =>
-									createTweet(text, image as string)
-								}
+								onClick={() => {
+									createTweet(text.trim(), image as string);
+									if (inputText.current) {
+										inputText.current.textContent = '';
+									}
+								}}
 							>
 								Tweet
 							</TweetButton>
