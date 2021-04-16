@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext, useEffect } from 'react';
+import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import {
 	BrowserRouter as Router,
 	Switch,
@@ -24,6 +24,7 @@ import {
 	Comment,
 	Heart,
 	Retweet,
+	RetweetFilled,
 	Share,
 } from './components/icons/TweetInteraction';
 import { GridColumn, GridRow } from './pages/home/Atoms';
@@ -32,6 +33,7 @@ import { TweetsContext } from './hooks/TweetsContext';
 import Loader from 'react-loader-spinner';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { ResponsiveImage } from './components/ResponsiveImage';
+import { AnimatedHeart } from './components/icons/AnimatedHeart';
 import axios from 'axios';
 import { routes } from './services/routes';
 const LeftPanel = styled.div`
@@ -164,23 +166,39 @@ const UserImage = styled.img`
 	width: 48px;
 	height: 48px;
 	border-radius: 9999px;
+	transition: 200ms;
+	&:hover {
+		filter: brightness(0.8);
+	}
 `;
 
 const TweetHeader = styled.div`
 	display: flex;
 	justify-content: space-between;
 	flex-grow: 1;
-	height: 20px;
+	height: 22px;
+	margin-bottom: 2px;
 `;
 const FlexContainer = styled.div`
 	display: flex;
+	:hover {
+	}
 `;
+
 const Name = styled.span`
 	font-weight: 700;
 	font-size: 0.938rem;
 	color: rgb(217, 217, 217);
 	margin-right: 5px;
 `;
+
+const FlexRow = styled.div`
+	display: flex;
+	&:hover ${Name} {
+		text-decoration: underline;
+	}
+`;
+
 const Username = styled.span`
 	color: rgb(110, 118, 125);
 	font-weight: 400;
@@ -202,7 +220,6 @@ const TweetContentWrapper = styled.span`
 	color: #fff;
 	font-weight: 400;
 	font-size: 15px;
-	margin-top: 1rem;
 `;
 
 const TweetContent = styled.pre`
@@ -220,9 +237,11 @@ const TweetImage = styled(ResponsiveImage)`
 `;
 
 const TweetInteraction = styled.div`
+	display: flex;
 	max-width: 425px;
 	width: 100%;
-	margin-top: 12px;
+	margin-top: 0.75rem;
+	padding-bottom: 0.35rem;
 	justify-content: space-between;
 `;
 
@@ -230,43 +249,20 @@ const BaseIcon = styled.div`
 	width: 1.25em;
 	height: 1.25em;
 	fill: rgb(110, 118, 125);
+	transition: 200ms;
 `;
 
 const CommentSVG = BaseIcon.withComponent(Comment);
 const RetweetSVG = BaseIcon.withComponent(Retweet);
 const HeartSVG = BaseIcon.withComponent(Heart);
 const ShareSVG = BaseIcon.withComponent(Share);
-
-const IconHover = styled.div`
-	width: fit-content;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	border-radius: 50%;
-	cursor: pointer;
-	transition: 200ms;
-	padding: 0.5rem;
-	/* &:hover {
-		background-color: rgba(29, 161, 242, 1);
-	} */
-`;
-
+const RetweetFilledSVG = BaseIcon.withComponent(RetweetFilled);
 const LoaderWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	width: 100%;
 	margin-top: 1rem;
 	margin-bottom: 1rem;
-`;
-
-const Comments = styled.span`
-	font-size: 13px;
-	color: rgb(110, 118, 125);
-	padding: 0 0.75rem;
-`;
-const Container = styled.div`
-	display: flex;
-	align-items: center;
 `;
 
 const InfiniteScrolling = styled(InfiniteScroll)`
@@ -407,6 +403,93 @@ const getReadableDate = (createdAt: Date) => {
 	return `${month}${day}${year}`;
 };
 
+const Ammount = styled.span`
+	font-size: 13px;
+	color: rgb(110, 118, 125);
+	padding: 0 0.75rem;
+	transition: 200ms;
+`;
+
+const IconHover = styled.div`
+	width: fit-content;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	cursor: pointer;
+	transition: 200ms;
+	padding: 0.5rem;
+`;
+
+const IconHoverAnimated = styled(IconHover)`
+	padding: 0;
+	width: 36px;
+	height: 36px;
+`;
+const Container = styled.div`
+	display: flex;
+	align-items: center;
+	user-select: none;
+`;
+
+const CommentWrapper = styled(Container)`
+	&:hover ${IconHover} {
+		background-color: rgba(29, 161, 242, 0.1);
+	}
+	&:hover ${CommentSVG} {
+		fill: rgba(29, 161, 242, 1);
+	}
+	&:hover ${Ammount} {
+		color: rgba(29, 161, 242, 1);
+	}
+`;
+
+const RetweetWrapper = styled(Container)<{ retweeted?: boolean }>`
+	&:hover ${IconHover} {
+		background-color: rgba(23, 191, 99, 0.1);
+	}
+	&:hover ${RetweetSVG} {
+		fill: rgb(23, 191, 99);
+	}
+	&:hover ${Ammount} {
+		color: rgb(23, 191, 99);
+	}
+	&:hover ${RetweetFilledSVG} {
+		fill: rgb(23, 191, 99);
+	}
+
+	${Ammount} {
+		color: ${props => props.retweeted && 'rgb(23, 191, 99);'};
+	}
+	${RetweetFilledSVG} {
+		fill: ${props => props.retweeted && 'rgb(23, 191, 99);'};
+	}
+`;
+
+const HeartWrapper = styled(Container)`
+	&:hover ${IconHover} {
+		background-color: rgba(224, 36, 94, 0.1);
+	}
+	&:hover ${HeartSVG} {
+		fill: rgb(224, 36, 94);
+	}
+	&:hover ${Ammount} {
+		color: rgb(224, 36, 94);
+	}
+	&:hover ${IconHoverAnimated} {
+		background-color: rgba(224, 36, 94, 0.1);
+	}
+`;
+
+const ShareWrapper = styled(Container)`
+	&:hover ${IconHover} {
+		background-color: rgba(29, 161, 242, 0.1);
+	}
+	&:hover ${ShareSVG} {
+		fill: rgba(29, 161, 242, 1);
+	}
+`;
+
 const Tweet: React.FC<TweetPreview> = ({
 	attachment,
 	author,
@@ -414,6 +497,8 @@ const Tweet: React.FC<TweetPreview> = ({
 	message,
 	numberOfComments,
 	_id,
+	retweet,
+	likes,
 }) => {
 	const dateDiffDisplay = getReadableDate(new Date(createdAt));
 	const { deleteTweet } = useContext(TweetsContext);
@@ -422,14 +507,16 @@ const Tweet: React.FC<TweetPreview> = ({
 		<TweetContainer>
 			<GridColumn>
 				<UserImageWrapper>
-					<UserImage src={author.profilePicture} />
+					<UserImage draggable={false} src={author.profilePicture} />
 				</UserImageWrapper>
 
 				<GridRow>
 					<TweetHeader>
 						<FlexContainer>
-							<Name>{author.name}</Name>
-							<Username>@{author.username}</Username>
+							<FlexRow>
+								<Name>{author.name}</Name>
+								<Username>@{author.username}</Username>
+							</FlexRow>
 							<TweetDate> · {dateDiffDisplay}</TweetDate>
 						</FlexContainer>
 						<HeightWrapper>
@@ -442,14 +529,11 @@ const Tweet: React.FC<TweetPreview> = ({
 						<TweetContent>{message}</TweetContent>
 					</TweetContentWrapper>
 					{attachment && <TweetImage src={attachment}></TweetImage>}
-					<TweetInteraction>
-						<Container>
-							<IconHover>
-								<CommentSVG />
-							</IconHover>
-							<Comments>{numberOfComments}</Comments>
-						</Container>
-					</TweetInteraction>
+					<TweetInteractions
+						numberOfComments={numberOfComments}
+						likes={likes}
+						retweet={retweet}
+					/>
 				</GridRow>
 			</GridColumn>
 		</TweetContainer>
@@ -457,3 +541,62 @@ const Tweet: React.FC<TweetPreview> = ({
 };
 
 export default App;
+
+type TweetInteractionsProps = {
+	numberOfComments: number;
+	retweet: number;
+	likes: number;
+};
+
+const TweetInteractions: React.FC<TweetInteractionsProps> = ({
+	numberOfComments,
+	retweet,
+	likes,
+}) => {
+	const [commented, setCommented] = useState(false);
+	const [isLiked, setIsLiked] = useState(false);
+	const [isRetweeted, setIsRetweeted] = useState(false);
+
+	return (
+		<TweetInteraction>
+			<CommentWrapper>
+				<IconHover>
+					<CommentSVG />
+				</IconHover>
+				<Ammount>{numberOfComments}</Ammount>
+			</CommentWrapper>
+			<RetweetWrapper
+				retweeted={isRetweeted}
+				onClick={() => setIsRetweeted(prev => !prev)}
+			>
+				{isRetweeted ? (
+					<IconHover>
+						<RetweetFilledSVG />
+					</IconHover>
+				) : (
+					<IconHover>
+						<RetweetSVG />
+					</IconHover>
+				)}
+				<Ammount>{retweet}</Ammount>
+			</RetweetWrapper>
+			<HeartWrapper onClick={() => setIsLiked(prev => !prev)}>
+				{isLiked ? (
+					<IconHoverAnimated>
+						<AnimatedHeart />
+					</IconHoverAnimated>
+				) : (
+					<IconHover>
+						<HeartSVG />
+					</IconHover>
+				)}
+				<Ammount>{likes}</Ammount>
+			</HeartWrapper>
+			<ShareWrapper>
+				<IconHover>
+					<ShareSVG />
+				</IconHover>
+			</ShareWrapper>
+		</TweetInteraction>
+	);
+};
