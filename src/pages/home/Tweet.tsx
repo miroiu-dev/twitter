@@ -1,55 +1,19 @@
 import styled from '@emotion/styled/macro';
-import { AnimatePresence, motion } from 'framer-motion';
-import {
-	Activity,
-	Block,
-	Delete,
-	Embed,
-	Mute,
-	NotInterseted,
-	Pin,
-	RemoveFromList,
-	Report,
-	Unfollow,
-} from '../../components/icons/TweetModal';
+
 import { ResponsiveImage } from '../../components/ResponsiveImage';
 import { TweetInteractions } from './TweetInteraction';
-import { TweetOption } from './TweetOptions';
 import { GridRow, GridColumn } from './Atoms';
 import { TweetPreview } from '../../models/TweetPreview';
 import { useModal } from '../../hooks/useModal';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { ConfirmDeletionModal } from '../../components/modals/ConfirmDeletionModal';
 import { DotsSVG, IconWrapper } from '../../components/side-panel/Atoms';
 import { getReadableDate } from '../../utils/getReadableDate';
-const TweetModal = styled(motion.div)`
-	position: absolute;
-	width: 340px;
-	z-index: 3;
-	top: 0;
-	pointer-events: all;
-	left: -305px;
-	background-color: #000;
-	box-shadow: rgb(255 255 255 / 20%) 0px 0px 15px,
-		rgb(255 255 255 / 15%) 0px 0px 3px 1px;
-`;
-
-const BaseTweetModalIcon = styled.svg`
-	height: 1.25em;
-	width: 1.25em;
-`;
-
-const NotInterestedSVG = BaseTweetModalIcon.withComponent(NotInterseted);
-const UnfollowSVG = BaseTweetModalIcon.withComponent(Unfollow);
-const RemoveFromListSVG = BaseTweetModalIcon.withComponent(RemoveFromList);
-const MuteSVG = BaseTweetModalIcon.withComponent(Mute);
-const BlockSVG = BaseTweetModalIcon.withComponent(Block);
-const EmbedSVG = BaseTweetModalIcon.withComponent(Embed);
-const ReportSVG = BaseTweetModalIcon.withComponent(Report);
-
-const DeleteSVG = BaseTweetModalIcon.withComponent(Delete);
-const PinSVG = BaseTweetModalIcon.withComponent(Pin);
+import {
+	TweetOptionsModalSelf,
+	TweetOptionsModalUser,
+} from './TweetOptionsModal';
 
 const Wrapper = styled(IconWrapper)`
 	margin-top: -7px;
@@ -146,10 +110,6 @@ const FlexContainer = styled.div`
 	}
 `;
 
-const ActivitySVG = BaseTweetModalIcon.withComponent(Activity);
-
-const SelftTweetModal = styled(TweetModal)``;
-
 export const Tweet: React.FC<TweetPreview> = ({
 	attachment,
 	author,
@@ -161,7 +121,7 @@ export const Tweet: React.FC<TweetPreview> = ({
 	likes,
 }) => {
 	const dateDiffDisplay = getReadableDate(new Date(createdAt));
-	const { openModal, ref, show } = useModal();
+	const { closeModal, openModal, ref, show } = useModal();
 	const [isOpen, setIsOpen] = useState(false);
 	const closeDeletionModal = () => {
 		setIsOpen(false);
@@ -202,89 +162,19 @@ export const Tweet: React.FC<TweetPreview> = ({
 									<DotsSVG></DotsSVG>
 								</Wrapper>
 								{author.username !== user!.username ? (
-									<AnimatePresence>
-										{show && (
-											<TweetModal
-												ref={ref}
-												initial={{
-													height: '0px',
-													opacity: 0,
-												}}
-												animate={{
-													height: 'auto',
-													opacity: 1,
-												}}
-											>
-												<TweetOption
-													icon={<NotInterestedSVG />}
-													label="Not interested in this Tweet"
-												></TweetOption>
-												<TweetOption
-													icon={<UnfollowSVG />}
-													label={`Unfollow @${author.username}`}
-												></TweetOption>
-												<TweetOption
-													icon={<RemoveFromListSVG />}
-													label={`Add/remove @${author.username} from Lists`}
-												></TweetOption>
-												<TweetOption
-													icon={<MuteSVG />}
-													label={`Mute @${author.username}`}
-												></TweetOption>
-												<TweetOption
-													icon={<BlockSVG />}
-													label={`Block @${author.username}`}
-												></TweetOption>{' '}
-												<TweetOption
-													icon={<EmbedSVG />}
-													label="Embed Tweet"
-												></TweetOption>{' '}
-												<TweetOption
-													icon={<ReportSVG />}
-													label="Report Tweet"
-												></TweetOption>
-											</TweetModal>
-										)}
-									</AnimatePresence>
+									<TweetOptionsModalUser
+										author={author}
+										reference={ref}
+										show={show}
+									/>
 								) : (
-									<AnimatePresence>
-										{show && (
-											<SelftTweetModal
-												ref={ref}
-												initial={{
-													height: '0px',
-													opacity: 0,
-												}}
-												animate={{
-													height: 'auto',
-													opacity: 1,
-												}}
-											>
-												<TweetOption
-													icon={<DeleteSVG />}
-													label="Delete"
-													color="rgb(224, 36, 94)"
-													callback={openDeletionModal}
-												></TweetOption>
-												<TweetOption
-													icon={<PinSVG />}
-													label="Pin to your profile"
-												></TweetOption>
-												<TweetOption
-													icon={<RemoveFromListSVG />}
-													label={`Add/remove @${author.username} from Lists`}
-												></TweetOption>
-												<TweetOption
-													icon={<EmbedSVG />}
-													label="Embed Tweet"
-												></TweetOption>
-												<TweetOption
-													icon={<ActivitySVG />}
-													label="View Tweet activity"
-												></TweetOption>
-											</SelftTweetModal>
-										)}
-									</AnimatePresence>
+									<TweetOptionsModalSelf
+										author={author}
+										reference={ref}
+										show={show}
+										callback={openDeletionModal}
+										secondaryCallback={closeModal}
+									/>
 								)}
 							</HeightWrapper>
 						</TweetHeader>
