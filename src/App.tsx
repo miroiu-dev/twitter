@@ -36,6 +36,21 @@ import { ResponsiveImage } from './components/ResponsiveImage';
 import { AnimatedHeart } from './components/icons/AnimatedHeart';
 import axios from 'axios';
 import { routes } from './services/routes';
+import {
+	Activity,
+	Block,
+	Delete,
+	Embed,
+	Mute,
+	NotInterseted,
+	Pin,
+	RemoveFromList,
+	Report,
+	Unfollow,
+} from './components/icons/TweetModal';
+import { useModal } from './hooks/useModal';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ConfirmDeletionModal } from './components/modals/ConfirmDeletionModal';
 const LeftPanel = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -61,17 +76,6 @@ type LayoutProps = {
 };
 
 const LayoutWrapper = styled.div`
-	/* display: grid;
-	grid-template-columns: 0.9fr auto 1.1fr;
-
-	@media (max-width: 799px) {
-		grid-template-columns: auto;
-
-		${HomeLayout} {
-			width: auto;
-			margin: 0 auto;
-		}
-	} */
 	display: flex;
 	justify-content: center;
 `;
@@ -207,6 +211,7 @@ const Username = styled.span`
 `;
 const HeightWrapper = styled.div`
 	height: 20px;
+	position: relative;
 `;
 const TweetDate = styled.span`
 	color: rgb(110, 118, 125);
@@ -243,6 +248,7 @@ const TweetInteraction = styled.div`
 	margin-top: 0.75rem;
 	padding-bottom: 0.35rem;
 	justify-content: space-between;
+	margin-left: -10px;
 `;
 
 const BaseIcon = styled.div`
@@ -432,6 +438,25 @@ const Container = styled.div`
 	user-select: none;
 `;
 
+const BaseTweetModalIcon = styled.svg`
+	height: 1.25em;
+	width: 1.25em;
+`;
+
+const NotInterestedSVG = BaseTweetModalIcon.withComponent(NotInterseted);
+const UnfollowSVG = BaseTweetModalIcon.withComponent(Unfollow);
+const RemoveFromListSVG = BaseTweetModalIcon.withComponent(RemoveFromList);
+const MuteSVG = BaseTweetModalIcon.withComponent(Mute);
+const BlockSVG = BaseTweetModalIcon.withComponent(Block);
+const EmbedSVG = BaseTweetModalIcon.withComponent(Embed);
+const ReportSVG = BaseTweetModalIcon.withComponent(Report);
+
+const DeleteSVG = BaseTweetModalIcon.withComponent(Delete);
+const PinSVG = BaseTweetModalIcon.withComponent(Pin);
+const ActivitySVG = BaseTweetModalIcon.withComponent(Activity);
+const ActivitySVGInteraction = styled(ActivitySVG)`
+	fill: rgb(110, 118, 125);
+`;
 const CommentWrapper = styled(Container)`
 	&:hover ${IconHover} {
 		background-color: rgba(29, 161, 242, 0.1);
@@ -466,7 +491,7 @@ const RetweetWrapper = styled(Container)<{ retweeted?: boolean }>`
 	}
 `;
 
-const HeartWrapper = styled(Container)`
+const HeartWrapper = styled(Container)<{ liked?: boolean }>`
 	&:hover ${IconHover} {
 		background-color: rgba(224, 36, 94, 0.1);
 	}
@@ -479,6 +504,9 @@ const HeartWrapper = styled(Container)`
 	&:hover ${IconHoverAnimated} {
 		background-color: rgba(224, 36, 94, 0.1);
 	}
+	${Ammount} {
+		color: ${props => props.liked && 'rgb(224, 36, 94)'};
+	}
 `;
 
 const ShareWrapper = styled(Container)`
@@ -489,6 +517,31 @@ const ShareWrapper = styled(Container)`
 		fill: rgba(29, 161, 242, 1);
 	}
 `;
+
+const ActivityWrapper = styled(Container)`
+	&:hover ${IconHover} {
+		background-color: rgba(29, 161, 242, 0.1);
+	}
+	&:hover ${ActivitySVGInteraction} {
+		fill: rgba(29, 161, 242, 1);
+	}
+`;
+
+const TweetModal = styled(motion.div)`
+	position: absolute;
+	width: 340px;
+	z-index: 3;
+	top: 0;
+	pointer-events: all;
+	left: -305px;
+	background-color: #000;
+	box-shadow: rgb(255 255 255 / 20%) 0px 0px 15px,
+		rgb(255 255 255 / 15%) 0px 0px 3px 1px;
+	/* display: flex;
+	flex-direction: column; */
+`;
+
+const SelftTweetModal = styled(TweetModal)``;
 
 const Tweet: React.FC<TweetPreview> = ({
 	attachment,
@@ -501,62 +554,219 @@ const Tweet: React.FC<TweetPreview> = ({
 	likes,
 }) => {
 	const dateDiffDisplay = getReadableDate(new Date(createdAt));
-	const { deleteTweet } = useContext(TweetsContext);
+	const { openModal, ref, show } = useModal();
+	const [isOpen, setIsOpen] = useState(false);
+	const closeDeletionModal = () => {
+		setIsOpen(false);
+	};
+	const openDeletionModal = () => {
+		setIsOpen(true);
+	};
+	const { user } = useAuth();
 
 	return (
-		<TweetContainer>
-			<GridColumn>
-				<UserImageWrapper>
-					<UserImage draggable={false} src={author.profilePicture} />
-				</UserImageWrapper>
+		<>
+			{isOpen && (
+				<ConfirmDeletionModal
+					closeModal={closeDeletionModal}
+					tweetId={_id}
+				/>
+			)}
+			<TweetContainer>
+				<GridColumn>
+					<UserImageWrapper>
+						<UserImage
+							draggable={false}
+							src={author.profilePicture}
+						/>
+					</UserImageWrapper>
 
-				<GridRow>
-					<TweetHeader>
-						<FlexContainer>
-							<FlexRow>
-								<Name>{author.name}</Name>
-								<Username>@{author.username}</Username>
-							</FlexRow>
-							<TweetDate> · {dateDiffDisplay}</TweetDate>
-						</FlexContainer>
-						<HeightWrapper>
-							<Wrapper onClick={() => deleteTweet(_id)}>
-								<DotsSVG></DotsSVG>
-							</Wrapper>
-						</HeightWrapper>
-					</TweetHeader>
-					<TweetContentWrapper>
-						<TweetContent>{message}</TweetContent>
-					</TweetContentWrapper>
-					{attachment && <TweetImage src={attachment}></TweetImage>}
-					<TweetInteractions
-						numberOfComments={numberOfComments}
-						likes={likes}
-						retweet={retweet}
-					/>
-				</GridRow>
-			</GridColumn>
-		</TweetContainer>
+					<GridRow>
+						<TweetHeader>
+							<FlexContainer>
+								<FlexRow>
+									<Name>{author.name}</Name>
+									<Username>@{author.username}</Username>
+								</FlexRow>
+								<TweetDate> · {dateDiffDisplay}</TweetDate>
+							</FlexContainer>
+							<HeightWrapper>
+								<Wrapper onClick={openModal}>
+									<DotsSVG></DotsSVG>
+								</Wrapper>
+								{author.username !== user!.username ? (
+									<AnimatePresence>
+										{show && (
+											<TweetModal
+												ref={ref}
+												initial={{
+													height: '0px',
+													opacity: 0,
+												}}
+												animate={{
+													height: 'auto',
+													opacity: 1,
+												}}
+											>
+												<TweetOption
+													icon={<NotInterestedSVG />}
+													label="Not interested in this Tweet"
+												></TweetOption>
+												<TweetOption
+													icon={<UnfollowSVG />}
+													label={`Unfollow @${author.username}`}
+												></TweetOption>
+												<TweetOption
+													icon={<RemoveFromListSVG />}
+													label={`Add/remove @${author.username} from Lists`}
+												></TweetOption>
+												<TweetOption
+													icon={<MuteSVG />}
+													label={`Mute @${author.username}`}
+												></TweetOption>
+												<TweetOption
+													icon={<BlockSVG />}
+													label={`Block @${author.username}`}
+												></TweetOption>{' '}
+												<TweetOption
+													icon={<EmbedSVG />}
+													label="Embed Tweet"
+												></TweetOption>{' '}
+												<TweetOption
+													icon={<ReportSVG />}
+													label="Report Tweet"
+												></TweetOption>
+											</TweetModal>
+										)}
+									</AnimatePresence>
+								) : (
+									<AnimatePresence>
+										{show && (
+											<SelftTweetModal
+												ref={ref}
+												initial={{
+													height: '0px',
+													opacity: 0,
+												}}
+												animate={{
+													height: 'auto',
+													opacity: 1,
+												}}
+											>
+												<TweetOption
+													icon={<DeleteSVG />}
+													label="Delete"
+													color="rgb(224, 36, 94)"
+													callback={openDeletionModal}
+												></TweetOption>
+												<TweetOption
+													icon={<PinSVG />}
+													label="Pin to your profile"
+												></TweetOption>
+												<TweetOption
+													icon={<RemoveFromListSVG />}
+													label={`Add/remove @${author.username} from Lists`}
+												></TweetOption>
+												<TweetOption
+													icon={<EmbedSVG />}
+													label="Embed Tweet"
+												></TweetOption>
+												<TweetOption
+													icon={<ActivitySVG />}
+													label="View Tweet activity"
+												></TweetOption>
+											</SelftTweetModal>
+										)}
+									</AnimatePresence>
+								)}
+							</HeightWrapper>
+						</TweetHeader>
+						<TweetContentWrapper>
+							<TweetContent>{message}</TweetContent>
+						</TweetContentWrapper>
+						{attachment && (
+							<TweetImage src={attachment}></TweetImage>
+						)}
+						<TweetInteractions
+							numberOfComments={numberOfComments}
+							likes={likes}
+							retweet={retweet}
+							author={author}
+						/>
+					</GridRow>
+				</GridColumn>
+			</TweetContainer>
+		</>
 	);
 };
 
 export default App;
 
+type TweetOptionProps = {
+	label: string;
+	icon: ReactNode;
+	color?: string;
+	callback?: () => void;
+};
+
+const Label = styled.span`
+	font-weight: 400;
+	font-size: 0.938rem;
+`;
+
+const OptionWrapper = styled.div<{ color?: string }>`
+	padding: 1rem;
+	display: flex;
+	align-items: center;
+	&:hover {
+		background-color: rgba(255, 255, 255, 0.03);
+	}
+	${Label} {
+		color: ${props => props.color || 'rgb(217, 217, 217)'}!important;
+	}
+`;
+
+const OptionIconWrapper = styled.div<{ color?: string }>`
+	margin-right: 0.75rem;
+	height: 1.25em;
+	width: 1.25em;
+	fill: ${props => props.color || 'rgb(110, 118, 125)'};
+`;
+
+const TweetOption: React.FC<TweetOptionProps> = ({
+	label,
+	icon,
+	color,
+	callback,
+}) => {
+	return (
+		<OptionWrapper color={color} onClick={() => callback && callback()}>
+			<OptionIconWrapper color={color}>{icon} </OptionIconWrapper>
+			<Label>{label}</Label>
+		</OptionWrapper>
+	);
+};
+
 type TweetInteractionsProps = {
 	numberOfComments: number;
 	retweet: number;
 	likes: number;
+	author: {
+		name: string;
+		username: string;
+		profilePicture: string;
+	};
 };
 
 const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 	numberOfComments,
 	retweet,
 	likes,
+	author,
 }) => {
-	const [commented, setCommented] = useState(false);
 	const [isLiked, setIsLiked] = useState(false);
 	const [isRetweeted, setIsRetweeted] = useState(false);
-
+	const { user } = useAuth();
 	return (
 		<TweetInteraction>
 			<CommentWrapper>
@@ -580,7 +790,10 @@ const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 				)}
 				<Ammount>{retweet}</Ammount>
 			</RetweetWrapper>
-			<HeartWrapper onClick={() => setIsLiked(prev => !prev)}>
+			<HeartWrapper
+				liked={isLiked}
+				onClick={() => setIsLiked(prev => !prev)}
+			>
 				{isLiked ? (
 					<IconHoverAnimated>
 						<AnimatedHeart />
@@ -597,6 +810,13 @@ const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 					<ShareSVG />
 				</IconHover>
 			</ShareWrapper>
+			{author.username === user!.username && (
+				<ActivityWrapper>
+					<IconHover>
+						<ActivitySVGInteraction />
+					</IconHover>
+				</ActivityWrapper>
+			)}
 		</TweetInteraction>
 	);
 };
