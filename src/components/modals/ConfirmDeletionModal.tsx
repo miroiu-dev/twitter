@@ -2,7 +2,6 @@ import styled from '@emotion/styled/macro';
 import { useContext, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { TweetsContext } from '../../hooks/TweetsContext';
-import { useClickOutside } from '../../hooks/useClickOutside';
 
 const ModalWrapper = styled.div`
 	background-color: rgba(91, 112, 131, 0.4);
