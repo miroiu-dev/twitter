@@ -51,8 +51,36 @@ const deleteTweet = async (id: string) => {
 	}
 };
 
+const likeTweet = async (id: string) => {
+	try {
+		const response = await axios.put(
+			routes.likes(id),
+			{},
+			{
+				withCredentials: true,
+			}
+		);
+		console.log(response.status);
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+const unlikeTweet = async (id: string) => {
+	try {
+		const response = await axios.delete(routes.likes(id), {
+			withCredentials: true,
+		});
+		console.log(response.status);
+	} catch (err) {
+		console.log(err);
+	}
+};
+
 export const tweetsService = {
 	createTweet,
 	getTweets,
 	deleteTweet,
+	likeTweet,
+	unlikeTweet,
 };

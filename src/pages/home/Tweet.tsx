@@ -117,8 +117,9 @@ export const Tweet: React.FC<TweetPreview> = ({
 	message,
 	numberOfComments,
 	_id,
-	retweet,
-	likes,
+	numberOfRetweets,
+	numberOfLikes,
+	likedByUser,
 }) => {
 	const dateDiffDisplay = getReadableDate(new Date(createdAt));
 	const { closeModal, openModal, ref, show } = useModal();
@@ -186,9 +187,11 @@ export const Tweet: React.FC<TweetPreview> = ({
 						)}
 						<TweetInteractions
 							numberOfComments={numberOfComments}
-							likes={likes}
-							retweet={retweet}
+							numberOfLikes={numberOfLikes}
+							numberOfRetweets={numberOfRetweets}
 							author={author}
+							likedByUser={likedByUser}
+							id={_id}
 						/>
 					</GridRow>
 				</GridColumn>

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled/macro';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { AnimatedHeart } from '../../components/icons/AnimatedHeart';
 import {
 	Comment,
@@ -9,6 +9,7 @@ import {
 	Share,
 } from '../../components/icons/TweetInteraction';
 import { Activity } from '../../components/icons/TweetModal';
+import { TweetsContext } from '../../hooks/TweetsContext';
 import { useAuth } from '../../hooks/useAuth';
 
 const BaseTweetModalIcon = styled.svg`
@@ -143,23 +144,27 @@ const TweetInteraction = styled.div`
 
 type TweetInteractionsProps = {
 	numberOfComments: number;
-	retweet: number;
-	likes: number;
+	numberOfRetweets: number;
+	numberOfLikes: number;
 	author: {
 		name: string;
 		username: string;
 		profilePicture: string;
 	};
+	likedByUser: boolean;
+	id: string;
 };
 
 export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 	numberOfComments,
-	retweet,
-	likes,
+	numberOfRetweets,
+	numberOfLikes,
 	author,
+	likedByUser,
+	id,
 }) => {
-	const [isLiked, setIsLiked] = useState(false);
 	const [isRetweeted, setIsRetweeted] = useState(false);
+	const { toggleLike } = useContext(TweetsContext);
 	const { user } = useAuth();
 	return (
 		<TweetInteraction>
@@ -182,13 +187,10 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 						<RetweetSVG />
 					</IconHover>
 				)}
-				<Ammount>{retweet}</Ammount>
+				<Ammount>{numberOfRetweets}</Ammount>
 			</RetweetWrapper>
-			<HeartWrapper
-				liked={isLiked}
-				onClick={() => setIsLiked(prev => !prev)}
-			>
-				{isLiked ? (
+			<HeartWrapper liked={likedByUser} onClick={() => toggleLike(id)}>
+				{likedByUser ? (
 					<IconHoverAnimated>
 						<AnimatedHeart />
 					</IconHoverAnimated>
@@ -197,7 +199,7 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 						<HeartSVG />
 					</IconHover>
 				)}
-				<Ammount>{likes}</Ammount>
+				<Ammount>{numberOfLikes}</Ammount>
 			</HeartWrapper>
 			<ShareWrapper>
 				<IconHover>

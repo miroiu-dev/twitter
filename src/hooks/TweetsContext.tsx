@@ -8,6 +8,7 @@ type TweetsContextProps = {
 	deleteTweet: (id: string) => void;
 	fetchTweets: () => void;
 	createTweet: (message: string, attachment: string) => void;
+	toggleLike: (id: string) => void;
 };
 
 export const TweetsContext = createContext<TweetsContextProps>({
@@ -16,6 +17,7 @@ export const TweetsContext = createContext<TweetsContextProps>({
 	deleteTweet: (id: string) => {},
 	createTweet: (message: string, attachment: string) => {},
 	fetchTweets: () => {},
+	toggleLike: (id: string) => {},
 });
 
 const FETCH_TWEETS_LIMIT = 10;
@@ -58,9 +60,42 @@ export const TweetsProvider: React.FC = ({ children }) => {
 			setTweets(prev => prev.filter(tweet => tweet._id !== response));
 		}
 	};
+
+	const toggleLike = async (id: string) => {
+		const foundTweets = tweets.filter(t => t._id === id);
+		if (foundTweets.length > 0) {
+			const tweet = foundTweets[0];
+			if (tweet.likedByUser) {
+				await tweetsService.unlikeTweet(id);
+			} else {
+				await tweetsService.likeTweet(id);
+			}
+			setTweets(prev =>
+				prev.map(tweet =>
+					tweet._id === id
+						? {
+								...tweet,
+								numberOfLikes:
+									tweet.numberOfLikes +
+									(tweet.likedByUser ? -1 : 1),
+								likedByUser: !tweet.likedByUser,
+						  }
+						: tweet
+				)
+			);
+		}
+	};
+
 	return (
 		<TweetsContext.Provider
-			value={{ tweets, isLoading, fetchTweets, createTweet, deleteTweet }}
+			value={{
+				tweets,
+				isLoading,
+				fetchTweets,
+				createTweet,
+				deleteTweet,
+				toggleLike,
+			}}
 		>
 			{children}
 		</TweetsContext.Provider>

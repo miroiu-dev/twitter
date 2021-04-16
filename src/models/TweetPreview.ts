@@ -9,6 +9,7 @@ export type TweetPreview = {
 	message: string;
 	attachment: string;
 	numberOfComments: number;
-	likes: number;
-	retweet: number;
+	numberOfLikes: number;
+	numberOfRetweets: number;
+	likedByUser: boolean;
 };

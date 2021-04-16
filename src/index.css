@@ -28,3 +28,6 @@ code {
 }
 
 /* heart svg animation */
+body.modal::-webkit-scrollbar {
+	background-color: rgba(91, 112, 131, 0.4);
+}

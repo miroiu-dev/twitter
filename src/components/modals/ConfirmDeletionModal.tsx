@@ -10,13 +10,13 @@ const ModalWrapper = styled.div`
 	left: 0;
 	bottom: 0;
 	right: 0;
-	overflow: hidden;
 	width: 100vw;
 	height: 100vh;
 	z-index: 10;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	position: fixed;
 `;
 
 const ConfirmWrapper = styled.div`
@@ -78,15 +78,27 @@ export const ConfirmDeletionModal: React.FC<{
 	tweetId?: string;
 	closeModal: () => void;
 }> = ({ tweetId, closeModal }) => {
-	const query = document.getElementById('modal-root');
-	useEffect(() => {
-		document.body.style.overflow = 'hidden';
-		return () => {
-			document.body.style.overflow = 'auto';
-		};
-	}, []);
 	const { deleteTweet } = useContext(TweetsContext);
 	const divRef = useRef<HTMLDivElement | null>(null);
+
+	const query = document.getElementById('modal-root');
+
+	useEffect(() => {
+		const scrollTop =
+			window.pageYOffset || document.documentElement.scrollTop;
+		const scrollLeft =
+			window.pageXOffset || document.documentElement.scrollLeft;
+		const onscroll = () => {
+			window.scrollTo(scrollLeft, scrollTop);
+		};
+		window.addEventListener('scroll', onscroll);
+		document.body.classList.add('modal');
+		return () => {
+			window.removeEventListener('scroll', onscroll);
+			document.body.classList.remove('modal');
+		};
+	}, []);
+
 	return createPortal(
 		<ModalWrapper>
 			<ConfirmWrapper ref={divRef}>

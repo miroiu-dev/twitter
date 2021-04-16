@@ -135,6 +135,7 @@ export const CreateTweet: React.FC = () => {
 									setImage('');
 									if (inputText.current) {
 										inputText.current.textContent = '';
+										setText('');
 									}
 								}}
 							>
