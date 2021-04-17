@@ -7,8 +7,9 @@ const Name = styled.span`
 	margin-right: 5px;
 `;
 
-const FlexRow = styled.div`
+const FlexRow = styled.div<{ flexDirection?: string }>`
 	display: flex;
+	flex-direction: ${props => props.flexDirection ?? 'row'};
 	&:hover ${Name} {
 		text-decoration: underline;
 	}
@@ -28,8 +29,6 @@ const TweetDate = styled.span`
 `;
 const FlexContainer = styled.div`
 	display: flex;
-	:hover {
-	}
 `;
 
 export const TweetInfo: React.FC<{
@@ -39,15 +38,17 @@ export const TweetInfo: React.FC<{
 		profilePicture?: string;
 		id?: string;
 	};
-	date: string;
-}> = ({ author, date }) => {
+	date?: string;
+	showDate?: boolean;
+	flexDirection?: string;
+}> = ({ author, date, showDate = true, flexDirection }) => {
 	return (
 		<FlexContainer>
-			<FlexRow>
+			<FlexRow flexDirection={flexDirection}>
 				<Name>{author.name}</Name>
 				<Username>@{author.username}</Username>
 			</FlexRow>
-			<TweetDate> · {date}</TweetDate>
+			{showDate && <TweetDate> · {date}</TweetDate>}
 		</FlexContainer>
 	);
 };

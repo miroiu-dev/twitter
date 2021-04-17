@@ -5,7 +5,7 @@ import { TweetInteractions } from './TweetInteraction';
 import { GridRow, GridColumn } from './Atoms';
 import { TweetPreview } from '../../models/TweetPreview';
 import { useModal } from '../../hooks/useModal';
-import React, { memo, useState } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { ConfirmDeletionModal } from '../../components/modals/ConfirmDeletionModal';
 import { getReadableDate } from '../../utils/getReadableDate';
@@ -14,18 +14,18 @@ import { motion } from 'framer-motion';
 import { useHistory } from 'react-router';
 import { TweetHeader } from './TweetHeader';
 
-const TweetContentWrapper = styled.span`
+export const TweetContentWrapper = styled.span`
 	display: flex;
 	flex-grow: 1;
-	color: #fff;
+	color: rgb(217, 217, 217);
 	font-weight: 400;
 	font-size: 15px;
 `;
 
-const TweetContent = styled.pre`
+export const TweetContent = styled.pre`
 	display: flex;
 	flex-grow: 1;
-	color: #fff;
+	color: rgb(217, 217, 217);
 	font-weight: 400;
 	font-size: 15px;
 	font-family: inherit;

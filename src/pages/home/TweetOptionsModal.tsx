@@ -50,7 +50,8 @@ export const TweetOptionsModalUser: React.FC<{
 	author: {
 		name: string;
 		username: string;
-		profilePicture: string;
+		profilePicture?: string;
+		id?: string;
 	};
 	reference: React.MutableRefObject<HTMLDivElement | null>;
 }> = ({ show, author, reference }) => {
@@ -107,7 +108,8 @@ export const TweetOptionsModalSelf: React.FC<{
 	author: {
 		name: string;
 		username: string;
-		profilePicture: string;
+		profilePicture?: string;
+		id?: string;
 	};
 	reference: React.MutableRefObject<HTMLDivElement | null>;
 	callback: () => void;

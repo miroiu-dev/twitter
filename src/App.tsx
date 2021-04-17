@@ -16,15 +16,25 @@ import { Home } from './pages/home/Home';
 import { SidePanel } from './components/side-panel/SidePanel';
 import { Layout } from './pages/universal/Layout';
 import styled from '@emotion/styled/macro';
-import { IconWrapper } from './components/side-panel/Atoms';
+import { DotsSVG, IconWrapper } from './components/side-panel/Atoms';
 import { Arrow } from './components/icons/Arrow';
 import { TweetInfo } from './pages/home/TweetInfo';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { tweetsService } from './services/tweets.service';
 import { FullTweet } from './models/FullTweet';
-import { getReadableDate } from './utils/getReadableDate';
 import { delay } from './helpers';
-
+import Loader from 'react-loader-spinner';
+import { LoaderWrapper } from './pages/home/Feed';
+import { UserContext } from './hooks/UserContext';
+import {
+	TweetOptionsModalSelf,
+	TweetOptionsModalUser,
+} from './pages/home/TweetOptionsModal';
+import { useModal } from './hooks/useModal';
+import { ConfirmDeletionModal } from './components/modals/ConfirmDeletionModal';
+import { HeightWrapper, Wrapper } from './pages/home/TweetHeader';
+import { ResponsiveImage } from './components/ResponsiveImage';
+import { monthsMap } from './utils/getReadableDate';
 const TweetWrapper = styled.div`
 	max-width: 600px;
 	width: 100%;
@@ -58,40 +68,192 @@ const Title = styled.span`
 	cursor: pointer;
 `;
 
-const TweetContent = styled.div``;
+const TweetDataWrapper = styled.div`
+	cursor: pointer;
+	padding: 0.75rem 1rem;
+`;
+
+const FlexRow = styled.div`
+	display: flex;
+`;
+const FlexRowJustifyContent = styled.div`
+	display: flex;
+	justify-content: space-between;
+	flex-grow: 1;
+`;
+const ProfileImageWrapper = styled.div`
+	margin-right: 12px;
+`;
+const ProfileImage = styled.img`
+	border-radius: 9999px;
+	width: 48px;
+	height: 48px;
+	transition: 200ms;
+	&:hover {
+		filter: brightness(0.8);
+	}
+`;
+
+export const TweetContentWrapper = styled.span`
+	display: flex;
+	flex-grow: 1;
+	color: rgb(217, 217, 217);
+	font-weight: 400;
+	font-size: 1.438rem;
+	line-height: 28px;
+	font-family: inherit;
+	margin-top: 12px;
+	cursor: text;
+`;
+
+export const TweetContent = styled.pre`
+	display: flex;
+	flex-grow: 1;
+	color: rgb(217, 217, 217);
+	font-weight: 400;
+	font-size: 1.438rem;
+	line-height: 28px;
+	font-family: inherit;
+	margin: 0;
+`;
+
+const TweetImage = styled(ResponsiveImage)`
+	margin-top: 1rem;
+`;
+
+const DateBar = styled.div`
+	margin: 1rem 0;
+`;
+
+const CreatedAtDate = styled.span`
+	color: rgb(110, 118, 125);
+	font-weight: 400;
+	font-size: 15px;
+`;
 
 const Tweet: React.FC = () => {
-	const { id: tweetId } = useParams<{ id: string }>();
-	const history = useHistory();
+	const [isOpen, setIsOpen] = useState(false);
 	const [tweet, setTweet] = useState<FullTweet>();
 
-	const dateDiffDisplay = useMemo(() => {
+	const { id: tweetId } = useParams<{ id: string }>();
+	const history = useHistory();
+	const { user } = useContext(UserContext);
+
+	const { closeModal, openModal, ref, show } = useModal();
+	const closeDeletionModal = () => {
+		setIsOpen(false);
+	};
+	const openDeletionModal = () => {
+		setIsOpen(true);
+	};
+
+	const getTweetDate = (date: Date) => {
+		const minutes = date.getMinutes();
+		const hours = date.getHours();
+		const month = date.getMonth();
+		const Month = monthsMap.get(month);
+		const year = date.getFullYear();
+		const meridian = hours <= 12 ? 'AM' : 'PM';
+		return `${hours}:${minutes} ${meridian} · ${Month} ${month}, ${year}`;
+	};
+
+	const date = useMemo(() => {
 		if (tweet) {
-			return getReadableDate(new Date(tweet.createdAt));
+			return getTweetDate(new Date(tweet.createdAt));
 		}
 		return '1m';
 	}, [tweet]);
+	//  date.toLocaleString([], { hour12: true});
+	// const dateDiffDisplay = useMemo(() => {
+	// 	if (tweet) {
+	// 		return getReadableDate(new Date(tweet.createdAt));
+	// 	}
+	// 	return '1m';
+	// }, [tweet]);
 
 	useEffect(() => {
 		delay(1000).then(() => tweetsService.getTweet(tweetId).then(setTweet));
 	}, [tweetId]);
 
 	return (
-		<TweetWrapper>
-			<Header>
-				<IconWrapper onClick={() => history.push('/home')}>
-					<Icon />
-				</IconWrapper>
-				<Title>Tweet</Title>
-			</Header>
-			<TweetContent>
-				{tweet ? (
-					<TweetInfo author={tweet.author} date={dateDiffDisplay} />
-				) : (
-					<div style={{ color: 'white' }}>'Loading'</div>
-				)}
-			</TweetContent>
-		</TweetWrapper>
+		<>
+			{isOpen && tweet && (
+				<ConfirmDeletionModal
+					closeModal={closeDeletionModal}
+					tweetId={tweet._id}
+				/>
+			)}
+			<TweetWrapper>
+				<Header>
+					<IconWrapper onClick={() => history.push('/home')}>
+						<Icon />
+					</IconWrapper>
+					<Title>Tweet</Title>
+				</Header>
+				<TweetDataWrapper>
+					{tweet ? (
+						<>
+							<FlexRow>
+								<ProfileImageWrapper>
+									<ProfileImage
+										src={tweet.author.profilePicture}
+									></ProfileImage>
+								</ProfileImageWrapper>
+								<FlexRowJustifyContent>
+									<TweetInfo
+										author={tweet.author}
+										showDate={false}
+										flexDirection="column"
+									/>
+									<HeightWrapper>
+										<Wrapper onClick={openModal}>
+											<DotsSVG></DotsSVG>
+										</Wrapper>
+										{tweet.author.username !==
+										user!.username ? (
+											<TweetOptionsModalUser
+												author={tweet.author}
+												reference={ref}
+												show={show}
+											/>
+										) : (
+											<TweetOptionsModalSelf
+												author={tweet.author}
+												reference={ref}
+												show={show}
+												callback={openDeletionModal}
+												secondaryCallback={closeModal}
+											/>
+										)}
+									</HeightWrapper>
+								</FlexRowJustifyContent>
+							</FlexRow>
+							<TweetContentWrapper>
+								<TweetContent>{tweet.message}</TweetContent>
+							</TweetContentWrapper>
+							{tweet.attachment && (
+								<TweetImage
+									maxWidth={true}
+									src={tweet.attachment}
+								></TweetImage>
+							)}
+							<DateBar>
+								<CreatedAtDate>{date}</CreatedAtDate>
+							</DateBar>
+						</>
+					) : (
+						<LoaderWrapper>
+							<Loader
+								type="Oval"
+								color="rgb(29, 161, 242)"
+								height={30}
+								width={30}
+							/>
+						</LoaderWrapper>
+					)}
+				</TweetDataWrapper>
+			</TweetWrapper>
+		</>
 	);
 };
 

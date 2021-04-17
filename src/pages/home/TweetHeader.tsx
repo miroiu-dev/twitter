@@ -8,11 +8,11 @@ import {
 	TweetOptionsModalUser,
 } from './TweetOptionsModal';
 
-const Wrapper = styled(IconWrapper)`
+export const Wrapper = styled(IconWrapper)`
 	margin-top: -7px;
 `;
 
-const HeightWrapper = styled.div`
+export const HeightWrapper = styled.div`
 	height: 20px;
 	position: relative;
 `;

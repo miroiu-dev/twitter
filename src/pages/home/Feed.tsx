@@ -6,7 +6,7 @@ import Loader from 'react-loader-spinner';
 import { TweetsContext } from '../../hooks/TweetsContext';
 import { Tweet } from './Tweet';
 
-const LoaderWrapper = styled.div`
+export const LoaderWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	width: 100%;

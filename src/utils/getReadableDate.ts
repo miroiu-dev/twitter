@@ -1,4 +1,4 @@
-const monthsMap = new Map([
+export const monthsMap = new Map([
 	[1, 'Jan'],
 	[2, 'Feb'],
 	[3, 'Mar'],

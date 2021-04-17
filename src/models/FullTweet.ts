@@ -8,7 +8,7 @@ type Comment = {
 	message: string;
 	numberOfLikes: number;
 	numberOfRetweets: number;
-	createdAt: Date;
+	createdAt: string;
 };
 
 export type FullTweet = {
@@ -19,7 +19,7 @@ export type FullTweet = {
 		username: string;
 		profilePicture?: string;
 	};
-	createdAt: Date;
+	createdAt: string;
 	message: string;
 	attachment?: string;
 	comments?: Comment[];

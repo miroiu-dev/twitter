@@ -11,9 +11,9 @@ export const ImageWrapper = styled.div<{ url?: string }>`
 	background-position: center center;
 `;
 
-export const RealImage = styled.img`
-	max-width: 502px;
-	max-height: 282.38px;
+export const RealImage = styled.img<{ maxWidth?: boolean }>`
+	max-width: ${props => !props.maxWidth && '502px'};
+	max-height: ${props => !props.maxWidth && '282.38px'};
 	width: 100%;
 	opacity: 0;
 `;
@@ -21,10 +21,16 @@ export const RealImage = styled.img`
 export const ResponsiveImage: React.FC<{
 	src?: string;
 	className?: string;
-}> = ({ children, className, src }) => {
+	maxWidth?: boolean;
+}> = ({ children, className, src, maxWidth }) => {
 	return (
 		<ImageWrapper className={className} url={src}>
-			<RealImage draggable="false" alt="uploaded-pic" src={src} />
+			<RealImage
+				draggable="false"
+				alt="uploaded-pic"
+				src={src}
+				maxWidth={maxWidth}
+			/>
 			{children}
 		</ImageWrapper>
 	);
