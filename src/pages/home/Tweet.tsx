@@ -14,6 +14,7 @@ import {
 	TweetOptionsModalSelf,
 	TweetOptionsModalUser,
 } from './TweetOptionsModal';
+import { motion } from 'framer-motion';
 
 const Wrapper = styled(IconWrapper)`
 	margin-top: -7px;
@@ -71,7 +72,20 @@ const TweetImage = styled(ResponsiveImage)`
 	margin-top: 1rem;
 `;
 
-const TweetContainer = styled.div`
+// const TweetContainer = styled.div`
+// 	display: flex;
+// 	flex-direction: column;
+// 	padding: 0 1rem;
+// 	padding-top: 0.75rem;
+// 	display: flex;
+// 	&:hover {
+// 		background-color: rgba(255, 255, 255, 0.03);
+// 	}
+// 	cursor: pointer;
+// 	border-bottom: 1px solid rgb(47, 51, 54);
+// `;
+
+const TweetContainer = styled(motion.div)`
 	display: flex;
 	flex-direction: column;
 	padding: 0 1rem;
@@ -120,6 +134,7 @@ export const Tweet: React.FC<TweetPreview> = ({
 	numberOfRetweets,
 	numberOfLikes,
 	likedByUser,
+	retweetedByUser,
 }) => {
 	const dateDiffDisplay = getReadableDate(new Date(createdAt));
 	const { closeModal, openModal, ref, show } = useModal();
@@ -132,6 +147,25 @@ export const Tweet: React.FC<TweetPreview> = ({
 	};
 	const { user } = useAuth();
 
+	const TweetVariants = {
+		initial: {
+			opacity: 0.5,
+		},
+		animate: {
+			opacity: 1,
+			transition: {
+				duration: 0.5,
+			},
+		},
+		exit: {
+			height: 0,
+			opacity: 0,
+			transition: {
+				duration: 0.3,
+			},
+		},
+	};
+
 	return (
 		<>
 			{isOpen && (
@@ -140,7 +174,12 @@ export const Tweet: React.FC<TweetPreview> = ({
 					tweetId={_id}
 				/>
 			)}
-			<TweetContainer>
+			<TweetContainer
+				variants={TweetVariants}
+				initial="initial"
+				animate="animate"
+				exit="exit"
+			>
 				<GridColumn>
 					<UserImageWrapper>
 						<UserImage
@@ -192,6 +231,7 @@ export const Tweet: React.FC<TweetPreview> = ({
 							author={author}
 							likedByUser={likedByUser}
 							id={_id}
+							retweetedByUser={retweetedByUser}
 						/>
 					</GridRow>
 				</GridColumn>

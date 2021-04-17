@@ -12,4 +12,5 @@ export type TweetPreview = {
 	numberOfLikes: number;
 	numberOfRetweets: number;
 	likedByUser: boolean;
+	retweetedByUser: boolean;
 };

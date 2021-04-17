@@ -77,10 +77,36 @@ const unlikeTweet = async (id: string) => {
 	}
 };
 
+const retweetTweet = async (id: string) => {
+	try {
+		const response = await axios.put(
+			routes.retweets(id),
+			{},
+			{ withCredentials: true }
+		);
+		console.log(response.status);
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+const unretweetTweet = async (id: string) => {
+	try {
+		const response = await axios.delete(routes.retweets(id), {
+			withCredentials: true,
+		});
+		console.log(response.status);
+	} catch (err) {
+		console.log(err);
+	}
+};
+
 export const tweetsService = {
 	createTweet,
 	getTweets,
 	deleteTweet,
 	likeTweet,
 	unlikeTweet,
+	retweetTweet,
+	unretweetTweet,
 };

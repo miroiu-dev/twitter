@@ -9,15 +9,17 @@ type TweetsContextProps = {
 	fetchTweets: () => void;
 	createTweet: (message: string, attachment: string) => void;
 	toggleLike: (id: string) => void;
+	toggleRetweet: (id: string) => void;
 };
 
 export const TweetsContext = createContext<TweetsContextProps>({
 	tweets: [],
 	isLoading: true,
-	deleteTweet: (id: string) => {},
-	createTweet: (message: string, attachment: string) => {},
+	deleteTweet: () => {},
+	createTweet: () => {},
 	fetchTweets: () => {},
-	toggleLike: (id: string) => {},
+	toggleLike: () => {},
+	toggleRetweet: () => {},
 });
 
 const FETCH_TWEETS_LIMIT = 10;
@@ -86,6 +88,31 @@ export const TweetsProvider: React.FC = ({ children }) => {
 		}
 	};
 
+	const toggleRetweet = async (id: string) => {
+		const foundTweets = tweets.filter(t => t._id === id);
+		if (foundTweets.length > 0) {
+			const tweet = foundTweets[0];
+			if (tweet.retweetedByUser) {
+				await tweetsService.unretweetTweet(id);
+			} else {
+				await tweetsService.retweetTweet(id);
+			}
+			setTweets(prev =>
+				prev.map(tweet =>
+					tweet._id === id
+						? {
+								...tweet,
+								numberOfRetweets:
+									tweet.numberOfRetweets +
+									(tweet.retweetedByUser ? -1 : 1),
+								retweetedByUser: !tweet.retweetedByUser,
+						  }
+						: tweet
+				)
+			);
+		}
+	};
+
 	return (
 		<TweetsContext.Provider
 			value={{
@@ -95,6 +122,7 @@ export const TweetsProvider: React.FC = ({ children }) => {
 				createTweet,
 				deleteTweet,
 				toggleLike,
+				toggleRetweet,
 			}}
 		>
 			{children}

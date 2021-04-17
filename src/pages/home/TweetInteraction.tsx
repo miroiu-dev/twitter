@@ -1,5 +1,6 @@
 import styled from '@emotion/styled/macro';
-import { useContext, useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
+import { useContext } from 'react';
 import { AnimatedHeart } from '../../components/icons/AnimatedHeart';
 import {
 	Comment,
@@ -9,8 +10,10 @@ import {
 	Share,
 } from '../../components/icons/TweetInteraction';
 import { Activity } from '../../components/icons/TweetModal';
+import { RetweetModal } from '../../components/modals/RetweetModal';
 import { TweetsContext } from '../../hooks/TweetsContext';
 import { useAuth } from '../../hooks/useAuth';
+import { useModal } from '../../hooks/useModal';
 
 const BaseTweetModalIcon = styled.svg`
 	height: 1.25em;
@@ -75,6 +78,7 @@ const CommentWrapper = styled(Container)`
 `;
 
 const RetweetWrapper = styled(Container)<{ retweeted?: boolean }>`
+	position: relative;
 	&:hover ${IconHover} {
 		background-color: rgba(23, 191, 99, 0.1);
 	}
@@ -152,6 +156,7 @@ type TweetInteractionsProps = {
 		profilePicture: string;
 	};
 	likedByUser: boolean;
+	retweetedByUser: boolean;
 	id: string;
 };
 
@@ -161,11 +166,12 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 	numberOfLikes,
 	author,
 	likedByUser,
+	retweetedByUser,
 	id,
 }) => {
-	const [isRetweeted, setIsRetweeted] = useState(false);
-	const { toggleLike } = useContext(TweetsContext);
+	const { toggleLike, toggleRetweet } = useContext(TweetsContext);
 	const { user } = useAuth();
+	const { show, openModal, ref, closeModal } = useModal();
 	return (
 		<TweetInteraction>
 			<CommentWrapper>
@@ -174,11 +180,8 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 				</IconHover>
 				<Ammount>{numberOfComments}</Ammount>
 			</CommentWrapper>
-			<RetweetWrapper
-				retweeted={isRetweeted}
-				onClick={() => setIsRetweeted(prev => !prev)}
-			>
-				{isRetweeted ? (
+			<RetweetWrapper retweeted={retweetedByUser} onClick={openModal}>
+				{retweetedByUser ? (
 					<IconHover>
 						<RetweetFilledSVG />
 					</IconHover>
@@ -188,6 +191,17 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 					</IconHover>
 				)}
 				<Ammount>{numberOfRetweets}</Ammount>
+				<AnimatePresence>
+					{show && (
+						<RetweetModal
+							reference={ref}
+							callback={toggleRetweet}
+							isRetweeted={retweetedByUser}
+							tweetId={id}
+							closeModal={closeModal}
+						/>
+					)}
+				</AnimatePresence>
 			</RetweetWrapper>
 			<HeartWrapper liked={likedByUser} onClick={() => toggleLike(id)}>
 				{likedByUser ? (

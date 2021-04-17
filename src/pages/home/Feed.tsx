@@ -1,4 +1,5 @@
 import styled from '@emotion/styled/macro';
+import { AnimatePresence } from 'framer-motion';
 import { useContext, useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Loader from 'react-loader-spinner';
@@ -39,8 +40,12 @@ export const Feed: React.FC = () => {
 				</LoaderWrapper>
 			}
 		>
-			{tweets &&
-				tweets.map(tweet => <Tweet key={tweet._id} {...tweet} />)}
+			{/* {tweets &&
+				tweets.map(tweet => <Tweet key={tweet._id} {...tweet} />)} */}
+			<AnimatePresence>
+				{tweets &&
+					tweets.map(tweet => <Tweet key={tweet._id} {...tweet} />)}
+			</AnimatePresence>
 		</InfiniteScrolling>
 	);
 };
