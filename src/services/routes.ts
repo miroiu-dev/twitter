@@ -11,4 +11,5 @@ export const routes = {
 		`${baseURL}/tweets?offset=${offset}&limit=${limit}`,
 	likes: (id: string) => `${baseURL}/tweets/${id}/likes`,
 	retweets: (id: string) => `${baseURL}/tweets/${id}/retweets`,
+	getTweet: (id: string) => `${baseURL}/tweets/${id}`,
 };

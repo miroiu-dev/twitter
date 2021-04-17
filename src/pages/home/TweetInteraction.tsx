@@ -174,7 +174,7 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 	const { show, openModal, ref, closeModal } = useModal();
 	console.log(show);
 	return (
-		<TweetInteraction>
+		<TweetInteraction onClick={ev => ev.stopPropagation()}>
 			<CommentWrapper>
 				<IconHover>
 					<CommentSVG />

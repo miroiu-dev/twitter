@@ -5,50 +5,14 @@ import { TweetInteractions } from './TweetInteraction';
 import { GridRow, GridColumn } from './Atoms';
 import { TweetPreview } from '../../models/TweetPreview';
 import { useModal } from '../../hooks/useModal';
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { ConfirmDeletionModal } from '../../components/modals/ConfirmDeletionModal';
-import { DotsSVG, IconWrapper } from '../../components/side-panel/Atoms';
 import { getReadableDate } from '../../utils/getReadableDate';
-import {
-	TweetOptionsModalSelf,
-	TweetOptionsModalUser,
-} from './TweetOptionsModal';
+
 import { motion } from 'framer-motion';
-
-const Wrapper = styled(IconWrapper)`
-	margin-top: -7px;
-`;
-
-const Name = styled.span`
-	font-weight: 700;
-	font-size: 0.938rem;
-	color: rgb(217, 217, 217);
-	margin-right: 5px;
-`;
-
-const FlexRow = styled.div`
-	display: flex;
-	&:hover ${Name} {
-		text-decoration: underline;
-	}
-`;
-
-const Username = styled.span`
-	color: rgb(110, 118, 125);
-	font-weight: 400;
-	font-size: 0.938rem;
-	margin-right: 5px;
-`;
-const HeightWrapper = styled.div`
-	height: 20px;
-	position: relative;
-`;
-const TweetDate = styled.span`
-	color: rgb(110, 118, 125);
-	font-weight: 400;
-	font-size: 0.938rem;
-`;
+import { useHistory } from 'react-router';
+import { TweetHeader } from './TweetHeader';
 
 const TweetContentWrapper = styled.span`
 	display: flex;
@@ -111,19 +75,6 @@ const UserImage = styled.img`
 	}
 `;
 
-const TweetHeader = styled.div`
-	display: flex;
-	justify-content: space-between;
-	flex-grow: 1;
-	height: 22px;
-	margin-bottom: 2px;
-`;
-const FlexContainer = styled.div`
-	display: flex;
-	:hover {
-	}
-`;
-
 export const Tweet: React.FC<TweetPreview> = ({
 	attachment,
 	author,
@@ -139,6 +90,7 @@ export const Tweet: React.FC<TweetPreview> = ({
 	const dateDiffDisplay = getReadableDate(new Date(createdAt));
 	const { closeModal, openModal, ref, show } = useModal();
 	const [isOpen, setIsOpen] = useState(false);
+	const history = useHistory();
 	const closeDeletionModal = () => {
 		setIsOpen(false);
 	};
@@ -179,6 +131,10 @@ export const Tweet: React.FC<TweetPreview> = ({
 				initial="initial"
 				animate="animate"
 				exit="exit"
+				onClick={ev => {
+					ev.stopPropagation();
+					history.push(`/tweet/${_id}`);
+				}}
 			>
 				<GridColumn>
 					<UserImageWrapper>
@@ -189,35 +145,16 @@ export const Tweet: React.FC<TweetPreview> = ({
 					</UserImageWrapper>
 
 					<GridRow>
-						<TweetHeader>
-							<FlexContainer>
-								<FlexRow>
-									<Name>{author.name}</Name>
-									<Username>@{author.username}</Username>
-								</FlexRow>
-								<TweetDate> · {dateDiffDisplay}</TweetDate>
-							</FlexContainer>
-							<HeightWrapper>
-								<Wrapper onClick={openModal}>
-									<DotsSVG></DotsSVG>
-								</Wrapper>
-								{author.username !== user!.username ? (
-									<TweetOptionsModalUser
-										author={author}
-										reference={ref}
-										show={show}
-									/>
-								) : (
-									<TweetOptionsModalSelf
-										author={author}
-										reference={ref}
-										show={show}
-										callback={openDeletionModal}
-										secondaryCallback={closeModal}
-									/>
-								)}
-							</HeightWrapper>
-						</TweetHeader>
+						<TweetHeader
+							author={author}
+							reference={ref}
+							closeModal={closeModal}
+							date={dateDiffDisplay}
+							isShowing={show}
+							openDeletionModal={openDeletionModal}
+							openModal={openModal}
+							user={user!}
+						/>
 						<TweetContentWrapper>
 							<TweetContent>{message}</TweetContent>
 						</TweetContentWrapper>

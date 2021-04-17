@@ -101,6 +101,17 @@ const unretweetTweet = async (id: string) => {
 	}
 };
 
+const getTweet = async (id: string) => {
+	try {
+		const response = await axios.get(routes.getTweet(id), {
+			withCredentials: true,
+		});
+		return response.data;
+	} catch (err) {
+		console.log(err);
+	}
+};
+
 export const tweetsService = {
 	createTweet,
 	getTweets,
@@ -109,4 +120,5 @@ export const tweetsService = {
 	unlikeTweet,
 	retweetTweet,
 	unretweetTweet,
+	getTweet,
 };

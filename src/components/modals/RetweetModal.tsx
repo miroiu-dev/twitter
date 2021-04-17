@@ -62,11 +62,8 @@ export const RetweetModal: React.FC<{
 		>
 			<Option
 				onClick={() => {
-					console.log('before-closed');
 					closeModal();
-					console.log('closed');
 					callback(tweetId);
-					console.log('retweeted');
 				}}
 			>
 				<RetweetSVG />
