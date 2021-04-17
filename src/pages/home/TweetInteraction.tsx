@@ -24,12 +24,12 @@ const ActivitySVG = BaseTweetModalIcon.withComponent(Activity);
 const ActivitySVGInteraction = styled(ActivitySVG)`
 	fill: rgb(110, 118, 125);
 `;
-const Container = styled.div`
+export const Container = styled.div`
 	display: flex;
 	align-items: center;
 	user-select: none;
 `;
-const IconHover = styled.div`
+export const IconHover = styled.div`
 	width: fit-content;
 	display: flex;
 	justify-content: center;
@@ -153,7 +153,7 @@ type TweetInteractionsProps = {
 	author: {
 		name: string;
 		username: string;
-		profilePicture: string;
+		profilePicture?: string;
 	};
 	likedByUser: boolean;
 	retweetedByUser: boolean;
@@ -172,7 +172,6 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 	const { toggleLike, toggleRetweet } = useContext(TweetsContext);
 	const { user } = useAuth();
 	const { show, openModal, ref, closeModal } = useModal();
-	console.log(show);
 	return (
 		<TweetInteraction onClick={ev => ev.stopPropagation()}>
 			<CommentWrapper>
@@ -207,7 +206,7 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 			<HeartWrapper liked={likedByUser} onClick={() => toggleLike(id)}>
 				{likedByUser ? (
 					<IconHoverAnimated>
-						<AnimatedHeart />
+						<AnimatedHeart width="60px" height="60px" />
 					</IconHoverAnimated>
 				) : (
 					<IconHover>

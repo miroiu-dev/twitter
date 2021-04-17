@@ -35,6 +35,20 @@ import { ConfirmDeletionModal } from './components/modals/ConfirmDeletionModal';
 import { HeightWrapper, Wrapper } from './pages/home/TweetHeader';
 import { ResponsiveImage } from './components/ResponsiveImage';
 import { monthsMap } from './utils/getReadableDate';
+import { Activity } from './components/icons/TweetModal';
+import { IconHover } from './pages/home/TweetInteraction';
+import {
+	Comment,
+	Heart,
+	Retweet,
+	RetweetFilled,
+	Share,
+} from './components/icons/TweetInteraction';
+import { Container } from './components/user/Atoms';
+import { AnimatePresence } from 'framer-motion';
+import { RetweetModal } from './components/modals/RetweetModal';
+import { TweetsContext } from './hooks/TweetsContext';
+import { AnimatedHeart } from './components/icons/AnimatedHeart';
 const TweetWrapper = styled.div`
 	max-width: 600px;
 	width: 100%;
@@ -71,6 +85,8 @@ const Title = styled.span`
 const TweetDataWrapper = styled.div`
 	cursor: pointer;
 	padding: 0.75rem 1rem;
+	padding-bottom: 0;
+	border-bottom: 1px solid rgb(47, 51, 54);
 `;
 
 const FlexRow = styled.div`
@@ -123,12 +139,128 @@ const TweetImage = styled(ResponsiveImage)`
 
 const DateBar = styled.div`
 	margin: 1rem 0;
+	display: flex;
+	cursor: default;
 `;
 
 const CreatedAtDate = styled.span`
 	color: rgb(110, 118, 125);
 	font-weight: 400;
 	font-size: 15px;
+	cursor: pointer;
+	&:hover {
+		text-decoration: underline;
+	}
+`;
+const Platform = styled(CreatedAtDate)`
+	margin-left: 5px;
+`;
+const Dot = styled.span`
+	color: rgb(110, 118, 125);
+	font-weight: 400;
+	font-size: 0.938rem;
+	margin-left: 5px;
+	cursor: pointer;
+`;
+
+const ViewActivityWrapper = styled.div`
+	display: flex;
+	border-top: 1px solid rgb(47, 51, 54);
+	cursor: pointer;
+	padding: 1rem 0;
+	&:hover {
+		background-color: rgba(255, 255, 255, 0.03);
+	}
+`;
+
+const ViewActivitySVG = styled(Activity)`
+	padding-right: 4px;
+	fill: rgb(110, 118, 125);
+	height: 1.25em;
+	width: 1.25em;
+	margin-right: 5px;
+`;
+
+const ViewActivityLabel = styled.span`
+	color: rgb(110, 118, 125);
+	font-weight: 400;
+	font-size: 0.938rem;
+	cursor: pointer;
+`;
+
+const TweetInteractionsWrapper = styled.div`
+	height: 48px;
+	display: flex;
+	justify-content: space-around;
+	border-top: 1px solid rgb(47, 51, 54);
+	align-items: center;
+`;
+
+const BaseIcon = styled.svg`
+	width: 1.5em;
+	height: 1.5em;
+	fill: rgb(110, 118, 125);
+`;
+
+const CommentSVG = BaseIcon.withComponent(Comment);
+
+const CommentWrapper = styled(Container)`
+	&:hover ${IconHover} {
+		background-color: rgba(29, 161, 242, 0.1);
+	}
+	&:hover ${CommentSVG} {
+		fill: rgba(29, 161, 242, 1);
+	}
+`;
+
+const RetweetFilledSVG = BaseIcon.withComponent(RetweetFilled);
+
+const RetweetSVG = BaseIcon.withComponent(Retweet);
+const HeartSVG = BaseIcon.withComponent(Heart);
+const RetweetWrapper = styled(Container)<{ retweeted?: boolean }>`
+	position: relative;
+	&:hover ${IconHover} {
+		background-color: rgba(23, 191, 99, 0.1);
+	}
+	&:hover ${RetweetSVG} {
+		fill: rgb(23, 191, 99);
+	}
+
+	&:hover ${RetweetFilledSVG} {
+		fill: rgb(23, 191, 99);
+	}
+
+	${RetweetFilledSVG} {
+		fill: ${props => props.retweeted && 'rgb(23, 191, 99);'};
+	}
+`;
+
+const IconHoverAnimated = styled(IconHover)`
+	padding: 0;
+	width: 36px;
+	height: 36px;
+`;
+
+const HeartWrapper = styled(Container)<{ liked?: boolean }>`
+	&:hover ${IconHover} {
+		background-color: rgba(224, 36, 94, 0.1);
+	}
+	&:hover ${HeartSVG} {
+		fill: rgb(224, 36, 94);
+	}
+
+	&:hover ${IconHoverAnimated} {
+		background-color: rgba(224, 36, 94, 0.1);
+	}
+`;
+const ShareSVG = BaseIcon.withComponent(Share);
+const ShareWrapper = styled(Container)`
+	&:hover ${IconHover} {
+		background-color: rgba(29, 161, 242, 0.1);
+	}
+	&:hover ${ShareSVG} {
+		fill: rgba(29, 161, 242, 1);
+	}
 `;
 
 const Tweet: React.FC = () => {
@@ -147,18 +279,24 @@ const Tweet: React.FC = () => {
 		setIsOpen(true);
 	};
 
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, []);
+
 	const getTweetDate = (date: Date) => {
-		const minutes = date.getMinutes();
-		const hours = date.getHours();
+		const hour = date.toLocaleString([], {
+			hour: '2-digit',
+			minute: '2-digit',
+		});
 		const month = date.getMonth();
 		const Month = monthsMap.get(month);
 		const year = date.getFullYear();
-		const meridian = hours <= 12 ? 'AM' : 'PM';
-		return `${hours}:${minutes} ${meridian} · ${Month} ${month}, ${year}`;
+		return `${hour} · ${Month} ${month}, ${year}`;
 	};
 
 	const date = useMemo(() => {
 		if (tweet) {
+			console.log(tweet);
 			return getTweetDate(new Date(tweet.createdAt));
 		}
 		return '1m';
@@ -239,7 +377,18 @@ const Tweet: React.FC = () => {
 							)}
 							<DateBar>
 								<CreatedAtDate>{date}</CreatedAtDate>
+								<Dot> · </Dot>
+								<Platform>Twitter Web App</Platform>
 							</DateBar>
+							{tweet.author.username === user?.username && (
+								<ViewActivityWrapper>
+									<ViewActivitySVG></ViewActivitySVG>
+									<ViewActivityLabel>
+										View Tweet activity
+									</ViewActivityLabel>
+								</ViewActivityWrapper>
+							)}
+							<FullTweetInteractions tweet={tweet} />
 						</>
 					) : (
 						<LoaderWrapper>
@@ -254,6 +403,64 @@ const Tweet: React.FC = () => {
 				</TweetDataWrapper>
 			</TweetWrapper>
 		</>
+	);
+};
+
+const FullTweetInteractions: React.FC<{ tweet: FullTweet }> = ({ tweet }) => {
+	const { toggleLike, toggleRetweet } = useContext(TweetsContext);
+	const { show, openModal, ref, closeModal } = useModal();
+	return (
+		<TweetInteractionsWrapper>
+			<CommentWrapper>
+				<IconHover>
+					<CommentSVG />
+				</IconHover>
+			</CommentWrapper>
+			<RetweetWrapper
+				retweeted={tweet.retweetedByUser}
+				onClick={openModal}
+			>
+				{tweet.retweetedByUser ? (
+					<IconHover>
+						<RetweetFilledSVG />
+					</IconHover>
+				) : (
+					<IconHover>
+						<RetweetSVG />
+					</IconHover>
+				)}
+				<AnimatePresence>
+					{show && (
+						<RetweetModal
+							reference={ref}
+							callback={toggleRetweet}
+							isRetweeted={tweet.retweetedByUser}
+							tweetId={tweet._id}
+							closeModal={closeModal}
+						/>
+					)}
+				</AnimatePresence>
+			</RetweetWrapper>
+			<HeartWrapper
+				liked={tweet.likedByUser}
+				onClick={() => toggleLike(tweet._id)}
+			>
+				{tweet.likedByUser ? (
+					<IconHoverAnimated>
+						<AnimatedHeart width="70px" height="70px" />
+					</IconHoverAnimated>
+				) : (
+					<IconHover>
+						<HeartSVG />
+					</IconHover>
+				)}
+			</HeartWrapper>
+			<ShareWrapper>
+				<IconHover>
+					<ShareSVG />
+				</IconHover>
+			</ShareWrapper>
+		</TweetInteractionsWrapper>
 	);
 };
 

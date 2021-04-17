@@ -12,7 +12,7 @@ type Comment = {
 };
 
 export type FullTweet = {
-	_id?: string;
+	_id: string;
 	author: {
 		id?: string;
 		name: string;
