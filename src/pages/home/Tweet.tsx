@@ -75,6 +75,25 @@ const UserImage = styled.img`
 	}
 `;
 
+export const TweetVariants = {
+	initial: {
+		opacity: 0.5,
+	},
+	animate: {
+		opacity: 1,
+		transition: {
+			duration: 0.5,
+		},
+	},
+	exit: {
+		height: 0,
+		opacity: 0,
+		transition: {
+			duration: 0.3,
+		},
+	},
+};
+
 export const Tweet: React.FC<TweetPreview> = ({
 	attachment,
 	author,
@@ -98,25 +117,6 @@ export const Tweet: React.FC<TweetPreview> = ({
 		setIsOpen(true);
 	};
 	const { user } = useAuth();
-
-	const TweetVariants = {
-		initial: {
-			opacity: 0.5,
-		},
-		animate: {
-			opacity: 1,
-			transition: {
-				duration: 0.5,
-			},
-		},
-		exit: {
-			height: 0,
-			opacity: 0,
-			transition: {
-				duration: 0.3,
-			},
-		},
-	};
 
 	return (
 		<>

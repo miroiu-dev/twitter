@@ -152,9 +152,11 @@ const CreatedAtDate = styled.span`
 		text-decoration: underline;
 	}
 `;
+
 const Platform = styled(CreatedAtDate)`
 	margin-left: 5px;
 `;
+
 const Dot = styled.span`
 	color: rgb(110, 118, 125);
 	font-weight: 400;
@@ -216,7 +218,9 @@ const CommentWrapper = styled(Container)`
 const RetweetFilledSVG = BaseIcon.withComponent(RetweetFilled);
 
 const RetweetSVG = BaseIcon.withComponent(Retweet);
+
 const HeartSVG = BaseIcon.withComponent(Heart);
+
 const RetweetWrapper = styled(Container)<{ retweeted?: boolean }>`
 	position: relative;
 	&:hover ${IconHover} {
@@ -237,8 +241,8 @@ const RetweetWrapper = styled(Container)<{ retweeted?: boolean }>`
 
 const IconHoverAnimated = styled(IconHover)`
 	padding: 0;
-	width: 36px;
-	height: 36px;
+	width: 40px;
+	height: 40px;
 `;
 
 const HeartWrapper = styled(Container)<{ liked?: boolean }>`
@@ -253,7 +257,9 @@ const HeartWrapper = styled(Container)<{ liked?: boolean }>`
 		background-color: rgba(224, 36, 94, 0.1);
 	}
 `;
+
 const ShareSVG = BaseIcon.withComponent(Share);
+
 const ShareWrapper = styled(Container)`
 	&:hover ${IconHover} {
 		background-color: rgba(29, 161, 242, 0.1);
@@ -261,6 +267,30 @@ const ShareWrapper = styled(Container)`
 	&:hover ${ShareSVG} {
 		fill: rgba(29, 161, 242, 1);
 	}
+`;
+
+const Ammounts = styled.div`
+	display: flex;
+	padding: 1rem 4px;
+	border-top: 1px solid rgb(47, 51, 54);
+`;
+
+const AmmountWrapper = styled.div`
+	display: flex;
+	margin-right: 20px;
+`;
+
+const Ammount = styled.span`
+	font-weight: 700;
+	font-size: 15px;
+	color: rgb(217, 217, 217);
+	margin-right: 4px;
+`;
+
+const AmmountLabel = styled.span`
+	color: rgb(110, 118, 125);
+	font-weight: 400;
+	font-size: 15px;
 `;
 
 const Tweet: React.FC = () => {
@@ -387,6 +417,29 @@ const Tweet: React.FC = () => {
 										View Tweet activity
 									</ViewActivityLabel>
 								</ViewActivityWrapper>
+							)}
+							{(tweet.numberOfRetweets > 0 ||
+								tweet.numberOfLikes > 0) && (
+								<Ammounts>
+									{tweet.numberOfRetweets > 0 && (
+										<AmmountWrapper>
+											<Ammount>
+												{tweet.numberOfRetweets}
+											</Ammount>
+											<AmmountLabel>
+												Retweets
+											</AmmountLabel>
+										</AmmountWrapper>
+									)}
+									{tweet.numberOfLikes > 0 && (
+										<AmmountWrapper>
+											<Ammount>
+												{tweet.numberOfLikes}
+											</Ammount>
+											<AmmountLabel>Likes</AmmountLabel>
+										</AmmountWrapper>
+									)}
+								</Ammounts>
 							)}
 							<FullTweetInteractions tweet={tweet} />
 						</>
