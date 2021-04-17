@@ -60,20 +60,18 @@ export const RetweetModal: React.FC<{
 				opacity: 1,
 			}}
 		>
-			<Option>
+			<Option
+				onClick={() => {
+					console.log('before-closed');
+					closeModal();
+					console.log('closed');
+					callback(tweetId);
+					console.log('retweeted');
+				}}
+			>
 				<RetweetSVG />
 
-				<Label
-					onClick={() => {
-						console.log('before-closed');
-						closeModal();
-						console.log('closed');
-						callback(tweetId);
-						console.log('retweeted');
-					}}
-				>
-					{isRetweeted ? 'Undo Retweet' : 'Retweet'}
-				</Label>
+				<Label>{isRetweeted ? 'Undo Retweet' : 'Retweet'}</Label>
 			</Option>
 			<Option>
 				<QuoteSVG />

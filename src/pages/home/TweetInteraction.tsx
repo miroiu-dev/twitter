@@ -172,6 +172,7 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 	const { toggleLike, toggleRetweet } = useContext(TweetsContext);
 	const { user } = useAuth();
 	const { show, openModal, ref, closeModal } = useModal();
+	console.log(show);
 	return (
 		<TweetInteraction>
 			<CommentWrapper>
