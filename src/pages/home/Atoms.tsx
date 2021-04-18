@@ -12,15 +12,16 @@ import {
 } from '../../components/icons/TweetOptions';
 import { Everyone } from '../../components/icons/WhoCanReply';
 
-export const CreateTweetWrapper = styled.div`
+export const CreateTweetWrapper = styled.div<{ hideBorderBottom?: boolean }>`
 	padding: 4px 0;
-	border-bottom: 1px solid rgb(47, 51, 54);
+	border-bottom: ${props =>
+		!props.hideBorderBottom && '1px solid rgb(47, 51, 54)'};
 `;
 
-export const CreateTweetContent = styled.div`
+export const CreateTweetContent = styled.div<{ contentPadding?: string }>`
 	display: flex;
 	flex-direction: column;
-	padding: 0 1rem;
+	padding: ${props => props.contentPadding || '0 1rem'};
 `;
 
 export const ProfilePictureWrapper = styled(Link)`
@@ -54,10 +55,11 @@ export const GridRow = styled.div`
 	display: grid;
 `;
 
-export const TweetInput = styled.div`
+export const TweetInput = styled.div<{ inputMinHeight?: string }>`
 	font-size: 1.25rem;
 	max-height: 720px;
-	min-height: 24px;
+
+	min-height: ${props => props.inputMinHeight || '24px'};
 
 	font-weight: 400;
 	color: rgb(217, 217, 217);
@@ -91,6 +93,7 @@ export const TweetOptionsWrapper = styled.div`
 	justify-content: space-between;
 	margin-top: 0.75rem;
 	margin-bottom: 5px;
+	margin-left: -12px;
 `;
 export const TweetOptions = styled.div`
 	display: flex;

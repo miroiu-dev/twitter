@@ -33,7 +33,21 @@ const EmojiPickerWrapper = styled(IconWrapperLabel)`
 	position: relative;
 `;
 
-export const CreateTweet: React.FC = () => {
+export const CreateTweet: React.FC<{
+	contentPadding?: string;
+	visibilityHidden?: boolean;
+	inputMinHeight?: string;
+	callback?: () => void;
+	buttonName?: string;
+	hideBorderBottom?: boolean;
+}> = ({
+	contentPadding,
+	visibilityHidden,
+	inputMinHeight,
+	callback,
+	buttonName,
+	hideBorderBottom,
+}) => {
 	const { user } = useAuth();
 	const [text, setText] = useState('');
 	const [isShown, setIsShown] = useState(false);
@@ -76,8 +90,8 @@ export const CreateTweet: React.FC = () => {
 	// }, [text.length]);
 
 	return (
-		<CreateTweetWrapper>
-			<CreateTweetContent>
+		<CreateTweetWrapper hideBorderBottom={hideBorderBottom}>
+			<CreateTweetContent contentPadding={contentPadding}>
 				<GridColumn>
 					<ProfilePictureWrapper to="/profile">
 						<ProfilePicture src={user?.profilePicture} />
@@ -91,7 +105,11 @@ export const CreateTweet: React.FC = () => {
 								onInput={() =>
 									setText(inputText.current?.textContent!)
 								}
-								onClick={showTweetVisiblityOption}
+								onClick={() =>
+									!visibilityHidden &&
+									showTweetVisiblityOption
+								}
+								inputMinHeight={inputMinHeight}
 							></TweetInput>
 						</TweetInputWrapper>
 						{image && (
@@ -100,7 +118,9 @@ export const CreateTweet: React.FC = () => {
 								callback={removeImage}
 							/>
 						)}
-						{(isShown || image) && <ContentVisiblity />}
+						{!visibilityHidden && (isShown || image) && (
+							<ContentVisiblity />
+						)}
 						<TweetOptionsWrapper>
 							<TweetOptions>
 								<IconWrapperLabel
@@ -131,7 +151,14 @@ export const CreateTweet: React.FC = () => {
 							<TweetButton
 								disabled={!text}
 								onClick={() => {
-									createTweet(text.trim(), image as string);
+									if (!callback) {
+										createTweet(
+											text.trim(),
+											image as string
+										);
+									} else {
+										// callback(text.trim(), image as string);
+									}
 									setImage('');
 									if (inputText.current) {
 										inputText.current.textContent = '';
@@ -139,7 +166,7 @@ export const CreateTweet: React.FC = () => {
 									}
 								}}
 							>
-								Tweet
+								{buttonName || 'Tweet'}
 							</TweetButton>
 						</TweetOptionsWrapper>
 					</GridRow>

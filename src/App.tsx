@@ -47,8 +47,8 @@ import {
 import { Container } from './components/user/Atoms';
 import { AnimatePresence } from 'framer-motion';
 import { RetweetModal } from './components/modals/RetweetModal';
-import { TweetsContext } from './hooks/TweetsContext';
 import { AnimatedHeart } from './components/icons/AnimatedHeart';
+import { CommentModal } from './components/modals/CommentModal';
 const TweetWrapper = styled.div`
 	max-width: 600px;
 	width: 100%;
@@ -318,29 +318,55 @@ const Tweet: React.FC = () => {
 			hour: '2-digit',
 			minute: '2-digit',
 		});
-		const month = date.getMonth();
-		const Month = monthsMap.get(month);
+		const day = date.getDate();
+		const month = monthsMap.get(date.getMonth());
 		const year = date.getFullYear();
-		return `${hour} · ${Month} ${month}, ${year}`;
+		return `${hour} · ${month} ${day}, ${year}`;
 	};
 
 	const date = useMemo(() => {
 		if (tweet) {
-			console.log(tweet);
 			return getTweetDate(new Date(tweet.createdAt));
 		}
 		return '1m';
 	}, [tweet]);
-	//  date.toLocaleString([], { hour12: true});
-	// const dateDiffDisplay = useMemo(() => {
-	// 	if (tweet) {
-	// 		return getReadableDate(new Date(tweet.createdAt));
-	// 	}
-	// 	return '1m';
-	// }, [tweet]);
+
+	const toggleLike = async () => {
+		if (tweet) {
+			if (tweet.likedByUser) {
+				await tweetsService.unlikeTweet(tweet._id);
+			} else {
+				await tweetsService.likeTweet(tweet._id);
+			}
+			if (tweet) {
+				setTweet({
+					...tweet,
+					numberOfLikes:
+						tweet.numberOfLikes + (tweet.likedByUser ? -1 : 1),
+					likedByUser: !tweet.likedByUser,
+				});
+			}
+		}
+	};
+
+	const toggleRetweet = async () => {
+		if (tweet) {
+			if (tweet.retweetedByUser) {
+				await tweetsService.unretweetTweet(tweet._id);
+			} else {
+				await tweetsService.retweetTweet(tweet._id);
+			}
+			setTweet({
+				...tweet,
+				numberOfRetweets:
+					tweet.numberOfRetweets + (tweet.retweetedByUser ? -1 : 1),
+				retweetedByUser: !tweet.retweetedByUser,
+			});
+		}
+	};
 
 	useEffect(() => {
-		delay(1000).then(() => tweetsService.getTweet(tweetId).then(setTweet));
+		delay(200).then(() => tweetsService.getTweet(tweetId).then(setTweet));
 	}, [tweetId]);
 
 	return (
@@ -441,7 +467,11 @@ const Tweet: React.FC = () => {
 									)}
 								</Ammounts>
 							)}
-							<FullTweetInteractions tweet={tweet} />
+							<FullTweetInteractions
+								tweet={tweet}
+								toggleLike={toggleLike}
+								toggleRetweet={toggleRetweet}
+							/>
 						</>
 					) : (
 						<LoaderWrapper>
@@ -459,8 +489,11 @@ const Tweet: React.FC = () => {
 	);
 };
 
-const FullTweetInteractions: React.FC<{ tweet: FullTweet }> = ({ tweet }) => {
-	const { toggleLike, toggleRetweet } = useContext(TweetsContext);
+const FullTweetInteractions: React.FC<{
+	tweet: FullTweet;
+	toggleLike: () => void;
+	toggleRetweet: () => void;
+}> = ({ tweet, toggleLike, toggleRetweet }) => {
 	const { show, openModal, ref, closeModal } = useModal();
 	return (
 		<TweetInteractionsWrapper>
@@ -468,6 +501,11 @@ const FullTweetInteractions: React.FC<{ tweet: FullTweet }> = ({ tweet }) => {
 				<IconHover>
 					<CommentSVG />
 				</IconHover>
+				<CommentModal
+					author={tweet.author}
+					createdAt={tweet.createdAt}
+					message={tweet.message}
+				/>
 			</CommentWrapper>
 			<RetweetWrapper
 				retweeted={tweet.retweetedByUser}
@@ -494,10 +532,7 @@ const FullTweetInteractions: React.FC<{ tweet: FullTweet }> = ({ tweet }) => {
 					)}
 				</AnimatePresence>
 			</RetweetWrapper>
-			<HeartWrapper
-				liked={tweet.likedByUser}
-				onClick={() => toggleLike(tweet._id)}
-			>
+			<HeartWrapper liked={tweet.likedByUser} onClick={toggleLike}>
 				{tweet.likedByUser ? (
 					<IconHoverAnimated>
 						<AnimatedHeart width="70px" height="70px" />

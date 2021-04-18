@@ -27,17 +27,19 @@ const TweetHeaderWrapper = styled.div`
 
 export type TweetHeaderProps = {
 	author: {
+		id?: string;
 		name: string;
 		username: string;
-		profilePicture: string;
+		profilePicture?: string;
 	};
 	date: string;
-	openModal: () => void;
-	user: User;
-	reference: React.MutableRefObject<HTMLDivElement | null>;
-	isShowing: boolean;
-	openDeletionModal: () => void;
-	closeModal: () => void;
+	openModal?: () => void;
+	user?: User;
+	reference?: React.MutableRefObject<HTMLDivElement | null>;
+	isShowing?: boolean;
+	openDeletionModal?: () => void;
+	closeModal?: () => void;
+	hideButton?: boolean;
 };
 
 export const TweetHeader: React.FC<TweetHeaderProps> = ({
@@ -49,30 +51,34 @@ export const TweetHeader: React.FC<TweetHeaderProps> = ({
 	isShowing,
 	openDeletionModal,
 	closeModal,
+	hideButton,
 }) => {
 	return (
 		<TweetHeaderWrapper>
 			<TweetInfo author={author} date={date} />
-			<HeightWrapper onClick={ev => ev.stopPropagation()}>
-				<Wrapper onClick={openModal}>
-					<DotsSVG></DotsSVG>
-				</Wrapper>
-				{author.username !== user!.username ? (
-					<TweetOptionsModalUser
-						author={author}
-						reference={reference}
-						show={isShowing}
-					/>
-				) : (
-					<TweetOptionsModalSelf
-						author={author}
-						reference={reference}
-						show={isShowing}
-						callback={openDeletionModal}
-						secondaryCallback={closeModal}
-					/>
-				)}
-			</HeightWrapper>
+			{!hideButton && (
+				<HeightWrapper onClick={ev => ev.stopPropagation()}>
+					<Wrapper onClick={openModal}>
+						<DotsSVG></DotsSVG>
+					</Wrapper>
+
+					{author.username !== user!.username ? (
+						<TweetOptionsModalUser
+							author={author}
+							reference={reference!}
+							show={isShowing!}
+						/>
+					) : (
+						<TweetOptionsModalSelf
+							author={author}
+							reference={reference!}
+							show={isShowing!}
+							callback={openDeletionModal!}
+							secondaryCallback={closeModal}
+						/>
+					)}
+				</HeightWrapper>
+			)}
 		</TweetHeaderWrapper>
 	);
 };

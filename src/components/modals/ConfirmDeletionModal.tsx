@@ -2,6 +2,8 @@ import styled from '@emotion/styled/macro';
 import { useContext, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { TweetsContext } from '../../hooks/TweetsContext';
+import { useClickOutside } from '../../hooks/useClickOutside';
+import { useModalScrollbar } from '../../hooks/useModalScrollbar';
 
 const ModalWrapper = styled.div`
 	background-color: rgba(91, 112, 131, 0.4);
@@ -82,23 +84,8 @@ export const ConfirmDeletionModal: React.FC<{
 	const divRef = useRef<HTMLDivElement | null>(null);
 
 	const query = document.getElementById('modal-root');
-
-	useEffect(() => {
-		const scrollTop =
-			window.pageYOffset || document.documentElement.scrollTop;
-		const scrollLeft =
-			window.pageXOffset || document.documentElement.scrollLeft;
-		const onscroll = () => {
-			window.scrollTo(scrollLeft, scrollTop);
-		};
-		window.addEventListener('scroll', onscroll);
-		document.body.classList.add('modal');
-		return () => {
-			window.removeEventListener('scroll', onscroll);
-			document.body.classList.remove('modal');
-		};
-	}, []);
-
+	useClickOutside(divRef, closeModal);
+	useModalScrollbar();
 	return createPortal(
 		<ModalWrapper>
 			<ConfirmWrapper ref={divRef}>
