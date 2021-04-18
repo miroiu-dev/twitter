@@ -133,21 +133,25 @@ type CommentModalProps = {
 	};
 	createdAt: string;
 	message: string;
+	reference: React.MutableRefObject<HTMLDivElement | null>;
+	closeModal: () => void;
 };
 
 export const CommentModal: React.FC<CommentModalProps> = ({
 	author,
 	message,
 	createdAt,
+	reference,
+	closeModal,
 }) => {
 	const query = document.getElementById('modal-root');
 	const dateDiffDisplay = getReadableDate(new Date(createdAt));
 	useModalScrollbar();
 	return createPortal(
 		<ModalWrapper>
-			<Modal>
+			<Modal ref={reference}>
 				<WrapperTop>
-					<IconWrapper>
+					<IconWrapper onClick={closeModal}>
 						<CloseXSVG />
 					</IconWrapper>
 				</WrapperTop>

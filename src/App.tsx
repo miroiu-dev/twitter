@@ -495,17 +495,27 @@ const FullTweetInteractions: React.FC<{
 	toggleRetweet: () => void;
 }> = ({ tweet, toggleLike, toggleRetweet }) => {
 	const { show, openModal, ref, closeModal } = useModal();
+	const {
+		show: showCommentModal,
+		openModal: openCommentModal,
+		ref: commentModalRef,
+		closeModal: closeCommentModal,
+	} = useModal();
 	return (
 		<TweetInteractionsWrapper>
-			<CommentWrapper>
+			<CommentWrapper onClick={openCommentModal}>
 				<IconHover>
 					<CommentSVG />
 				</IconHover>
-				<CommentModal
-					author={tweet.author}
-					createdAt={tweet.createdAt}
-					message={tweet.message}
-				/>
+				{showCommentModal && (
+					<CommentModal
+						author={tweet.author}
+						createdAt={tweet.createdAt}
+						message={tweet.message}
+						reference={commentModalRef}
+						closeModal={closeCommentModal}
+					/>
+				)}
 			</CommentWrapper>
 			<RetweetWrapper
 				retweeted={tweet.retweetedByUser}

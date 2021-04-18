@@ -3,7 +3,7 @@ import { useClickOutside } from './useClickOutside';
 
 export const useModal = () => {
 	const [isShowing, setIsShowing] = useState(false);
-
+	console.log(isShowing);
 	const divRef = useRef<HTMLDivElement | null>(null);
 	const openModal = () => {
 		setIsShowing(true);
