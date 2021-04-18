@@ -37,14 +37,14 @@ export const CreateTweet: React.FC<{
 	contentPadding?: string;
 	visibilityHidden?: boolean;
 	inputMinHeight?: string;
-	callback?: () => void;
+	onCreateTweet?: (content: string, attachement: string) => void;
 	buttonName?: string;
 	hideBorderBottom?: boolean;
 }> = ({
 	contentPadding,
 	visibilityHidden,
 	inputMinHeight,
-	callback,
+	onCreateTweet,
 	buttonName,
 	hideBorderBottom,
 }) => {
@@ -75,19 +75,6 @@ export const CreateTweet: React.FC<{
 	};
 
 	const { createTweet } = useContext(TweetsContext);
-	// //tbh i dont know what i am doing anymore
-	// useEffect(() => {
-	// 	const onKeyPress = (ev: KeyboardEvent) => {
-	// 		if (ev.key !== '8') {
-	// 			ev.preventDefault();
-	// 		}
-	// 	};
-	// 	if (text.length > 20) {
-	// 		inputText!.current!.addEventListener('keypress', onKeyPress);
-	// 	}
-	// 	return () =>
-	// 		inputText!.current?.removeEventListener('keypress', onKeyPress);
-	// }, [text.length]);
 
 	return (
 		<CreateTweetWrapper hideBorderBottom={hideBorderBottom}>
@@ -151,15 +138,8 @@ export const CreateTweet: React.FC<{
 							<TweetButton
 								disabled={!text}
 								onClick={() => {
-									if (!callback) {
-										createTweet(
-											text.trim(),
-											image as string
-										);
-									} else {
-										// callback(text.trim(), image as string);
-									}
-									setImage('');
+									createTweet(text.trim(), image as string);
+									removeImage();
 									if (inputText.current) {
 										inputText.current.textContent = '';
 										setText('');

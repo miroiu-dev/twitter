@@ -3,15 +3,17 @@ import { useClickOutside } from './useClickOutside';
 
 export const useModal = () => {
 	const [isShowing, setIsShowing] = useState(false);
-	console.log(isShowing);
+
 	const divRef = useRef<HTMLDivElement | null>(null);
+
 	const openModal = () => {
 		setIsShowing(true);
 	};
+
 	const closeModal = () => {
-		if (isShowing) {
-			setIsShowing(false);
-		}
+		// if (isShowing) {
+		setIsShowing(false);
+		// }
 	};
 
 	useEffect(() => {
@@ -22,8 +24,8 @@ export const useModal = () => {
 		return () => {
 			document.getElementById('root')!.style.pointerEvents = 'all';
 		};
-	});
+	}, [isShowing]);
 
-	useClickOutside(divRef, closeModal);
+	// useClickOutside(divRef, closeModal);
 	return { openModal, closeModal, show: isShowing, ref: divRef };
 };

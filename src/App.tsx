@@ -495,27 +495,27 @@ const FullTweetInteractions: React.FC<{
 	toggleRetweet: () => void;
 }> = ({ tweet, toggleLike, toggleRetweet }) => {
 	const { show, openModal, ref, closeModal } = useModal();
-	const {
-		show: showCommentModal,
-		openModal: openCommentModal,
-		ref: commentModalRef,
-		closeModal: closeCommentModal,
-	} = useModal();
+
+	const [isToggled, setIsToggled] = useState(false);
+
+	const toggle = React.useCallback(() => setIsToggled(!isToggled), [
+		isToggled,
+		setIsToggled,
+	]);
+
 	return (
 		<TweetInteractionsWrapper>
-			<CommentWrapper onClick={openCommentModal}>
+			<CommentWrapper onClick={toggle}>
 				<IconHover>
 					<CommentSVG />
 				</IconHover>
-				{showCommentModal && (
-					<CommentModal
-						author={tweet.author}
-						createdAt={tweet.createdAt}
-						message={tweet.message}
-						reference={commentModalRef}
-						closeModal={closeCommentModal}
-					/>
-				)}
+				<CommentModal
+					isOpen={isToggled}
+					onClose={toggle}
+					author={tweet.author}
+					createdAt={tweet.createdAt}
+					message={tweet.message}
+				/>
 			</CommentWrapper>
 			<RetweetWrapper
 				retweeted={tweet.retweetedByUser}
@@ -564,6 +564,7 @@ const FullTweetInteractions: React.FC<{
 
 const App = () => {
 	const { user } = useAuth();
+
 	return (
 		<Router>
 			{user ? (
