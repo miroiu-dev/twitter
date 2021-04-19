@@ -15,7 +15,7 @@ export const LoaderWrapper = styled.div`
 `;
 
 const InfiniteScrolling = styled(InfiniteScroll)`
-	overflow-x: hidden !important;
+	overflow: hidden !important;
 `;
 
 export const Feed: React.FC = () => {

@@ -81,7 +81,12 @@ export const TweetVariants = {
 	},
 };
 
-export const Comment: React.FC<CommentModel> = ({
+export const Comment: React.FC<
+	CommentModel & {
+		toggleCommentRetweet: (id: string) => void;
+		toggleCommentLike: (id: string) => void;
+	}
+> = ({
 	attachment,
 	author,
 	createdAt,
@@ -92,6 +97,8 @@ export const Comment: React.FC<CommentModel> = ({
 	numberOfLikes,
 	likedByUser,
 	retweetedByUser,
+	toggleCommentRetweet,
+	toggleCommentLike,
 }) => {
 	const dateDiffDisplay = getReadableDate(new Date(createdAt));
 	const { closeModal, openModal, ref, show } = useModal();
@@ -103,7 +110,6 @@ export const Comment: React.FC<CommentModel> = ({
 		setIsOpen(true);
 	};
 	const { user } = useAuth();
-	const { toggleLike, toggleRetweet } = useContext(TweetsContext);
 	const { deleteTweet } = useContext(TweetsContext);
 
 	return (
@@ -154,8 +160,8 @@ export const Comment: React.FC<CommentModel> = ({
 							likedByUser={likedByUser!}
 							id={_id!}
 							retweetedByUser={retweetedByUser!}
-							toggleLike={toggleLike}
-							toggleRetweet={toggleRetweet}
+							toggleLike={toggleCommentLike}
+							toggleRetweet={toggleCommentRetweet}
 						/>
 					</GridRow>
 				</GridColumn>

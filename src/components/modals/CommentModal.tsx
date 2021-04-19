@@ -87,6 +87,7 @@ type CommentModalProps = {
 	createdAt: string;
 	message: string;
 	onClose: () => void;
+	onReply: (message: string, attachement: string) => void;
 	isOpen: boolean;
 };
 
@@ -96,9 +97,9 @@ export const CommentModal: React.FC<CommentModalProps> = ({
 	createdAt,
 	isOpen,
 	onClose,
+	onReply,
 }) => {
 	const dateDiffDisplay = getReadableDate(new Date(createdAt));
-	useModalScrollbar();
 
 	return (
 		<TwitterModal isOpen={isOpen} onClose={onClose}>
@@ -132,6 +133,10 @@ export const CommentModal: React.FC<CommentModalProps> = ({
 				</GridColumn>
 			</InitialComment>
 			<CreateTweet
+				callback={(a, m) => {
+					onReply(a, m);
+					onClose();
+				}}
 				contentPadding="0 0"
 				visibilityHidden
 				inputMinHeight="96px"

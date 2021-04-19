@@ -87,7 +87,7 @@ export const ConfirmDeletionModal: React.FC<{
 	const history = useHistory();
 	const query = document.getElementById('modal-root');
 	// useClickOutside(divRef, closeModal);
-	useModalScrollbar();
+	useModalScrollbar(true);
 	return createPortal(
 		<ModalWrapper>
 			<ConfirmWrapper ref={divRef}>

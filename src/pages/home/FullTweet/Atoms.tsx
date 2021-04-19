@@ -258,10 +258,8 @@ export const AmmountLabel = styled.span`
 `;
 
 export const InfiniteScrolling = styled(InfiniteScroll)`
-	overflow-x: hidden !important;
+	overflow: hidden !important;
 `;
-
-export const FETCH_COMMENTS_LIMIT = 10;
 
 export type Author = {
 	id?: string;

@@ -39,12 +39,14 @@ export const CreateTweet: React.FC<{
 	inputMinHeight?: string;
 	buttonName?: string;
 	hideBorderBottom?: boolean;
+	callback?: (message: string, attachement: string) => void;
 }> = ({
 	contentPadding,
 	visibilityHidden,
 	inputMinHeight,
 	buttonName,
 	hideBorderBottom,
+	callback,
 }) => {
 	const { user } = useAuth();
 	const [text, setText] = useState('');
@@ -137,7 +139,14 @@ export const CreateTweet: React.FC<{
 							<TweetButton
 								disabled={!text}
 								onClick={() => {
-									createTweet(text.trim(), image as string);
+									if (callback) {
+										callback(text.trim(), image as string);
+									} else {
+										createTweet(
+											text.trim(),
+											image as string
+										);
+									}
 									removeImage();
 									if (inputText.current) {
 										inputText.current.textContent = '';

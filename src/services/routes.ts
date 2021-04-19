@@ -14,4 +14,8 @@ export const routes = {
 	getTweet: (id: string) => `${baseURL}/tweets/${id}`,
 	getTweetComments: (id: string, offset: number, limit: number) =>
 		`${baseURL}/tweets/${id}/comments?offset=${offset}&limit=${limit}`,
+	toggleCommentLike: (id: string) => `${baseURL}/tweets/comments/${id}/likes`,
+	toggleCommentRetweet: (id: string) =>
+		`${baseURL}/tweets/comments/${id}/retweets`,
+	creatComment: (id: string) => `${baseURL}/tweets/${id}/comments`,
 };

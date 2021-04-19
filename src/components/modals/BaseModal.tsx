@@ -1,6 +1,7 @@
 import styled from '@emotion/styled/macro';
 import { createPortal } from 'react-dom';
 import { MouseEventHandler } from 'react';
+import { useModalScrollbar } from '../../hooks/useModalScrollbar';
 
 const modalroot = document.getElementById('modal-root');
 
@@ -53,6 +54,7 @@ export const BaseModal: React.FC<{ isOpen: boolean; onClose?: () => void }> = ({
 	isOpen,
 	onClose,
 }) => {
+	useModalScrollbar(isOpen);
 	return isOpen
 		? createPortal(
 				<ModalWrapper onClick={onClose}>

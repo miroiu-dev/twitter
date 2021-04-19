@@ -177,7 +177,16 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 	const { show, openModal, ref, closeModal } = useModal();
 	return (
 		<TweetInteraction onClick={ev => ev.stopPropagation()}>
-			<CommentWrapper>
+			<CommentWrapper
+				onClick={() =>
+					console.log(
+						'liked ',
+						likedByUser,
+						'retweeted',
+						retweetedByUser
+					)
+				}
+			>
 				<IconHover>
 					<CommentSVG />
 				</IconHover>

@@ -24,7 +24,8 @@ export const FullTweetInteractions: React.FC<{
 	tweet: FullTweet;
 	toggleLike: () => void;
 	toggleRetweet: () => void;
-}> = ({ tweet, toggleLike, toggleRetweet }) => {
+	createComment: (message: string, attachement: string) => void;
+}> = ({ tweet, toggleLike, toggleRetweet, createComment }) => {
 	const { show, openModal, ref, closeModal } = useModal();
 
 	const [isToggled, setIsToggled] = useState(false);
@@ -41,6 +42,7 @@ export const FullTweetInteractions: React.FC<{
 					<CommentSVG />
 				</IconHover>
 				<CommentModal
+					onReply={createComment}
 					isOpen={isToggled}
 					onClose={toggle}
 					author={tweet.author}
