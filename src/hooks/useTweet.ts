@@ -121,7 +121,13 @@ export const useTweet = (tweetId: string) => {
 		);
 		if (comment) {
 			setComments(prev => [comment, ...prev]);
+			offsetRef.current += 1;
 		}
+	};
+
+	const deleteComment = async (commentId: string) => {
+		await commentsService.deleteComment(tweetId, commentId);
+		setComments(prev => prev.filter(curr => curr._id !== commentId));
 	};
 
 	return {
@@ -133,5 +139,6 @@ export const useTweet = (tweetId: string) => {
 		toggleCommentLike,
 		toggleCommentRetweet,
 		fetchComments,
+		deleteComment,
 	};
 };

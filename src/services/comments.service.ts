@@ -63,10 +63,21 @@ const createComment = async (
 	}
 };
 
+const deleteComment = async (tweetId: string, commentId: string) => {
+	try {
+		await axios.delete(routes.deleteComment(tweetId, commentId), {
+			withCredentials: true,
+		});
+	} catch (err) {
+		console.log(err);
+	}
+};
+
 export const commentsService = {
 	like,
 	unlike,
 	retweet,
 	unretweet,
 	createComment,
+	deleteComment,
 };

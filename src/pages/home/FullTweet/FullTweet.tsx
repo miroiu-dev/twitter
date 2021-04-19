@@ -17,6 +17,7 @@ import { Comment } from './Comment';
 import { TweetData } from './FullTweetData';
 import { FullTweetInteractions } from './FullTweetInteractions';
 import { useTweet } from '../../../hooks/useTweet';
+import { AnimatePresence } from 'framer-motion';
 
 export const FullTweet: React.FC = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -32,6 +33,7 @@ export const FullTweet: React.FC = () => {
 		toggleRetweet,
 		fetchComments,
 		createComment,
+		deleteComment,
 	} = useTweet(tweetId);
 
 	const closeDeletionModal = () => {
@@ -41,9 +43,9 @@ export const FullTweet: React.FC = () => {
 		setIsOpen(true);
 	};
 
-	// useEffect(() => {
-	// 	window.scrollTo(0, 0);
-	// }, []);
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, []);
 
 	useEffect(() => {
 		fetchComments().then(() => console.log('fetched'));
@@ -69,7 +71,7 @@ export const FullTweet: React.FC = () => {
 					<Title>Tweet</Title>
 				</Header>
 				<TweetDataWrapper>
-					{tweet ? (
+					{tweet && (
 						<>
 							<TweetData
 								{...tweet}
@@ -82,15 +84,6 @@ export const FullTweet: React.FC = () => {
 								createComment={createComment}
 							/>
 						</>
-					) : (
-						<LoaderWrapper>
-							<Loader
-								type="Oval"
-								color="rgb(29, 161, 242)"
-								height={30}
-								width={30}
-							/>
-						</LoaderWrapper>
 					)}
 				</TweetDataWrapper>
 				<InfiniteScrolling
@@ -108,24 +101,27 @@ export const FullTweet: React.FC = () => {
 						</LoaderWrapper>
 					}
 				>
-					{comments &&
-						comments.map(comment => (
-							<Comment
-								key={comment._id}
-								author={comment.author}
-								_id={comment._id}
-								createdAt={comment.createdAt}
-								message={comment.message}
-								attachment={comment.attachment}
-								likedByUser={comment.likedByUser}
-								retweetedByUser={comment.retweetedByUser}
-								numberOfLikes={comment.numberOfLikes}
-								numberOfRetweets={comment.numberOfRetweets}
-								numberOfComments={comment.numberOfComments}
-								toggleCommentLike={toggleCommentLike}
-								toggleCommentRetweet={toggleCommentRetweet}
-							></Comment>
-						))}
+					<AnimatePresence>
+						{comments &&
+							comments.map(comment => (
+								<Comment
+									key={comment._id}
+									author={comment.author}
+									_id={comment._id}
+									createdAt={comment.createdAt}
+									message={comment.message}
+									attachment={comment.attachment}
+									likedByUser={comment.likedByUser}
+									retweetedByUser={comment.retweetedByUser}
+									numberOfLikes={comment.numberOfLikes}
+									numberOfRetweets={comment.numberOfRetweets}
+									numberOfComments={comment.numberOfComments}
+									toggleCommentLike={toggleCommentLike}
+									toggleCommentRetweet={toggleCommentRetweet}
+									deleteComment={deleteComment}
+								></Comment>
+							))}
+					</AnimatePresence>
 				</InfiniteScrolling>
 			</TweetWrapper>
 		</>

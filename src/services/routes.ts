@@ -18,4 +18,6 @@ export const routes = {
 	toggleCommentRetweet: (id: string) =>
 		`${baseURL}/tweets/comments/${id}/retweets`,
 	creatComment: (id: string) => `${baseURL}/tweets/${id}/comments`,
+	deleteComment: (tweetId: string, commentId: string) =>
+		`${baseURL}/tweets/${tweetId}/comments/${commentId}`,
 };

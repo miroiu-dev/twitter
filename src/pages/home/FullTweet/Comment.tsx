@@ -85,6 +85,7 @@ export const Comment: React.FC<
 	CommentModel & {
 		toggleCommentRetweet: (id: string) => void;
 		toggleCommentLike: (id: string) => void;
+		deleteComment: (id: string) => void;
 	}
 > = ({
 	attachment,
@@ -99,6 +100,7 @@ export const Comment: React.FC<
 	retweetedByUser,
 	toggleCommentRetweet,
 	toggleCommentLike,
+	deleteComment,
 }) => {
 	const dateDiffDisplay = getReadableDate(new Date(createdAt));
 	const { closeModal, openModal, ref, show } = useModal();
@@ -117,7 +119,7 @@ export const Comment: React.FC<
 			{isOpen && (
 				<ConfirmDeletionModal
 					closeModal={closeDeletionModal}
-					onDelete={deleteTweet}
+					onDelete={deleteComment}
 					id={_id}
 				/>
 			)}
