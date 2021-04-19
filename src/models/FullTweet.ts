@@ -1,4 +1,4 @@
-type Comment = {
+export type Comment = {
 	_id?: string;
 	author: {
 		name: string;
@@ -8,7 +8,11 @@ type Comment = {
 	message: string;
 	numberOfLikes: number;
 	numberOfRetweets: number;
+	numberOfComments?: number;
 	createdAt: string;
+	attachment?: string;
+	likedByUser?: boolean;
+	retweetedByUser?: boolean;
 };
 
 export type FullTweet = {

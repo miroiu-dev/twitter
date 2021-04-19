@@ -1,5 +1,6 @@
 import styled from '@emotion/styled/macro';
 import { AnimatePresence, motion } from 'framer-motion';
+import { forwardRef } from 'react';
 import {
 	Activity,
 	Block,
@@ -45,7 +46,7 @@ const ActivitySVG = BaseTweetModalIcon.withComponent(Activity);
 
 const SelftTweetModal = styled(TweetModal)``;
 
-export const TweetOptionsModalUser: React.FC<{
+type TweetOptionsModalUserProps = {
 	show: boolean;
 	author: {
 		name: string;
@@ -53,13 +54,17 @@ export const TweetOptionsModalUser: React.FC<{
 		profilePicture?: string;
 		id?: string;
 	};
-	reference: React.MutableRefObject<HTMLDivElement | null>;
-}> = ({ show, author, reference }) => {
+};
+
+export const TweetOptionsModalUser = forwardRef<
+	HTMLDivElement,
+	TweetOptionsModalUserProps
+>(({ show, author }, ref) => {
 	return (
 		<AnimatePresence>
 			{show && (
 				<TweetModal
-					ref={reference}
+					ref={ref}
 					initial={{
 						height: '0px',
 						opacity: 0,
@@ -101,9 +106,9 @@ export const TweetOptionsModalUser: React.FC<{
 			)}
 		</AnimatePresence>
 	);
-};
+});
 
-export const TweetOptionsModalSelf: React.FC<{
+type TweetOptionModalSelf = {
 	show: boolean;
 	author: {
 		name: string;
@@ -111,15 +116,19 @@ export const TweetOptionsModalSelf: React.FC<{
 		profilePicture?: string;
 		id?: string;
 	};
-	reference: React.MutableRefObject<HTMLDivElement | null>;
 	callback: () => void;
 	secondaryCallback?: () => void;
-}> = ({ show, author, reference, callback, secondaryCallback }) => {
+};
+
+export const TweetOptionsModalSelf = forwardRef<
+	HTMLDivElement,
+	TweetOptionModalSelf
+>(({ show, author, callback, secondaryCallback }, ref) => {
 	return (
 		<AnimatePresence>
 			{show && (
 				<SelftTweetModal
-					ref={reference}
+					ref={ref}
 					initial={{
 						height: '0px',
 						opacity: 0,
@@ -160,4 +169,4 @@ export const TweetOptionsModalSelf: React.FC<{
 			)}
 		</AnimatePresence>
 	);
-};
+});

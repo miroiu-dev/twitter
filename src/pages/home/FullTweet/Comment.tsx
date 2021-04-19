@@ -1,21 +1,20 @@
 import styled from '@emotion/styled/macro';
 
-import { ResponsiveImage } from '../../components/ResponsiveImage';
-import { TweetInteractions } from './TweetInteraction';
-import { GridRow, GridColumn } from './Atoms';
-import { TweetPreview } from '../../models/TweetPreview';
-import { useModal } from '../../hooks/useModal';
-import React, { useContext, useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
-import { ConfirmDeletionModal } from '../../components/modals/ConfirmDeletionModal';
-import { getReadableDate } from '../../utils/getReadableDate';
+import { ResponsiveImage } from '../../../components/ResponsiveImage';
+import { TweetInteractions as CommentInteractions } from '../TweetInteraction';
+import { GridRow, GridColumn } from '../Atoms';
+import { useModal } from '../../../hooks/useModal';
+import { useContext, useState } from 'react';
+import { useAuth } from '../../../hooks/useAuth';
+import { ConfirmDeletionModal } from '../../../components/modals/ConfirmDeletionModal';
+import { getReadableDate } from '../../../utils/getReadableDate';
 
 import { motion } from 'framer-motion';
-import { useHistory } from 'react-router';
-import { TweetHeader } from './TweetHeader';
-import { TweetsContext } from '../../hooks/TweetsContext';
+import { TweetHeader as CommentHeader } from '../TweetHeader';
+import { TweetsContext } from '../../../hooks/TweetsContext';
+import { Comment as CommentModel } from '../../../models/FullTweet';
 
-export const TweetContentWrapper = styled.span`
+export const CommentWrapper = styled.span`
 	display: flex;
 	flex-grow: 1;
 	color: rgb(217, 217, 217);
@@ -23,7 +22,7 @@ export const TweetContentWrapper = styled.span`
 	font-size: 15px;
 `;
 
-export const TweetContent = styled.pre`
+export const CommentContent = styled.pre`
 	display: flex;
 	flex-grow: 1;
 	color: rgb(217, 217, 217);
@@ -33,24 +32,11 @@ export const TweetContent = styled.pre`
 	margin: 0;
 `;
 
-const TweetImage = styled(ResponsiveImage)`
+const CommentImage = styled(ResponsiveImage)`
 	margin-top: 1rem;
 `;
 
-// const TweetContainer = styled.div`
-// 	display: flex;
-// 	flex-direction: column;
-// 	padding: 0 1rem;
-// 	padding-top: 0.75rem;
-// 	display: flex;
-// 	&:hover {
-// 		background-color: rgba(255, 255, 255, 0.03);
-// 	}
-// 	cursor: pointer;
-// 	border-bottom: 1px solid rgb(47, 51, 54);
-// `;
-
-const TweetContainer = styled(motion.div)`
+const CommentContainer = styled(motion.div)`
 	display: flex;
 	flex-direction: column;
 	padding: 0 1rem;
@@ -95,7 +81,7 @@ export const TweetVariants = {
 	},
 };
 
-export const Tweet: React.FC<TweetPreview> = ({
+export const Comment: React.FC<CommentModel> = ({
 	attachment,
 	author,
 	createdAt,
@@ -110,7 +96,6 @@ export const Tweet: React.FC<TweetPreview> = ({
 	const dateDiffDisplay = getReadableDate(new Date(createdAt));
 	const { closeModal, openModal, ref, show } = useModal();
 	const [isOpen, setIsOpen] = useState(false);
-	const history = useHistory();
 	const closeDeletionModal = () => {
 		setIsOpen(false);
 	};
@@ -130,15 +115,11 @@ export const Tweet: React.FC<TweetPreview> = ({
 					id={_id}
 				/>
 			)}
-			<TweetContainer
+			<CommentContainer
 				variants={TweetVariants}
 				initial="initial"
 				animate="animate"
 				exit="exit"
-				onClick={ev => {
-					ev.stopPropagation();
-					history.push(`/tweet/${_id}`);
-				}}
 			>
 				<GridColumn>
 					<UserImageWrapper>
@@ -149,7 +130,7 @@ export const Tweet: React.FC<TweetPreview> = ({
 					</UserImageWrapper>
 
 					<GridRow>
-						<TweetHeader
+						<CommentHeader
 							author={author}
 							ref={ref}
 							closeModal={closeModal}
@@ -159,26 +140,26 @@ export const Tweet: React.FC<TweetPreview> = ({
 							openModal={openModal}
 							user={user!}
 						/>
-						<TweetContentWrapper>
-							<TweetContent>{message}</TweetContent>
-						</TweetContentWrapper>
+						<CommentWrapper>
+							<CommentContent>{message}</CommentContent>
+						</CommentWrapper>
 						{attachment && (
-							<TweetImage src={attachment}></TweetImage>
+							<CommentImage src={attachment}></CommentImage>
 						)}
-						<TweetInteractions
-							numberOfComments={numberOfComments}
+						<CommentInteractions
+							numberOfComments={numberOfComments!}
 							numberOfLikes={numberOfLikes}
 							numberOfRetweets={numberOfRetweets}
 							author={author}
-							likedByUser={likedByUser}
-							id={_id}
-							retweetedByUser={retweetedByUser}
+							likedByUser={likedByUser!}
+							id={_id!}
+							retweetedByUser={retweetedByUser!}
 							toggleLike={toggleLike}
 							toggleRetweet={toggleRetweet}
 						/>
 					</GridRow>
 				</GridColumn>
-			</TweetContainer>
+			</CommentContainer>
 		</>
 	);
 };

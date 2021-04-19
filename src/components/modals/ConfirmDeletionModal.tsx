@@ -1,6 +1,7 @@
 import styled from '@emotion/styled/macro';
 import { useContext, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { useHistory } from 'react-router';
 import { TweetsContext } from '../../hooks/TweetsContext';
 import { useClickOutside } from '../../hooks/useClickOutside';
 import { useModalScrollbar } from '../../hooks/useModalScrollbar';
@@ -77,12 +78,13 @@ const Button = styled.button<{
 `;
 
 export const ConfirmDeletionModal: React.FC<{
-	tweetId?: string;
+	id?: string;
 	closeModal: () => void;
-}> = ({ tweetId, closeModal }) => {
-	const { deleteTweet } = useContext(TweetsContext);
+	onDelete: (id: string) => void;
+	redirect?: string;
+}> = ({ id, closeModal, onDelete, redirect }) => {
 	const divRef = useRef<HTMLDivElement | null>(null);
-
+	const history = useHistory();
 	const query = document.getElementById('modal-root');
 	// useClickOutside(divRef, closeModal);
 	useModalScrollbar();
@@ -107,7 +109,10 @@ export const ConfirmDeletionModal: React.FC<{
 						backgroundColor="rgb(224, 36, 94)"
 						hoverBackgroundColor="rgb(202, 32, 85)"
 						onClick={() => {
-							deleteTweet(tweetId!);
+							onDelete(id!);
+							if (redirect) {
+								history.push(redirect);
+							}
 							closeModal();
 						}}
 					>

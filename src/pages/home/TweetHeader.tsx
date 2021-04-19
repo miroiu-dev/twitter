@@ -1,5 +1,5 @@
 import styled from '@emotion/styled/macro';
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { DotsSVG, IconWrapper } from '../../components/side-panel/Atoms';
 import { User } from '../../models/User';
 import { TweetInfo } from './TweetInfo';
@@ -42,43 +42,47 @@ export type TweetHeaderProps = {
 	hideButton?: boolean;
 };
 
-export const TweetHeader: React.FC<TweetHeaderProps> = ({
-	author,
-	date,
-	openModal,
-	user,
-	reference,
-	isShowing,
-	openDeletionModal,
-	closeModal,
-	hideButton,
-}) => {
-	return (
-		<TweetHeaderWrapper>
-			<TweetInfo author={author} date={date} />
-			{!hideButton && (
-				<HeightWrapper onClick={ev => ev.stopPropagation()}>
-					<Wrapper onClick={openModal}>
-						<DotsSVG></DotsSVG>
-					</Wrapper>
+export const TweetHeader = forwardRef<HTMLDivElement, TweetHeaderProps>(
+	(
+		{
+			author,
+			date,
+			openModal,
+			user,
+			isShowing,
+			openDeletionModal,
+			closeModal,
+			hideButton,
+		},
+		ref
+	) => {
+		return (
+			<TweetHeaderWrapper>
+				<TweetInfo author={author} date={date} />
+				{!hideButton && (
+					<HeightWrapper onClick={ev => ev.stopPropagation()}>
+						<Wrapper onClick={openModal}>
+							<DotsSVG></DotsSVG>
+						</Wrapper>
 
-					{author.username !== user!.username ? (
-						<TweetOptionsModalUser
-							author={author}
-							reference={reference!}
-							show={isShowing!}
-						/>
-					) : (
-						<TweetOptionsModalSelf
-							author={author}
-							reference={reference!}
-							show={isShowing!}
-							callback={openDeletionModal!}
-							secondaryCallback={closeModal}
-						/>
-					)}
-				</HeightWrapper>
-			)}
-		</TweetHeaderWrapper>
-	);
-};
+						{author.username !== user!.username ? (
+							<TweetOptionsModalUser
+								author={author}
+								ref={ref}
+								show={isShowing!}
+							/>
+						) : (
+							<TweetOptionsModalSelf
+								author={author}
+								ref={ref!}
+								show={isShowing!}
+								callback={openDeletionModal!}
+								secondaryCallback={closeModal}
+							/>
+						)}
+					</HeightWrapper>
+				)}
+			</TweetHeaderWrapper>
+		);
+	}
+);

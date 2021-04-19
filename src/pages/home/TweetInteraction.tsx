@@ -158,6 +158,8 @@ type TweetInteractionsProps = {
 	likedByUser: boolean;
 	retweetedByUser: boolean;
 	id: string;
+	toggleLike: (id: string) => void;
+	toggleRetweet: (id: string) => void;
 };
 
 export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
@@ -167,9 +169,10 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 	author,
 	likedByUser,
 	retweetedByUser,
+	toggleLike,
+	toggleRetweet,
 	id,
 }) => {
-	const { toggleLike, toggleRetweet } = useContext(TweetsContext);
 	const { user } = useAuth();
 	const { show, openModal, ref, closeModal } = useModal();
 	return (
@@ -194,7 +197,7 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 				<AnimatePresence>
 					{show && (
 						<RetweetModal
-							reference={ref}
+							ref={ref}
 							callback={toggleRetweet}
 							isRetweeted={retweetedByUser}
 							tweetId={id}

@@ -40,8 +40,6 @@ export const Feed: React.FC = () => {
 				</LoaderWrapper>
 			}
 		>
-			{/* {tweets &&
-				tweets.map(tweet => <Tweet key={tweet._id} {...tweet} />)} */}
 			<AnimatePresence>
 				{tweets &&
 					tweets.map(tweet => <Tweet key={tweet._id} {...tweet} />)}

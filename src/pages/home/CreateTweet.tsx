@@ -37,14 +37,12 @@ export const CreateTweet: React.FC<{
 	contentPadding?: string;
 	visibilityHidden?: boolean;
 	inputMinHeight?: string;
-	onCreateTweet?: (content: string, attachement: string) => void;
 	buttonName?: string;
 	hideBorderBottom?: boolean;
 }> = ({
 	contentPadding,
 	visibilityHidden,
 	inputMinHeight,
-	onCreateTweet,
 	buttonName,
 	hideBorderBottom,
 }) => {
@@ -97,6 +95,7 @@ export const CreateTweet: React.FC<{
 									showTweetVisiblityOption
 								}
 								inputMinHeight={inputMinHeight}
+								shouldNotKeepMinHeight={image ? true : false}
 							></TweetInput>
 						</TweetInputWrapper>
 						{image && (

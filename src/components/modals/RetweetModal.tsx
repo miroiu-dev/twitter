@@ -1,5 +1,6 @@
 import styled from '@emotion/styled/macro';
 import { motion } from 'framer-motion';
+import { forwardRef } from 'react';
 import { Quote } from '../icons/Quote';
 import { Retweet } from '../icons/TweetInteraction';
 
@@ -41,39 +42,42 @@ const Label = styled.span`
 const RetweetSVG = BaseIcon.withComponent(Retweet);
 const QuoteSVG = BaseIcon.withComponent(Quote);
 
-export const RetweetModal: React.FC<{
-	reference: React.MutableRefObject<HTMLDivElement | null>;
+type RetweetModalProps = {
 	isRetweeted: boolean;
 	callback: (id: string) => void;
 	closeModal: () => void;
 	tweetId: string;
-}> = ({ reference, callback, isRetweeted, tweetId, closeModal }) => {
-	return (
-		<RetweetModalWrapper
-			ref={reference}
-			initial={{
-				height: '0px',
-				opacity: 0,
-			}}
-			animate={{
-				height: 'auto',
-				opacity: 1,
-			}}
-		>
-			<Option
-				onClick={() => {
-					closeModal();
-					callback(tweetId);
+};
+
+export const RetweetModal = forwardRef<HTMLDivElement, RetweetModalProps>(
+	({ callback, isRetweeted, tweetId, closeModal }, ref) => {
+		return (
+			<RetweetModalWrapper
+				ref={ref}
+				initial={{
+					height: '0px',
+					opacity: 0,
+				}}
+				animate={{
+					height: 'auto',
+					opacity: 1,
 				}}
 			>
-				<RetweetSVG />
+				<Option
+					onClick={() => {
+						closeModal();
+						callback(tweetId);
+					}}
+				>
+					<RetweetSVG />
 
-				<Label>{isRetweeted ? 'Undo Retweet' : 'Retweet'}</Label>
-			</Option>
-			<Option>
-				<QuoteSVG />
-				<Label>Quote Tweet</Label>
-			</Option>
-		</RetweetModalWrapper>
-	);
-};
+					<Label>{isRetweeted ? 'Undo Retweet' : 'Retweet'}</Label>
+				</Option>
+				<Option>
+					<QuoteSVG />
+					<Label>Quote Tweet</Label>
+				</Option>
+			</RetweetModalWrapper>
+		);
+	}
+);

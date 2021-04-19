@@ -112,6 +112,20 @@ const getTweet = async (id: string) => {
 	}
 };
 
+const getTweetComments = async (id: string, offset: number, limit: number) => {
+	try {
+		const response = await axios.get(
+			routes.getTweetComments(id, offset, limit),
+			{
+				withCredentials: true,
+			}
+		);
+		return response.data;
+	} catch (err) {
+		console.log(err);
+	}
+};
+
 export const tweetsService = {
 	createTweet,
 	getTweets,
@@ -121,4 +135,5 @@ export const tweetsService = {
 	retweetTweet,
 	unretweetTweet,
 	getTweet,
+	getTweetComments,
 };

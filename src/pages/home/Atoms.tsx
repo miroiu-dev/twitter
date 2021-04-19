@@ -55,11 +55,15 @@ export const GridRow = styled.div`
 	display: grid;
 `;
 
-export const TweetInput = styled.div<{ inputMinHeight?: string }>`
+export const TweetInput = styled.div<{
+	inputMinHeight?: string;
+	shouldNotKeepMinHeight?: boolean;
+}>`
 	font-size: 1.25rem;
 	max-height: 720px;
 
-	min-height: ${props => props.inputMinHeight || '24px'};
+	min-height: ${props =>
+		!props.shouldNotKeepMinHeight && (props.inputMinHeight || '24px')};
 
 	font-weight: 400;
 	color: rgb(217, 217, 217);
