@@ -50,7 +50,6 @@ export const TweetDataWrapper = styled.div`
 	cursor: pointer;
 	padding: 0.75rem 1rem;
 	padding-bottom: 0;
-	border-bottom: 1px solid rgb(47, 51, 54);
 `;
 
 export const FlexRow = styled.div`
@@ -267,3 +266,9 @@ export type Author = {
 	username: string;
 	profilePicture?: string;
 };
+
+export const Border = styled.div`
+	width: 100%;
+	height: 1px;
+	background-color: rgb(47, 51, 54);
+`;

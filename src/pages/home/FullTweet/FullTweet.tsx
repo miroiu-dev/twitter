@@ -12,6 +12,7 @@ import {
 	Title,
 	TweetDataWrapper,
 	TweetWrapper,
+	Border,
 } from './Atoms';
 import { Comment } from './Comment';
 import { TweetData } from './FullTweetData';
@@ -86,6 +87,7 @@ export const FullTweet: React.FC = () => {
 						</>
 					)}
 				</TweetDataWrapper>
+				{tweet && <Border />}
 				<InfiniteScrolling
 					dataLength={comments.length}
 					next={fetchComments}
