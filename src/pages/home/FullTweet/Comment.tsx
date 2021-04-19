@@ -4,15 +4,13 @@ import { ResponsiveImage } from '../../../components/ResponsiveImage';
 import { TweetInteractions as CommentInteractions } from '../TweetInteraction';
 import { GridRow, GridColumn } from '../Atoms';
 import { useModal } from '../../../hooks/useModal';
-import { useContext, useState } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import { ConfirmDeletionModal } from '../../../components/modals/ConfirmDeletionModal';
 import { getReadableDate } from '../../../utils/getReadableDate';
-
 import { motion } from 'framer-motion';
 import { TweetHeader as CommentHeader } from '../TweetHeader';
-import { TweetsContext } from '../../../hooks/TweetsContext';
 import { Comment as CommentModel } from '../../../models/FullTweet';
+import { useState } from 'react';
 
 export const CommentWrapper = styled.span`
 	display: flex;
@@ -83,11 +81,14 @@ export const TweetVariants = {
 
 export const Comment: React.FC<
 	CommentModel & {
+		attachment?: string;
+		tweetId: string;
 		toggleCommentRetweet: (id: string) => void;
 		toggleCommentLike: (id: string) => void;
 		deleteComment: (id: string) => void;
 	}
 > = ({
+	tweetId,
 	attachment,
 	author,
 	createdAt,
@@ -112,7 +113,6 @@ export const Comment: React.FC<
 		setIsOpen(true);
 	};
 	const { user } = useAuth();
-	const { deleteTweet } = useContext(TweetsContext);
 
 	return (
 		<>
@@ -161,9 +161,11 @@ export const Comment: React.FC<
 							author={author}
 							likedByUser={likedByUser!}
 							id={_id!}
+							tweetId={tweetId}
 							retweetedByUser={retweetedByUser!}
 							toggleLike={toggleCommentLike}
 							toggleRetweet={toggleCommentRetweet}
+							canComment={true}
 						/>
 					</GridRow>
 				</GridColumn>

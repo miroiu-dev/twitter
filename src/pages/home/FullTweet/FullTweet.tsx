@@ -108,6 +108,7 @@ export const FullTweet: React.FC = () => {
 									key={comment._id}
 									author={comment.author}
 									_id={comment._id}
+									tweetId={tweet!._id}
 									createdAt={comment.createdAt}
 									message={comment.message}
 									attachment={comment.attachment}

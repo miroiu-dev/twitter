@@ -1,4 +1,6 @@
 import styled from '@emotion/styled/macro';
+import { useContext } from 'react';
+import { TweetsContext } from '../../hooks/TweetsContext';
 import { useModalScrollbar } from '../../hooks/useModalScrollbar';
 import { CreateTweet } from '../../pages/home/CreateTweet';
 import { TweetHeader } from '../../pages/home/TweetHeader';
@@ -89,6 +91,7 @@ type CommentModalProps = {
 	onClose: () => void;
 	onReply: (message: string, attachement: string) => void;
 	isOpen: boolean;
+	tweetId: string;
 };
 
 export const CommentModal: React.FC<CommentModalProps> = ({
@@ -98,9 +101,10 @@ export const CommentModal: React.FC<CommentModalProps> = ({
 	isOpen,
 	onClose,
 	onReply,
+	tweetId,
 }) => {
 	const dateDiffDisplay = getReadableDate(new Date(createdAt));
-
+	const { updateCommentCount } = useContext(TweetsContext);
 	return (
 		<TwitterModal isOpen={isOpen} onClose={onClose}>
 			<InitialComment>
@@ -134,6 +138,7 @@ export const CommentModal: React.FC<CommentModalProps> = ({
 			</InitialComment>
 			<CreateTweet
 				callback={(a, m) => {
+					updateCommentCount(tweetId);
 					onReply(a, m);
 					onClose();
 				}}

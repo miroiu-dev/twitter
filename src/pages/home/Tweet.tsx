@@ -175,6 +175,9 @@ export const Tweet: React.FC<TweetPreview> = ({
 							retweetedByUser={retweetedByUser}
 							toggleLike={toggleLike}
 							toggleRetweet={toggleRetweet}
+							createdAt={createdAt}
+							message={message}
+							tweetId={_id}
 						/>
 					</GridRow>
 				</GridColumn>

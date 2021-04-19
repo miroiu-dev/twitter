@@ -1,6 +1,6 @@
 import styled from '@emotion/styled/macro';
 import { AnimatePresence } from 'framer-motion';
-import { useContext } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { AnimatedHeart } from '../../components/icons/AnimatedHeart';
 import {
 	Comment,
@@ -10,10 +10,12 @@ import {
 	Share,
 } from '../../components/icons/TweetInteraction';
 import { Activity } from '../../components/icons/TweetModal';
+import { CommentModal } from '../../components/modals/CommentModal';
 import { RetweetModal } from '../../components/modals/RetweetModal';
 import { TweetsContext } from '../../hooks/TweetsContext';
 import { useAuth } from '../../hooks/useAuth';
 import { useModal } from '../../hooks/useModal';
+import { useTweet } from '../../hooks/useTweet';
 
 const BaseTweetModalIcon = styled.svg`
 	height: 1.25em;
@@ -160,6 +162,10 @@ type TweetInteractionsProps = {
 	id: string;
 	toggleLike: (id: string) => void;
 	toggleRetweet: (id: string) => void;
+	createdAt?: string;
+	message?: string;
+	tweetId: string;
+	canComment?: boolean;
 };
 
 export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
@@ -172,25 +178,39 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 	toggleLike,
 	toggleRetweet,
 	id,
+	createdAt,
+	message,
+	tweetId,
+	canComment: cannotComment,
 }) => {
 	const { user } = useAuth();
 	const { show, openModal, ref, closeModal } = useModal();
+
+	const [isToggled, setIsToggled] = useState(false);
+
+	const toggle = useCallback(() => setIsToggled(!isToggled), [
+		isToggled,
+		setIsToggled,
+	]);
+
+	const { createComment } = useTweet(id);
+
 	return (
 		<TweetInteraction onClick={ev => ev.stopPropagation()}>
-			<CommentWrapper
-				onClick={() =>
-					console.log(
-						'liked ',
-						likedByUser,
-						'retweeted',
-						retweetedByUser
-					)
-				}
-			>
+			<CommentWrapper onClick={toggle}>
 				<IconHover>
 					<CommentSVG />
 				</IconHover>
 				<Ammount>{numberOfComments}</Ammount>
+				<CommentModal
+					onReply={createComment}
+					isOpen={!cannotComment && isToggled}
+					onClose={toggle}
+					author={author}
+					createdAt={createdAt!}
+					message={message!}
+					tweetId={tweetId}
+				/>
 			</CommentWrapper>
 			<RetweetWrapper retweeted={retweetedByUser} onClick={openModal}>
 				{retweetedByUser ? (

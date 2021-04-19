@@ -48,6 +48,7 @@ export const FullTweetInteractions: React.FC<{
 					author={tweet.author}
 					createdAt={tweet.createdAt}
 					message={tweet.message}
+					tweetId={tweet._id}
 				/>
 			</CommentWrapper>
 			<RetweetWrapper
