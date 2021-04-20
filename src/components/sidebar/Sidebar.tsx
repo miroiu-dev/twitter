@@ -25,6 +25,8 @@ import {
 	ProfileSVG,
 } from './Atoms';
 import { useModal } from '../../hooks/useModal';
+import { useCallback, useRef, useState } from 'react';
+import { useClickOutside } from '../../hooks/useClickOutside';
 
 const UserInfoWrapper = styled.div`
 	position: relative;
@@ -80,7 +82,13 @@ const DotsSVG = styled(Dots)`
 `;
 
 export const Sidebar: React.FC = () => {
-	const { openModal, show, ref } = useModal();
+	const [shouldOpen, setShouldOpen] = useState(false);
+	const div = useRef<HTMLDivElement | null>(null);
+	const show = useCallback(() => setShouldOpen(!shouldOpen), [
+		shouldOpen,
+		setShouldOpen,
+	]);
+	useClickOutside(div, show);
 	return (
 		<SidebarWrapper>
 			<Wrapper>
@@ -148,8 +156,8 @@ export const Sidebar: React.FC = () => {
 			</Wrapper>
 
 			<UserInfoWrapper>
-				<UserInfo icon={<DotsSVG />} callback={openModal} />
-				<UserOptionsModal show={show} ref={ref} />
+				<UserInfo icon={<DotsSVG />} callback={show} />
+				<UserOptionsModal show={shouldOpen} ref={div} />
 			</UserInfoWrapper>
 		</SidebarWrapper>
 	);

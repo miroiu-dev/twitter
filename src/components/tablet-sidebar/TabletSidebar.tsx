@@ -30,9 +30,17 @@ import {
 	ProfileSVG,
 } from '../sidebar/Atoms';
 import TwitterSvg from '../icons/TwitterSvg';
+import { useCallback, useRef, useState } from 'react';
+import { useClickOutside } from '../../hooks/useClickOutside';
 
 export const TabletSidebar: React.FC = () => {
-	const { openModal, show, ref } = useModal();
+	const [shouldOpen, setShouldOpen] = useState(false);
+	const div = useRef<HTMLDivElement | null>(null);
+	const show = useCallback(() => setShouldOpen(!shouldOpen), [
+		shouldOpen,
+		setShouldOpen,
+	]);
+	useClickOutside(div, show);
 	return (
 		<TabletSidebarWrapper>
 			<NavigationWrapper>
@@ -80,16 +88,16 @@ export const TabletSidebar: React.FC = () => {
 				</TweetButtonWrapper>
 			</NavigationWrapper>
 			<ProfilePictureWrapper>
-				<ContainerWrapper onClick={openModal}>
+				<ContainerWrapper onClick={show}>
 					<ProfilePicture src={default_profile_normal} />
 				</ContainerWrapper>
 				<UserOptionsModal
-					show={show}
+					show={shouldOpen}
 					arrowLeft="11%"
 					arrowTop="100%"
 					modalLeft="60px"
 					modalBottom="65px"
-					ref={ref}
+					ref={div}
 				></UserOptionsModal>
 			</ProfilePictureWrapper>
 		</TabletSidebarWrapper>

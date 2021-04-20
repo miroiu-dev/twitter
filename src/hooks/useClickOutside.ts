@@ -14,6 +14,7 @@ export const useClickOutside = (
 	);
 
 	useEffect(() => {
+		console.log('asd');
 		document.addEventListener('click', handleClick);
 		return () => document.removeEventListener('click', handleClick);
 	}, [handleClick]);
