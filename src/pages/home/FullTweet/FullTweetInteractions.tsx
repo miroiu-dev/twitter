@@ -1,8 +1,9 @@
 import { AnimatePresence } from 'framer-motion';
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { AnimatedHeart } from '../../../components/icons/AnimatedHeart';
 import { CommentModal } from '../../../components/modals/CommentModal';
 import { RetweetModal } from '../../../components/modals/RetweetModal';
+import { TweetsContext } from '../../../hooks/TweetsContext';
 import { useModal } from '../../../hooks/useModal';
 import { FullTweet } from '../../../models/FullTweet';
 import { IconHover } from '../TweetInteraction';
@@ -34,7 +35,7 @@ export const FullTweetInteractions: React.FC<{
 		isToggled,
 		setIsToggled,
 	]);
-
+	const { toggleLikeUpdate } = useContext(TweetsContext);
 	return (
 		<TweetInteractionsWrapper>
 			<CommentWrapper onClick={toggle}>
@@ -76,7 +77,13 @@ export const FullTweetInteractions: React.FC<{
 					)}
 				</AnimatePresence>
 			</RetweetWrapper>
-			<HeartWrapper liked={tweet.likedByUser} onClick={toggleLike}>
+			<HeartWrapper
+				liked={tweet.likedByUser}
+				onClick={() => {
+					toggleLike();
+					toggleLikeUpdate(tweet._id);
+				}}
+			>
 				{tweet.likedByUser ? (
 					<IconHoverAnimated>
 						<AnimatedHeart width="70px" height="70px" />
