@@ -99,6 +99,9 @@ export const TweetOptionsWrapper = styled.div`
 	margin-top: 0.75rem;
 	margin-bottom: 5px;
 	margin-left: -12px;
+	@media (max-width: 320px) {
+		margin-left: -55px;
+	}
 `;
 export const TweetOptions = styled.div`
 	display: flex;

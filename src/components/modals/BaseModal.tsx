@@ -47,6 +47,10 @@ const ModalContent = styled(StopEvents)`
 	background-color: #000;
 	border-radius: 1rem;
 	padding: 0 1rem;
+	@media (max-width: 657px) {
+		top: 0;
+		height: 100vh;
+	}
 `;
 
 export const BaseModal: React.FC<{ isOpen: boolean; onClose?: () => void }> = ({

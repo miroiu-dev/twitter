@@ -66,6 +66,10 @@ const TweetContainer = styled(motion.div)`
 	}
 	cursor: pointer;
 	border-bottom: 1px solid rgb(47, 51, 54);
+	@media (max-width: 320px) {
+		padding: 0;
+		padding-top: 1rem;
+	}
 `;
 
 const UserImageWrapper = styled.div`
