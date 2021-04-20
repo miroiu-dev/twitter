@@ -23,7 +23,7 @@ export const TweetContentWrapper = styled.span`
 	font-size: 15px;
 `;
 
-export const TweetContent = styled.pre`
+export const TweetContent = styled.div`
 	display: flex;
 	flex-grow: 1;
 	color: rgb(217, 217, 217);

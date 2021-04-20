@@ -152,7 +152,6 @@ export const CommentModal: React.FC<CommentModalProps> = ({
 				inputMinHeight="96px"
 				buttonName="Reply"
 				hideBorderBottom
-				key={tweetId}
 			/>
 		</TwitterModal>
 	);

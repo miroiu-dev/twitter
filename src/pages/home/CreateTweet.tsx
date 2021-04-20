@@ -1,5 +1,11 @@
 import styled from '@emotion/styled/macro';
-import React, { FormEvent, useContext, useRef, useState } from 'react';
+import React, {
+	FormEvent,
+	FormEventHandler,
+	useContext,
+	useRef,
+	useState,
+} from 'react';
 import { IconWrapper } from '../../components/side-panel/Atoms';
 import { useAuth } from '../../hooks/useAuth';
 import {
@@ -50,9 +56,8 @@ export const CreateTweet: React.FC<{
 }) => {
 	const { user } = useAuth();
 	const [text, setText] = useState('');
-	const [isShown, setIsShown] = useState(false);
 	const [image, setImage] = useState<string | ArrayBuffer | null>(null);
-	console.log(image);
+	const [isShown, setIsShown] = useState(false);
 	const inputText = useRef<HTMLDivElement>(null);
 	const showTweetVisiblityOption = () => {
 		setIsShown(true);
@@ -63,7 +68,6 @@ export const CreateTweet: React.FC<{
 		const target = ev.target as HTMLInputElement;
 		reader.onload = () => {
 			if (reader.readyState === 2) {
-				console.log('where');
 				setImage(reader.result);
 			}
 		};
@@ -76,7 +80,6 @@ export const CreateTweet: React.FC<{
 	};
 
 	const { createTweet } = useContext(TweetsContext);
-
 	return (
 		<CreateTweetWrapper hideBorderBottom={hideBorderBottom}>
 			<CreateTweetContent contentPadding={contentPadding}>
@@ -90,9 +93,17 @@ export const CreateTweet: React.FC<{
 								ref={inputText}
 								contentEditable
 								data-placeholder="What's happening?"
-								onInput={() =>
-									setText(inputText.current?.textContent!)
-								}
+								onInput={(ev: FormEvent<HTMLDivElement>) => {
+									const nativeEvent = ev.nativeEvent as any;
+
+									setText(
+										prev =>
+											prev + (nativeEvent.data || '\n')
+									);
+									// setText(
+									// 	inputText.current?.textContent!
+									// );
+								}}
 								onClick={() =>
 									!visibilityHidden &&
 									showTweetVisiblityOption
@@ -131,13 +142,9 @@ export const CreateTweet: React.FC<{
 						)}
 						<TweetOptionsWrapper>
 							<TweetOptions>
-								<IconWrapperLabel
-									htmlFor="image-upload"
-									onChange={handleImageUpload}
-								>
+								<IconWrapperLabel onChange={handleImageUpload}>
 									<ImageUploadInput
 										type="file"
-										id="image-upload"
 										accept="image/*"
 										hidden
 									/>

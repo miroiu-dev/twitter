@@ -9,9 +9,21 @@ export const useTweet = (tweetId: string) => {
 	const [tweet, setTweet] = useState<FullTweet>();
 	const [comments, setComments] = useState<Comment[]>([]);
 	const offsetRef = useRef(0);
+	const isMounted = useRef(true);
 
 	useEffect(() => {
-		tweetsService.getTweet(tweetId).then(setTweet);
+		isMounted.current = true;
+		return () => {
+			isMounted.current = false;
+		};
+	}, []);
+
+	useEffect(() => {
+		tweetsService.getTweet(tweetId).then(t => {
+			if (isMounted.current) {
+				setTweet(t);
+			}
+		});
 	}, [tweetId]);
 
 	const fetchComments = useCallback(async () => {
@@ -21,7 +33,7 @@ export const useTweet = (tweetId: string) => {
 				offsetRef.current,
 				FETCH_COMMENTS_LIMIT
 			);
-			if (response && response.length > 0) {
+			if (response && response.length > 0 && isMounted.current) {
 				setComments(prev => [...prev!, ...response]);
 				offsetRef.current = offsetRef.current + response.length;
 			}
@@ -35,7 +47,7 @@ export const useTweet = (tweetId: string) => {
 			} else {
 				await tweetsService.likeTweet(tweet._id);
 			}
-			if (tweet) {
+			if (tweet && isMounted.current) {
 				setTweet({
 					...tweet,
 					numberOfLikes:
@@ -53,12 +65,15 @@ export const useTweet = (tweetId: string) => {
 			} else {
 				await tweetsService.retweetTweet(tweet._id);
 			}
-			setTweet({
-				...tweet,
-				numberOfRetweets:
-					tweet.numberOfRetweets + (tweet.retweetedByUser ? -1 : 1),
-				retweetedByUser: !tweet.retweetedByUser,
-			});
+			if (isMounted.current) {
+				setTweet({
+					...tweet,
+					numberOfRetweets:
+						tweet.numberOfRetweets +
+						(tweet.retweetedByUser ? -1 : 1),
+					retweetedByUser: !tweet.retweetedByUser,
+				});
+			}
 		}
 	};
 
@@ -71,19 +86,22 @@ export const useTweet = (tweetId: string) => {
 			} else {
 				await commentsService.retweet(id);
 			}
-			setComments(prev =>
-				prev.map(comment =>
-					comment._id === id
-						? {
-								...comment,
-								numberOfRetweets:
-									comment.numberOfRetweets +
-									(comment.retweetedByUser ? -1 : 1),
-								retweetedByUser: !comment.retweetedByUser,
-						  }
-						: comment
-				)
-			);
+
+			if (isMounted.current) {
+				setComments(prev =>
+					prev.map(comment =>
+						comment._id === id
+							? {
+									...comment,
+									numberOfRetweets:
+										comment.numberOfRetweets +
+										(comment.retweetedByUser ? -1 : 1),
+									retweetedByUser: !comment.retweetedByUser,
+							  }
+							: comment
+					)
+				);
+			}
 		}
 	};
 
@@ -96,19 +114,22 @@ export const useTweet = (tweetId: string) => {
 			} else {
 				await commentsService.like(id);
 			}
-			setComments(prev =>
-				prev.map(comment =>
-					comment._id === id
-						? {
-								...comment,
-								numberOfLikes:
-									comment.numberOfLikes +
-									(comment.likedByUser ? -1 : 1),
-								likedByUser: !comment.likedByUser,
-						  }
-						: comment
-				)
-			);
+
+			if (isMounted.current) {
+				setComments(prev =>
+					prev.map(comment =>
+						comment._id === id
+							? {
+									...comment,
+									numberOfLikes:
+										comment.numberOfLikes +
+										(comment.likedByUser ? -1 : 1),
+									likedByUser: !comment.likedByUser,
+							  }
+							: comment
+					)
+				);
+			}
 		}
 	};
 
@@ -118,7 +139,7 @@ export const useTweet = (tweetId: string) => {
 			message,
 			attachment
 		);
-		if (comment) {
+		if (comment && isMounted.current) {
 			setComments(prev => [comment, ...prev]);
 			offsetRef.current += 1;
 		}
@@ -126,7 +147,9 @@ export const useTweet = (tweetId: string) => {
 
 	const deleteComment = async (commentId: string) => {
 		await commentsService.deleteComment(tweetId, commentId);
-		setComments(prev => prev.filter(curr => curr._id !== commentId));
+		if (isMounted.current) {
+			setComments(prev => prev.filter(curr => curr._id !== commentId));
+		}
 	};
 	return {
 		tweet,

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled/macro';
 import { AnimatePresence } from 'framer-motion';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { AnimatedHeart } from '../../components/icons/AnimatedHeart';
 import {
 	Comment,
@@ -12,7 +12,6 @@ import {
 import { Activity } from '../../components/icons/TweetModal';
 import { CommentModal } from '../../components/modals/CommentModal';
 import { RetweetModal } from '../../components/modals/RetweetModal';
-import { TweetsContext } from '../../hooks/TweetsContext';
 import { useAuth } from '../../hooks/useAuth';
 import { useModal } from '../../hooks/useModal';
 import { useTweet } from '../../hooks/useTweet';
@@ -195,6 +194,8 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 
 	const { createComment } = useTweet(id);
 
+	const activityRef = useRef<HTMLDivElement | null>(null);
+
 	return (
 		<TweetInteraction onClick={ev => ev.stopPropagation()}>
 			<CommentWrapper onClick={toggle}>
@@ -253,7 +254,7 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 				</IconHover>
 			</ShareWrapper>
 			{author.username === user!.username && (
-				<ActivityWrapper>
+				<ActivityWrapper ref={activityRef}>
 					<IconHover>
 						<ActivitySVGInteraction />
 					</IconHover>

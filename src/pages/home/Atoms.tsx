@@ -78,6 +78,7 @@ export const TweetInput = styled.div<{
 		content: attr(data-placeholder);
 		color: #6e767d;
 	}
+	white-space: pre-line !important;
 `;
 
 export const BaseIcon = styled.svg`
