@@ -1,9 +1,10 @@
 import { AnimatePresence } from 'framer-motion';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useRef, useState } from 'react';
 import { AnimatedHeart } from '../../../components/icons/AnimatedHeart';
 import { CommentModal } from '../../../components/modals/CommentModal';
 import { RetweetModal } from '../../../components/modals/RetweetModal';
 import { TweetsContext } from '../../../hooks/TweetsContext';
+import { useClickOutside } from '../../../hooks/useClickOutside';
 import { useModal } from '../../../hooks/useModal';
 import { FullTweet } from '../../../models/FullTweet';
 import { IconHover } from '../TweetInteraction';
@@ -27,15 +28,21 @@ export const FullTweetInteractions: React.FC<{
 	toggleRetweet: () => void;
 	createComment: (message: string, attachement: string) => void;
 }> = ({ tweet, toggleLike, toggleRetweet, createComment }) => {
-	const { show, openModal, ref, closeModal } = useModal();
-
+	// const { show, openModal, closeModal } = useModal();
+	const div = useRef<HTMLDivElement | null>(null);
 	const [isToggled, setIsToggled] = useState(false);
 
 	const toggle = useCallback(() => setIsToggled(!isToggled), [
 		isToggled,
 		setIsToggled,
 	]);
+
+	const [isOpen, setIsOpen] = useState(false);
+
+	const open = useCallback(() => setIsOpen(!isOpen), [isOpen, setIsOpen]);
+
 	const { toggleLikeUpdate } = useContext(TweetsContext);
+	useClickOutside(div, open);
 	return (
 		<TweetInteractionsWrapper>
 			<CommentWrapper onClick={toggle}>
@@ -52,10 +59,7 @@ export const FullTweetInteractions: React.FC<{
 					tweetId={tweet._id}
 				/>
 			</CommentWrapper>
-			<RetweetWrapper
-				retweeted={tweet.retweetedByUser}
-				onClick={openModal}
-			>
+			<RetweetWrapper retweeted={tweet.retweetedByUser} onClick={open}>
 				{tweet.retweetedByUser ? (
 					<IconHover>
 						<RetweetFilledSVG />
@@ -66,13 +70,13 @@ export const FullTweetInteractions: React.FC<{
 					</IconHover>
 				)}
 				<AnimatePresence>
-					{show && (
+					{isOpen && (
 						<RetweetModal
-							ref={ref}
+							ref={div}
 							callback={toggleRetweet}
 							isRetweeted={tweet.retweetedByUser}
 							tweetId={tweet._id}
-							closeModal={closeModal}
+							closeModal={open}
 						/>
 					)}
 				</AnimatePresence>

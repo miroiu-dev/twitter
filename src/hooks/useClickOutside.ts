@@ -1,20 +1,16 @@
-import { MutableRefObject, useCallback, useEffect, useRef } from 'react';
+import { MutableRefObject, useCallback, useEffect } from 'react';
 
 export const useClickOutside = (
 	ref: MutableRefObject<HTMLDivElement | null | undefined>,
 	callback: () => void
 ) => {
-	const callbackRef = useRef(callback);
-
-	useEffect(() => (callbackRef.current = callback), [callback]);
-
 	const handleClick = useCallback(
 		(ev: MouseEvent) => {
 			if (ref.current && !ref.current.contains(ev.target! as Node)) {
-				callbackRef.current();
+				callback();
 			}
 		},
-		[ref]
+		[callback, ref]
 	);
 
 	useEffect(() => {

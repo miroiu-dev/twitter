@@ -26,6 +26,6 @@ export const useModal = () => {
 		};
 	}, [isShowing]);
 
-	// useClickOutside(divRef, closeModal);
+	useClickOutside(divRef, closeModal);
 	return { openModal, closeModal, show: isShowing, ref: divRef };
 };
