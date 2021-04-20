@@ -11,6 +11,7 @@ type TweetsContextProps = {
 	toggleLike: (id: string) => void;
 	toggleRetweet: (id: string) => void;
 	updateCommentCount: (id: string) => void;
+	decrementNumberOfComments: (id: string) => void;
 };
 
 export const TweetsContext = createContext<TweetsContextProps>({
@@ -22,6 +23,7 @@ export const TweetsContext = createContext<TweetsContextProps>({
 	toggleLike: () => {},
 	toggleRetweet: () => {},
 	updateCommentCount: () => {},
+	decrementNumberOfComments: () => {},
 });
 
 const FETCH_TWEETS_LIMIT = 10;
@@ -124,6 +126,19 @@ export const TweetsProvider: React.FC = ({ children }) => {
 			)
 		);
 	};
+
+	const decrementNumberOfComments = async (id: string) => {
+		console.log('entered');
+		console.log(tweets);
+		setTweets(prev =>
+			prev.map(tweet =>
+				tweet._id === id
+					? { ...tweet, numberOfComments: tweet.numberOfComments - 1 }
+					: tweet
+			)
+		);
+		console.log(tweets);
+	};
 	return (
 		<TweetsContext.Provider
 			value={{
@@ -135,6 +150,7 @@ export const TweetsProvider: React.FC = ({ children }) => {
 				toggleLike,
 				toggleRetweet,
 				updateCommentCount,
+				decrementNumberOfComments,
 			}}
 		>
 			{children}

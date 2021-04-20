@@ -52,7 +52,7 @@ export const CreateTweet: React.FC<{
 	const [text, setText] = useState('');
 	const [isShown, setIsShown] = useState(false);
 	const [image, setImage] = useState<string | ArrayBuffer | null>(null);
-
+	console.log(image);
 	const inputText = useRef<HTMLDivElement>(null);
 	const showTweetVisiblityOption = () => {
 		setIsShown(true);
@@ -63,6 +63,7 @@ export const CreateTweet: React.FC<{
 		const target = ev.target as HTMLInputElement;
 		reader.onload = () => {
 			if (reader.readyState === 2) {
+				console.log('where');
 				setImage(reader.result);
 			}
 		};

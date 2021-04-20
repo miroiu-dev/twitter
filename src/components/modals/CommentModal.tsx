@@ -49,6 +49,11 @@ export const TweetContent = styled.pre`
 	font-size: 15px;
 	font-family: inherit;
 	margin: 0;
+	white-space: pre-wrap !important; /* css-3 */
+	white-space: -moz-pre-wrap !important; /* Mozilla */
+	white-space: -pre-wrap !important; /* Opera 4-6 */
+	white-space: -o-pre-wrap !important; /* Opera 7 */
+	word-wrap: break-word !important; /* Internet Explorer 5.5+ */
 `;
 
 const InitialComment = styled.div``;
@@ -147,6 +152,7 @@ export const CommentModal: React.FC<CommentModalProps> = ({
 				inputMinHeight="96px"
 				buttonName="Reply"
 				hideBorderBottom
+				key={tweetId}
 			/>
 		</TwitterModal>
 	);

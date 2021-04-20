@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { delay } from '../helpers';
 import { Comment, FullTweet } from '../models/FullTweet';
 import { commentsService } from '../services/comments.service';
 import { tweetsService } from '../services/tweets.service';
@@ -12,7 +11,7 @@ export const useTweet = (tweetId: string) => {
 	const offsetRef = useRef(0);
 
 	useEffect(() => {
-		delay(200).then(() => tweetsService.getTweet(tweetId).then(setTweet));
+		tweetsService.getTweet(tweetId).then(setTweet);
 	}, [tweetId]);
 
 	const fetchComments = useCallback(async () => {
@@ -129,7 +128,6 @@ export const useTweet = (tweetId: string) => {
 		await commentsService.deleteComment(tweetId, commentId);
 		setComments(prev => prev.filter(curr => curr._id !== commentId));
 	};
-
 	return {
 		tweet,
 		comments,

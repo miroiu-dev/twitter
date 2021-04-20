@@ -28,6 +28,11 @@ export const CommentContent = styled.pre`
 	font-size: 15px;
 	font-family: inherit;
 	margin: 0;
+	white-space: pre-wrap !important; /* css-3 */
+	white-space: -moz-pre-wrap !important; /* Mozilla */
+	white-space: -pre-wrap !important; /* Opera 4-6 */
+	white-space: -o-pre-wrap !important; /* Opera 7 */
+	word-wrap: break-word !important; /* Internet Explorer 5.5+ */
 `;
 
 const CommentImage = styled(ResponsiveImage)`
@@ -121,6 +126,7 @@ export const Comment: React.FC<
 					closeModal={closeDeletionModal}
 					onDelete={deleteComment}
 					id={_id}
+					tweetId={tweetId}
 				/>
 			)}
 			<CommentContainer

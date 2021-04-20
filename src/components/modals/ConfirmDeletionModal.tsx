@@ -82,11 +82,13 @@ export const ConfirmDeletionModal: React.FC<{
 	closeModal: () => void;
 	onDelete: (id: string) => void;
 	redirect?: string;
-}> = ({ id, closeModal, onDelete, redirect }) => {
+	tweetId?: string;
+}> = ({ id, closeModal, onDelete, redirect, tweetId }) => {
 	const divRef = useRef<HTMLDivElement | null>(null);
 	const history = useHistory();
 	const query = document.getElementById('modal-root');
 	// useClickOutside(divRef, closeModal);
+	const { decrementNumberOfComments } = useContext(TweetsContext);
 	useModalScrollbar(true);
 	return createPortal(
 		<ModalWrapper>
@@ -109,6 +111,9 @@ export const ConfirmDeletionModal: React.FC<{
 						backgroundColor="rgb(224, 36, 94)"
 						hoverBackgroundColor="rgb(202, 32, 85)"
 						onClick={() => {
+							if (tweetId) {
+								decrementNumberOfComments(tweetId);
+							}
 							onDelete(id!);
 							if (redirect) {
 								history.push(redirect);
