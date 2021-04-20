@@ -12,6 +12,7 @@ export const LoaderWrapper = styled.div`
 	width: 100%;
 	margin-top: 1rem;
 	margin-bottom: 1rem;
+	height: 140px;
 `;
 
 const InfiniteScrolling = styled(InfiniteScroll)`

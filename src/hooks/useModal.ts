@@ -11,9 +11,7 @@ export const useModal = () => {
 	};
 
 	const closeModal = () => {
-		// if (isShowing) {
 		setIsShowing(false);
-		// }
 	};
 
 	useEffect(() => {
