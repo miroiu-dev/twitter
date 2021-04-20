@@ -242,6 +242,9 @@ export const OptionTitle = styled.span`
 	font-size: 0.813rem;
 	color: rgb(110, 118, 125);
 	margin-right: 48px;
+	@media (max-width: 320px) {
+		margin-right: 0;
+	}
 `;
 
 export const OptionWrapper = styled.div`

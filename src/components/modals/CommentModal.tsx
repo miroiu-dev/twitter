@@ -1,7 +1,6 @@
 import styled from '@emotion/styled/macro';
 import { useContext } from 'react';
 import { TweetsContext } from '../../hooks/TweetsContext';
-import { useModalScrollbar } from '../../hooks/useModalScrollbar';
 import { CreateTweet } from '../../pages/home/CreateTweet';
 import { TweetHeader } from '../../pages/home/TweetHeader';
 import { getReadableDate } from '../../utils/getReadableDate';

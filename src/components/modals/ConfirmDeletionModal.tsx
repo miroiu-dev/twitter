@@ -3,7 +3,6 @@ import { useContext, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useHistory } from 'react-router';
 import { TweetsContext } from '../../hooks/TweetsContext';
-import { useClickOutside } from '../../hooks/useClickOutside';
 import { useModalScrollbar } from '../../hooks/useModalScrollbar';
 
 const ModalWrapper = styled.div`
@@ -27,6 +26,11 @@ const ConfirmWrapper = styled.div`
 	padding: 2rem 1.25rem;
 	border-radius: 1rem;
 	background-color: #000;
+`;
+
+const Wrapper = styled.div`
+	display: flex;
+	flex-direction: column;
 `;
 
 const HeaderText = styled.div`
@@ -93,37 +97,39 @@ export const ConfirmDeletionModal: React.FC<{
 	return createPortal(
 		<ModalWrapper>
 			<ConfirmWrapper ref={divRef}>
-				<HeaderText>Delete Tweet?</HeaderText>
-				<Description>
-					This can’t be undone and it will be removed from your
-					profile, the timeline of any accounts that follow you, and
-					from Twitter search results.
-				</Description>
-				<ButtonWrapper>
-					<Button
-						backgroundColor="rgb(32, 35, 39)"
-						hoverBackgroundColor="rgb(54, 57, 61)"
-						onClick={closeModal}
-					>
-						Cancel
-					</Button>
-					<Button
-						backgroundColor="rgb(224, 36, 94)"
-						hoverBackgroundColor="rgb(202, 32, 85)"
-						onClick={() => {
-							if (tweetId) {
-								decrementNumberOfComments(tweetId);
-							}
-							onDelete(id!);
-							if (redirect) {
-								history.push(redirect);
-							}
-							closeModal();
-						}}
-					>
-						Delete
-					</Button>
-				</ButtonWrapper>
+				<Wrapper>
+					<HeaderText>Delete Tweet?</HeaderText>
+					<Description>
+						This can’t be undone and it will be removed from your
+						profile, the timeline of any accounts that follow you,
+						and from Twitter search results.
+					</Description>
+					<ButtonWrapper>
+						<Button
+							backgroundColor="rgb(32, 35, 39)"
+							hoverBackgroundColor="rgb(54, 57, 61)"
+							onClick={closeModal}
+						>
+							Cancel
+						</Button>
+						<Button
+							backgroundColor="rgb(224, 36, 94)"
+							hoverBackgroundColor="rgb(202, 32, 85)"
+							onClick={() => {
+								if (tweetId) {
+									decrementNumberOfComments(tweetId);
+								}
+								onDelete(id!);
+								if (redirect) {
+									history.push(redirect);
+								}
+								closeModal();
+							}}
+						>
+							Delete
+						</Button>
+					</ButtonWrapper>
+				</Wrapper>
 			</ConfirmWrapper>
 		</ModalWrapper>,
 		query!
