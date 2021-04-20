@@ -99,6 +99,25 @@ export const CreateTweet: React.FC<{
 								}
 								inputMinHeight={inputMinHeight}
 								shouldNotKeepMinHeight={image ? true : false}
+								onDragEnter={ev => {
+									ev.preventDefault();
+									ev.dataTransfer.dropEffect = 'none';
+								}}
+								onDragOver={ev => {
+									ev.preventDefault();
+									ev.dataTransfer.dropEffect = 'none';
+								}}
+								onPaste={ev => {
+									ev.preventDefault();
+									const text = ev.clipboardData.getData(
+										'text/plain'
+									);
+									document.execCommand(
+										'insertText',
+										false,
+										text
+									);
+								}}
 							></TweetInput>
 						</TweetInputWrapper>
 						{image && (
