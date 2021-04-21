@@ -41,7 +41,7 @@ export const FullTweetInteractions: React.FC<{
 
 	const open = useCallback(() => setIsOpen(!isOpen), [isOpen, setIsOpen]);
 
-	const { toggleLikeUpdate } = useContext(TweetsContext);
+	const { toggleLikeUpdate, toggleRetweetUpdate } = useContext(TweetsContext);
 	useClickOutside(div, open);
 	return (
 		<TweetInteractionsWrapper>
@@ -73,7 +73,10 @@ export const FullTweetInteractions: React.FC<{
 					{isOpen && (
 						<RetweetModal
 							ref={div}
-							callback={toggleRetweet}
+							callback={() => {
+								toggleRetweet();
+								toggleRetweetUpdate(tweet._id);
+							}}
 							isRetweeted={tweet.retweetedByUser}
 							tweetId={tweet._id}
 							closeModal={open}

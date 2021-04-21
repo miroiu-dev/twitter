@@ -13,6 +13,7 @@ type TweetsContextProps = {
 	updateCommentCount: (id: string) => void;
 	decrementNumberOfComments: (id: string) => void;
 	toggleLikeUpdate: (id: string) => void;
+	toggleRetweetUpdate: (id: string) => void;
 };
 
 export const TweetsContext = createContext<TweetsContextProps>({
@@ -26,6 +27,7 @@ export const TweetsContext = createContext<TweetsContextProps>({
 	updateCommentCount: () => {},
 	decrementNumberOfComments: () => {},
 	toggleLikeUpdate: () => {},
+	toggleRetweetUpdate: () => {},
 });
 
 const FETCH_TWEETS_LIMIT = 10;
@@ -137,7 +139,6 @@ export const TweetsProvider: React.FC = ({ children }) => {
 					: tweet
 			)
 		);
-		console.log(tweets);
 	};
 
 	const toggleLikeUpdate = (id: string) => {
@@ -146,13 +147,32 @@ export const TweetsProvider: React.FC = ({ children }) => {
 				tweet._id === id
 					? {
 							...tweet,
-							numberOfLikes: tweet.likedByUser ? -1 : 1,
+							numberOfLikes:
+								tweet.numberOfLikes +
+								(tweet.likedByUser ? -1 : 1),
 							likedByUser: !tweet.likedByUser,
 					  }
 					: tweet
 			)
 		);
 	};
+
+	const toggleRetweetUpdate = (id: string) => {
+		setTweets(prev =>
+			prev.map(tweet =>
+				tweet._id === id
+					? {
+							...tweet,
+							numberOfRetweets:
+								tweet.numberOfRetweets +
+								(tweet.retweetedByUser ? -1 : 1),
+							retweetedByUser: !tweet.retweetedByUser,
+					  }
+					: tweet
+			)
+		);
+	};
+
 	return (
 		<TweetsContext.Provider
 			value={{
@@ -166,6 +186,7 @@ export const TweetsProvider: React.FC = ({ children }) => {
 				updateCommentCount,
 				decrementNumberOfComments,
 				toggleLikeUpdate,
+				toggleRetweetUpdate,
 			}}
 		>
 			{children}

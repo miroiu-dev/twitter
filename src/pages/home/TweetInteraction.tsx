@@ -13,6 +13,7 @@ import { Activity } from '../../components/icons/TweetModal';
 import { CommentModal } from '../../components/modals/CommentModal';
 import { RetweetModal } from '../../components/modals/RetweetModal';
 import { useAuth } from '../../hooks/useAuth';
+import { useClickOutside } from '../../hooks/useClickOutside';
 import { useModal } from '../../hooks/useModal';
 import { useTweet } from '../../hooks/useTweet';
 
@@ -183,7 +184,6 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 	canComment: cannotComment,
 }) => {
 	const { user } = useAuth();
-	const { show, openModal, ref, closeModal } = useModal();
 
 	const [isToggled, setIsToggled] = useState(false);
 
@@ -192,9 +192,15 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 		setIsToggled,
 	]);
 
+	const [isOpen, setIsOpen] = useState(false);
+
+	const show = useCallback(() => setIsOpen(!isOpen), [isOpen, setIsOpen]);
+
 	const { createComment } = useTweet(id);
 
 	const activityRef = useRef<HTMLDivElement | null>(null);
+	const retweetRef = useRef<HTMLDivElement | null>(null);
+	useClickOutside(retweetRef, show);
 
 	return (
 		<TweetInteraction onClick={ev => ev.stopPropagation()}>
@@ -213,7 +219,7 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 					tweetId={tweetId}
 				/>
 			</CommentWrapper>
-			<RetweetWrapper retweeted={retweetedByUser} onClick={openModal}>
+			<RetweetWrapper retweeted={retweetedByUser} onClick={show}>
 				{retweetedByUser ? (
 					<IconHover>
 						<RetweetFilledSVG />
@@ -225,13 +231,13 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 				)}
 				<Ammount>{numberOfRetweets}</Ammount>
 				<AnimatePresence>
-					{show && (
+					{isOpen && (
 						<RetweetModal
-							ref={ref}
+							ref={retweetRef}
 							callback={toggleRetweet}
 							isRetweeted={retweetedByUser}
 							tweetId={id}
-							closeModal={closeModal}
+							closeModal={show}
 						/>
 					)}
 				</AnimatePresence>
