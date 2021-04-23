@@ -77,6 +77,8 @@ export const CreateTweet: React.FC<{
 		setImage(null);
 	};
 
+	const lines = useRef<string[]>([]);
+
 	const { createTweet } = useContext(TweetsContext);
 	return (
 		<CreateTweetWrapper hideBorderBottom={hideBorderBottom}>
@@ -94,11 +96,24 @@ export const CreateTweet: React.FC<{
 								onInput={(ev: FormEvent<HTMLDivElement>) => {
 									const nativeEvent = ev.nativeEvent as any;
 
-									setText(prev =>
-										isMobile
-											? nativeEvent.data || text + '\n'
-											: prev + (nativeEvent.data || '\n')
-									);
+									setText(prev => {
+										if (isMobile) {
+											if (!nativeEvent.data) {
+												lines.current.push(text);
+												return text + '\n';
+											} else {
+												return (
+													lines.current.join('\n') +
+													nativeEvent.data
+												);
+											}
+										} else {
+											return (
+												prev +
+												(nativeEvent.data || '\n')
+											);
+										}
+									});
 								}}
 								onClick={() =>
 									!visibilityHidden &&
