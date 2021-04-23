@@ -1,7 +1,7 @@
 import styled from '@emotion/styled/macro';
 import React, { forwardRef } from 'react';
 import { DotsSVG, IconWrapper } from '../../components/side-panel/Atoms';
-import { User } from '../../models/User';
+import { User } from '../../models/UserModel';
 import { TweetInfo } from './TweetInfo';
 import {
 	TweetOptionsModalSelf,
