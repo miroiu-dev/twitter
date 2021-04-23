@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { createContext, useEffect, useState } from 'react';
-import { User } from '../models/UserModel';
+import { User } from '../models/User';
 
 type ContextType = {
 	user?: User;

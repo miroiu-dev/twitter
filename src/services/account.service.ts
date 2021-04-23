@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { ApiError } from '../models/ApiError';
-import { User } from '../models/UserModel';
+import { User } from '../models/User';
 import { routes } from './routes';
 
 export type LoginResponse = {
