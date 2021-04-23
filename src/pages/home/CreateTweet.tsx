@@ -93,6 +93,7 @@ export const CreateTweet: React.FC<{
 								data-placeholder="What's happening?"
 								onInput={(ev: FormEvent<HTMLDivElement>) => {
 									setText(inputText.current?.innerHTML!);
+									//above works better
 									// setText(prev =>
 									// 	isMobile
 									// 		? inputText.current?.textContent ||
