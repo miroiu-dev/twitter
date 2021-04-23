@@ -96,7 +96,7 @@ export const CreateTweet: React.FC<{
 
 									setText(prev =>
 										isMobile
-											? prev
+											? nativeEvent.data || '\n'
 											: prev + (nativeEvent.data || '\n')
 									);
 								}}
