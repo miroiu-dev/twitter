@@ -6,7 +6,7 @@ import { IconWrapper } from '../../components/side-panel/Atoms';
 import { CreateTweet } from './CreateTweet';
 import { Feed } from './Feed';
 
-const HomeLayout = styled.div`
+export const HomeLayout = styled.div`
 	max-width: 600px;
 	width: 100%;
 	border-left: 1px solid rgb(47, 51, 54);
