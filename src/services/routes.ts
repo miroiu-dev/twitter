@@ -1,5 +1,4 @@
-const baseURL =
-	process.env.TWITTER_API_URL || 'https://twitter-api-cl.herokuapp.com';
+const baseURL = process.env.REACT_APP_TWITTER_API_URL;
 
 export const routes = {
 	login: () => `${baseURL}/login`,
