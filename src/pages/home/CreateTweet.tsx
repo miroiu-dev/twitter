@@ -33,9 +33,9 @@ const EmojiPickerWrapper = styled(IconWrapperLabel)`
 	position: relative;
 `;
 
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-	navigator.userAgent
-);
+// const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+// 	navigator.userAgent
+// );
 
 export const CreateTweet: React.FC<{
 	contentPadding?: string;
@@ -77,8 +77,6 @@ export const CreateTweet: React.FC<{
 		setImage(null);
 	};
 
-	const lines = useRef<string[]>([]);
-
 	const { createTweet } = useContext(TweetsContext);
 	return (
 		<CreateTweetWrapper hideBorderBottom={hideBorderBottom}>
@@ -94,26 +92,13 @@ export const CreateTweet: React.FC<{
 								contentEditable
 								data-placeholder="What's happening?"
 								onInput={(ev: FormEvent<HTMLDivElement>) => {
-									const nativeEvent = ev.nativeEvent as any;
-
-									setText(prev => {
-										if (isMobile) {
-											if (!nativeEvent.data) {
-												lines.current.push(text);
-												return text + '\n';
-											} else {
-												return (
-													lines.current.join('\n') +
-													nativeEvent.data
-												);
-											}
-										} else {
-											return (
-												prev +
-												(nativeEvent.data || '\n')
-											);
-										}
-									});
+									setText(inputText.current?.innerHTML!);
+									// setText(prev =>
+									// 	isMobile
+									// 		? inputText.current?.textContent ||
+									// 		  ''
+									// 		: prev + (nativeEvent.data || '\n')
+									// );
 								}}
 								onClick={() =>
 									!visibilityHidden &&
@@ -177,11 +162,20 @@ export const CreateTweet: React.FC<{
 							<TweetButton
 								disabled={!text}
 								onClick={() => {
+									const result = text
+										.replaceAll('<div>', '\n')
+										.replaceAll('</div>', '')
+										.replaceAll('&nbsp;', ' ')
+										.replaceAll('<br>', '\n')!;
+
 									if (callback) {
-										callback(text.trim(), image as string);
+										callback(
+											result.trim(),
+											image as string
+										);
 									} else {
 										createTweet(
-											text.trim(),
+											result.trim(),
 											image as string
 										);
 									}
