@@ -89,6 +89,7 @@ export const CreateTweet: React.FC<{
 								data-placeholder="What's happening?"
 								onInput={(ev: FormEvent<HTMLDivElement>) => {
 									const nativeEvent = ev.nativeEvent as any;
+									console.log(nativeEvent);
 
 									setText(
 										prev =>
