@@ -72,7 +72,7 @@ export const CreateTweet: React.FC<{
 	const removeImage = () => {
 		setImage(null);
 	};
-
+	console.log(text);
 	const { createTweet } = useContext(TweetsContext);
 	return (
 		<CreateTweetWrapper hideBorderBottom={hideBorderBottom}>
@@ -89,7 +89,6 @@ export const CreateTweet: React.FC<{
 								data-placeholder="What's happening?"
 								onInput={(ev: FormEvent<HTMLDivElement>) => {
 									const nativeEvent = ev.nativeEvent as any;
-									console.log(nativeEvent);
 
 									setText(
 										prev =>
@@ -161,6 +160,7 @@ export const CreateTweet: React.FC<{
 							<TweetButton
 								disabled={!text}
 								onClick={() => {
+									console.log('send', text);
 									if (callback) {
 										callback(text.trim(), image as string);
 									} else {
