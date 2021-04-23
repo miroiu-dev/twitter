@@ -2,7 +2,6 @@ import { useCallback, useRef, useState } from 'react';
 import { DotsSVG } from '../../../components/side-panel/Atoms';
 import { useAuth } from '../../../hooks/useAuth';
 import { useClickOutside } from '../../../hooks/useClickOutside';
-import { useModal } from '../../../hooks/useModal';
 import { Wrapper } from '../../registration/Atoms';
 import { HeightWrapper } from '../TweetHeader';
 import {

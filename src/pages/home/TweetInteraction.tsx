@@ -14,7 +14,6 @@ import { CommentModal } from '../../components/modals/CommentModal';
 import { RetweetModal } from '../../components/modals/RetweetModal';
 import { useAuth } from '../../hooks/useAuth';
 import { useClickOutside } from '../../hooks/useClickOutside';
-import { useModal } from '../../hooks/useModal';
 import { useTweet } from '../../hooks/useTweet';
 
 const BaseTweetModalIcon = styled.svg`

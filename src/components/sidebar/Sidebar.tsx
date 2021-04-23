@@ -24,7 +24,6 @@ import {
 	ProfileFilledSVG,
 	ProfileSVG,
 } from './Atoms';
-import { useModal } from '../../hooks/useModal';
 import { useCallback, useRef, useState } from 'react';
 import { useClickOutside } from '../../hooks/useClickOutside';
 

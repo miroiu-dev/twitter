@@ -1,4 +1,3 @@
-import { useModal } from '../../hooks/useModal';
 import { TweetButton } from '../buttons/TweetButton';
 import { UserOptionsModal } from '../modals/UserOptions';
 import { SidebarLink } from '../sidebar/SidebarLink';

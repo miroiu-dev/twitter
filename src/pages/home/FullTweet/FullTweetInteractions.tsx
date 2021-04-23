@@ -5,7 +5,6 @@ import { CommentModal } from '../../../components/modals/CommentModal';
 import { RetweetModal } from '../../../components/modals/RetweetModal';
 import { TweetsContext } from '../../../hooks/TweetsContext';
 import { useClickOutside } from '../../../hooks/useClickOutside';
-import { useModal } from '../../../hooks/useModal';
 import { FullTweet } from '../../../models/FullTweet';
 import { IconHover } from '../TweetInteraction';
 import {

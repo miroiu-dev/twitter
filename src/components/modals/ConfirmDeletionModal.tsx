@@ -1,5 +1,5 @@
 import styled from '@emotion/styled/macro';
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useHistory } from 'react-router';
 import { TweetsContext } from '../../hooks/TweetsContext';

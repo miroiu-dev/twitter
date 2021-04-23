@@ -1,11 +1,5 @@
 import styled from '@emotion/styled/macro';
-import React, {
-	FormEvent,
-	FormEventHandler,
-	useContext,
-	useRef,
-	useState,
-} from 'react';
+import React, { FormEvent, useContext, useRef, useState } from 'react';
 import { IconWrapper } from '../../components/side-panel/Atoms';
 import { useAuth } from '../../hooks/useAuth';
 import {
