@@ -33,6 +33,10 @@ const EmojiPickerWrapper = styled(IconWrapperLabel)`
 	position: relative;
 `;
 
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+	navigator.userAgent
+);
+
 export const CreateTweet: React.FC<{
 	contentPadding?: string;
 	visibilityHidden?: boolean;
@@ -72,7 +76,7 @@ export const CreateTweet: React.FC<{
 	const removeImage = () => {
 		setImage(null);
 	};
-	console.log(text);
+
 	const { createTweet } = useContext(TweetsContext);
 	return (
 		<CreateTweetWrapper hideBorderBottom={hideBorderBottom}>
@@ -90,13 +94,11 @@ export const CreateTweet: React.FC<{
 								onInput={(ev: FormEvent<HTMLDivElement>) => {
 									const nativeEvent = ev.nativeEvent as any;
 
-									setText(
-										prev =>
-											prev + (nativeEvent.data || '\n')
+									setText(prev =>
+										isMobile
+											? prev
+											: prev + (nativeEvent.data || '\n')
 									);
-									// setText(
-									// 	inputText.current?.textContent!
-									// );
 								}}
 								onClick={() =>
 									!visibilityHidden &&
@@ -160,7 +162,6 @@ export const CreateTweet: React.FC<{
 							<TweetButton
 								disabled={!text}
 								onClick={() => {
-									console.log('send', text);
 									if (callback) {
 										callback(text.trim(), image as string);
 									} else {
