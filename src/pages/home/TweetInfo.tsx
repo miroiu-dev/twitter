@@ -20,15 +20,23 @@ const Username = styled.span`
 	font-weight: 400;
 	font-size: 0.938rem;
 	margin-right: 5px;
+
+	white-space: nowrap !important;
+	word-break: normal !important;
 `;
 
 const TweetDate = styled.span`
 	color: rgb(110, 118, 125);
 	font-weight: 400;
 	font-size: 0.938rem;
+	white-space: nowrap !important;
+	word-break: normal !important;
 `;
 const FlexContainer = styled.div`
 	display: flex;
+	overflow: hidden;
+	white-space: nowrap !important;
+	word-break: normal !important;
 `;
 
 export const TweetInfo: React.FC<{
