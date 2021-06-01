@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 
-import default_profile_normal from '../images/default_profile_normal.png';
 import {
 	Container,
 	ImageWrapper,
