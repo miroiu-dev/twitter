@@ -30,7 +30,7 @@ const whoToFollow = async (): Promise<WhoToFollow[]> => {
 	const toFollow = [
 		{
 			profilePicture:
-				'https://pbs.twimg.com/profile_images/1380519454073884673/3hrggq0O_normal.jpg',
+				'https://pbs.twimg.com/profile_images/1397774282265141248/XA9jCj_Q_200x200.jpg',
 			name: 'SkinLords',
 			username: 'SkinLords',
 		},

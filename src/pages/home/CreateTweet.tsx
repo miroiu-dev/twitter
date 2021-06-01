@@ -117,9 +117,8 @@ export const CreateTweet: React.FC<{
 								}}
 								onPaste={ev => {
 									ev.preventDefault();
-									const text = ev.clipboardData.getData(
-										'text/plain'
-									);
+									const text =
+										ev.clipboardData.getData('text/plain');
 									document.execCommand(
 										'insertText',
 										false,

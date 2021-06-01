@@ -30,7 +30,7 @@ export const UserInfo: React.FC<{
 				<ImageWrapper>
 					<UserProfileImage
 						draggable={false}
-						src={user?.profilePicture ?? default_profile_normal}
+						src={user?.profilePicture}
 					/>
 				</ImageWrapper>
 				<SideWrapper>
