@@ -1,9 +1,4 @@
-import {
-	BrowserRouter as Router,
-	Switch,
-	Route,
-	Redirect,
-} from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { LandingPage } from './pages/landing/LandingPage';
 import { LoginPage } from './pages/registration/LoginPage';
 import { SignupPage } from './pages/registration/SignupPage';
@@ -18,128 +13,73 @@ import { LoaderWrapper } from './pages/home/Feed';
 import { HomeLayout as MainLayout } from './pages/home/Home';
 import Loader from 'react-loader-spinner';
 
-const App = () => {
+const ProtectedApp = () => {
 	const { user } = useAuth();
 
 	return (
-		<Router>
+		<>
 			{user ? (
 				<Layout
 					rightPanel={<SidePanel />}
 					leftPanel={<Sidebar />}
 					tabletSidebar={<TabletSidebar />}
 				>
-					<Switch>
-						<Route path="/home">
-							<Home />
-						</Route>
-						<Route path="/explore">
-							<MainLayout>
-								<LoaderWrapper>
-									<Loader
-										type="Oval"
-										color="rgb(29, 161, 242)"
-										height={30}
-										width={30}
-									/>
-								</LoaderWrapper>
-							</MainLayout>
-						</Route>
-						<Route path="/notifications">
-							<MainLayout>
-								<LoaderWrapper>
-									<Loader
-										type="Oval"
-										color="rgb(29, 161, 242)"
-										height={30}
-										width={30}
-									/>
-								</LoaderWrapper>
-							</MainLayout>
-						</Route>
-						<Route path="/messages">
-							<MainLayout>
-								<LoaderWrapper>
-									<Loader
-										type="Oval"
-										color="rgb(29, 161, 242)"
-										height={30}
-										width={30}
-									/>
-								</LoaderWrapper>
-							</MainLayout>
-						</Route>
-						<Route path="/bookmarks">
-							<MainLayout>
-								<LoaderWrapper>
-									<Loader
-										type="Oval"
-										color="rgb(29, 161, 242)"
-										height={30}
-										width={30}
-									/>
-								</LoaderWrapper>
-							</MainLayout>
-						</Route>
-						<Route path="/lists">
-							<MainLayout>
-								<LoaderWrapper>
-									<Loader
-										type="Oval"
-										color="rgb(29, 161, 242)"
-										height={30}
-										width={30}
-									/>
-								</LoaderWrapper>
-							</MainLayout>
-						</Route>
-						<Route path="/profile">
-							<MainLayout>
-								<LoaderWrapper>
-									<Loader
-										type="Oval"
-										color="rgb(29, 161, 242)"
-										height={30}
-										width={30}
-									/>
-								</LoaderWrapper>
-							</MainLayout>
-						</Route>
-						<Route path="/more">
-							<MainLayout>
-								<LoaderWrapper>
-									<Loader
-										type="Oval"
-										color="rgb(29, 161, 242)"
-										height={30}
-										width={30}
-									/>
-								</LoaderWrapper>
-							</MainLayout>
-						</Route>
-						<Route path="/tweet/:id">
-							<FullTweet />
-						</Route>
-						<Route path="/">
-							<Redirect to="/home" />
-						</Route>
-					</Switch>
+					<Routes>
+						<Route path="/" element={<Home />} />
+
+						<Route
+							path="/explore"
+							element={<UnimplementedRoute />}
+						/>
+						<Route
+							path="/notifications"
+							element={<UnimplementedRoute />}
+						/>
+						<Route
+							path="/messages"
+							element={<UnimplementedRoute />}
+						/>
+						<Route
+							path="/bookmarks"
+							element={<UnimplementedRoute />}
+						/>
+						<Route path="/lists" element={<UnimplementedRoute />} />
+						<Route
+							path="/profile"
+							element={<UnimplementedRoute />}
+						/>
+						<Route path="/more" element={<UnimplementedRoute />} />
+						<Route path="/tweet/:id" element={<FullTweet />} />
+
+						<Route path="*" element={<Navigate to="/" replace />} />
+					</Routes>
 				</Layout>
 			) : (
-				<Switch>
-					<Route path="/login">
-						<LoginPage />
-					</Route>
-					<Route path="/signup">
-						<SignupPage />
-					</Route>
-					<Route path="/">
-						<LandingPage />
-					</Route>
-				</Switch>
+				<Routes>
+					<Route path="/login" element={<LoginPage />} />
+					<Route path="/signup" element={<SignupPage />} />
+					<Route path="/" element={<LandingPage />} />
+				</Routes>
 			)}
-		</Router>
+		</>
 	);
 };
+
+const UnimplementedRoute = () => {
+	return (
+		<MainLayout>
+			<LoaderWrapper>
+				<Loader
+					type="Oval"
+					color="rgb(29, 161, 242)"
+					height={30}
+					width={30}
+				/>
+			</LoaderWrapper>
+		</MainLayout>
+	);
+};
+
+const App = () => <ProtectedApp />;
 
 export default App;

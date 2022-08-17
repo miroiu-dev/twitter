@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 
 import { ResponsiveImage } from '../../../components/ResponsiveImage';
 import { TweetInteractions as CommentInteractions } from '../TweetInteraction';

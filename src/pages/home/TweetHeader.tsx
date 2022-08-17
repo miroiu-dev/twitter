@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import React, { forwardRef } from 'react';
 import { DotsSVG, IconWrapper } from '../../components/side-panel/Atoms';
 import { User } from '../../models/User';

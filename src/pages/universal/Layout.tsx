@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { ReactNode } from 'react';
 import { useScreenType } from '../../hooks/useScreenType';
 
@@ -14,6 +14,7 @@ const RightPanel = styled.div`
 `;
 
 type LayoutProps = {
+	children: ReactNode;
 	leftPanel?: ReactNode;
 	rightPanel?: ReactNode;
 	tabletSidebar?: ReactNode;

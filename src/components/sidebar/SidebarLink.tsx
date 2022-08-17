@@ -1,4 +1,4 @@
-import styled, { StyledComponent } from '@emotion/styled/macro';
+import styled, { StyledComponent } from '@emotion/styled';
 import { useMemo } from 'react';
 import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';

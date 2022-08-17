@@ -1,11 +1,12 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
-import { MouseEventHandler } from 'react';
+import { MouseEventHandler, ReactNode } from 'react';
 import { useModalScrollbar } from '../../hooks/useModalScrollbar';
 
 const modalroot = document.getElementById('modal-root');
 
 const StopEvents: React.FC<{
+	children: ReactNode;
 	className?: string;
 	onClick?: MouseEventHandler<HTMLDivElement>;
 }> = ({ children, className, onClick }) => {
@@ -53,11 +54,11 @@ const ModalContent = styled(StopEvents)`
 	}
 `;
 
-export const BaseModal: React.FC<{ isOpen: boolean; onClose?: () => void }> = ({
-	children,
-	isOpen,
-	onClose,
-}) => {
+export const BaseModal: React.FC<{
+	children: ReactNode;
+	isOpen: boolean;
+	onClose?: () => void;
+}> = ({ children, isOpen, onClose }) => {
 	useModalScrollbar(isOpen);
 	return isOpen
 		? createPortal(

@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { TwitterButton } from '../../components/buttons/TwitterButton';
 import { Link } from 'react-router-dom';
 

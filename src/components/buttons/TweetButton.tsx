@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { Tweet } from '../icons/Tweet';
 
 const TweetButtonWrapper = styled.div`

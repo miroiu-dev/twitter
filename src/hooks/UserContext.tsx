@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useEffect, useState } from 'react';
 import { User } from '../models/User';
 
 type ContextType = {
@@ -14,7 +14,9 @@ export const UserContext = createContext<ContextType>({
 const localUser: User | null = JSON.parse(
 	localStorage.getItem('user') || 'null'
 );
-export const UserProvider: React.FC = ({ children }) => {
+export const UserProvider: React.FC<{ children: ReactNode }> = ({
+	children,
+}) => {
 	const [user, setUser] = useState<User | undefined>(localUser || undefined);
 
 	useEffect(() => {

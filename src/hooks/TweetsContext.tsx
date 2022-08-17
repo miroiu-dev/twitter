@@ -1,4 +1,10 @@
-import React, { createContext, useCallback, useRef, useState } from 'react';
+import React, {
+	createContext,
+	ReactNode,
+	useCallback,
+	useRef,
+	useState,
+} from 'react';
 import { TweetPreview } from '../models/TweetPreview';
 import { tweetsService } from '../services/tweets.service';
 
@@ -14,6 +20,7 @@ type TweetsContextProps = {
 	decrementNumberOfComments: (id: string) => void;
 	toggleLikeUpdate: (id: string) => void;
 	toggleRetweetUpdate: (id: string) => void;
+	hasMore: boolean;
 };
 
 export const TweetsContext = createContext<TweetsContextProps>({
@@ -28,13 +35,17 @@ export const TweetsContext = createContext<TweetsContextProps>({
 	decrementNumberOfComments: () => {},
 	toggleLikeUpdate: () => {},
 	toggleRetweetUpdate: () => {},
+	hasMore: true,
 });
 
 const FETCH_TWEETS_LIMIT = 10;
 
-export const TweetsProvider: React.FC = ({ children }) => {
+export const TweetsProvider: React.FC<{ children: ReactNode }> = ({
+	children,
+}) => {
 	const [tweets, setTweets] = useState<TweetPreview[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
+	const [hasMore, setHasMore] = useState(true);
 	const offsetRef = useRef(0);
 
 	const createTweet = async (message: string, attachment: string) => {
@@ -57,11 +68,12 @@ export const TweetsProvider: React.FC = ({ children }) => {
 			FETCH_TWEETS_LIMIT
 		);
 
-		setIsLoading(false);
-
 		if (response && response.results.length > 0) {
 			setTweets(prev => [...prev, ...response.results]);
 			offsetRef.current = offsetRef.current + response.results.length;
+			if (offsetRef.current === response.totalTweets) {
+				setHasMore(false);
+			}
 		}
 	}, []);
 	const deleteTweet = async (id: string) => {
@@ -187,6 +199,7 @@ export const TweetsProvider: React.FC = ({ children }) => {
 				decrementNumberOfComments,
 				toggleLikeUpdate,
 				toggleRetweetUpdate,
+				hasMore,
 			}}
 		>
 			{children}

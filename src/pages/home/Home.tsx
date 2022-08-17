@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import { Sparkles } from '../../components/icons/Sparkles';
 import { IconWrapper } from '../../components/side-panel/Atoms';

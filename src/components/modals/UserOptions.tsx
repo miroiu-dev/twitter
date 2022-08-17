@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { useAuth } from '../../hooks/useAuth';
 import { UserInfo } from '../user/UserInfo';
 import { Checkmark } from '../icons/Checkmark';

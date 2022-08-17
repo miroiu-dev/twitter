@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import React, { FormEvent, useContext, useRef, useState } from 'react';
 import { IconWrapper } from '../../components/side-panel/Atoms';
 import { useAuth } from '../../hooks/useAuth';
@@ -22,7 +22,6 @@ import {
 } from './Atoms';
 import { ContentVisiblity } from './ContentVisiblity';
 import { ImageOptions } from './ImageOptions';
-import 'emoji-mart/css/emoji-mart.css';
 import { TweetsContext } from '../../hooks/TweetsContext';
 
 const IconWrapperLabel = IconWrapper.withComponent('label');
@@ -93,13 +92,6 @@ export const CreateTweet: React.FC<{
 								data-placeholder="What's happening?"
 								onInput={(ev: FormEvent<HTMLDivElement>) => {
 									setText(inputText.current?.innerHTML!);
-									//above works better
-									// setText(prev =>
-									// 	isMobile
-									// 		? inputText.current?.textContent ||
-									// 		  ''
-									// 		: prev + (nativeEvent.data || '\n')
-									// );
 								}}
 								onClick={() =>
 									!visibilityHidden &&

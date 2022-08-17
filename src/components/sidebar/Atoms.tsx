@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { Bookmarks, BookmarksFilled } from '../icons/Bookmarks';
 import { Hashtag, HashtagFilled } from '../icons/Hashtag';
 import { House, HouseFilled } from '../icons/House';
@@ -19,9 +19,8 @@ export const HouseSVG = BaseIcon.withComponent(House);
 export const HouseFilledSVG = BaseIcon.withComponent(HouseFilled);
 export const HashtagSVG = BaseIcon.withComponent(Hashtag);
 export const HashtagFilledSVG = BaseIcon.withComponent(HashtagFilled);
-export const NotificationsFilledSVG = BaseIcon.withComponent(
-	NotificationsFilled
-);
+export const NotificationsFilledSVG =
+	BaseIcon.withComponent(NotificationsFilled);
 export const MessagesSVG = BaseIcon.withComponent(Messages);
 export const MessagesFilledSVG = BaseIcon.withComponent(MessagesFilled);
 export const BookmarksSVG = BaseIcon.withComponent(Bookmarks);

@@ -1,7 +1,7 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { useContext, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { TweetsContext } from '../../hooks/TweetsContext';
 import { useModalScrollbar } from '../../hooks/useModalScrollbar';
 
@@ -89,7 +89,7 @@ export const ConfirmDeletionModal: React.FC<{
 	tweetId?: string;
 }> = ({ id, closeModal, onDelete, redirect, tweetId }) => {
 	const divRef = useRef<HTMLDivElement | null>(null);
-	const history = useHistory();
+	const navigate = useNavigate();
 	const query = document.getElementById('modal-root');
 	// useClickOutside(divRef, closeModal);
 	const { decrementNumberOfComments } = useContext(TweetsContext);
@@ -121,7 +121,7 @@ export const ConfirmDeletionModal: React.FC<{
 								}
 								onDelete(id!);
 								if (redirect) {
-									history.push(redirect);
+									navigate(redirect);
 								}
 								closeModal();
 							}}

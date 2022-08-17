@@ -1,5 +1,5 @@
 import { keyframes } from '@emotion/react';
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import React from 'react';
 
 const heartBurst = keyframes`

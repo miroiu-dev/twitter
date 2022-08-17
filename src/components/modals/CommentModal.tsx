@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { useContext } from 'react';
 import { TweetsContext } from '../../hooks/TweetsContext';
 import { CreateTweet } from '../../pages/home/CreateTweet';

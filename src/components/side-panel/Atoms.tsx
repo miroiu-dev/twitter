@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { Dots } from '../icons/Dots';
 import { Remove } from '../icons/Remove';
 import { Search } from '../icons/Search';

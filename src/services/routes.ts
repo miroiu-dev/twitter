@@ -1,4 +1,4 @@
-const baseURL = process.env.REACT_APP_TWITTER_API_URL;
+const baseURL = import.meta.env.VITE_TWITTER_API_URL;
 
 export const routes = {
 	login: () => `${baseURL}/login`,

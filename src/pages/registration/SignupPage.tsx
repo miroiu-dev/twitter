@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import TwitterSvg from '../../components/icons/TwitterSvg';
 import { TwitterInput } from '../../components/input/TwitterInput';

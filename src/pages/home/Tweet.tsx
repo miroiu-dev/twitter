@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 
 import { ResponsiveImage } from '../../components/ResponsiveImage';
 import { TweetInteractions } from './TweetInteraction';
@@ -11,9 +11,9 @@ import { ConfirmDeletionModal } from '../../components/modals/ConfirmDeletionMod
 import { getReadableDate } from '../../utils/getReadableDate';
 
 import { motion } from 'framer-motion';
-import { useHistory } from 'react-router';
 import { TweetHeader } from './TweetHeader';
 import { TweetsContext } from '../../hooks/TweetsContext';
+import { useNavigate } from 'react-router-dom';
 
 export const TweetContentWrapper = styled.span`
 	display: flex;
@@ -119,7 +119,7 @@ export const Tweet: React.FC<TweetPreview> = ({
 	const dateDiffDisplay = getReadableDate(new Date(createdAt));
 	const { closeModal, openModal, ref, show } = useModal();
 	const [isOpen, setIsOpen] = useState(false);
-	const history = useHistory();
+	const navigate = useNavigate();
 	const closeDeletionModal = () => {
 		setIsOpen(false);
 	};
@@ -146,7 +146,7 @@ export const Tweet: React.FC<TweetPreview> = ({
 				exit="exit"
 				onClick={ev => {
 					ev.stopPropagation();
-					history.push(`/tweet/${_id}`);
+					navigate(`/tweet/${_id}`);
 				}}
 			>
 				<GridColumn>
@@ -171,9 +171,7 @@ export const Tweet: React.FC<TweetPreview> = ({
 						<TweetContentWrapper>
 							<TweetContent>{message}</TweetContent>
 						</TweetContentWrapper>
-						{attachment && (
-							<TweetImage src={attachment}></TweetImage>
-						)}
+						{attachment && <TweetImage src={attachment} />}
 						<TweetInteractions
 							numberOfComments={numberOfComments}
 							numberOfLikes={numberOfLikes}

@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { AnimatePresence } from 'framer-motion';
 import { useContext, useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -20,16 +20,16 @@ const InfiniteScrolling = styled(InfiniteScroll)`
 `;
 
 export const Feed: React.FC = () => {
-	const { tweets, fetchTweets } = useContext(TweetsContext);
+	const { tweets, fetchTweets, hasMore } = useContext(TweetsContext);
 	useEffect(() => {
 		fetchTweets();
 	}, [fetchTweets]);
 
 	return (
 		<InfiniteScrolling
-			dataLength={tweets.length} //This is important field to render the next data
+			dataLength={tweets.length}
 			next={fetchTweets}
-			hasMore={true}
+			hasMore={hasMore}
 			loader={
 				<LoaderWrapper>
 					<Loader

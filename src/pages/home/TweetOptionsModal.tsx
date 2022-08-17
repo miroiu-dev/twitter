@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { AnimatePresence, motion } from 'framer-motion';
 import { forwardRef } from 'react';
 import {

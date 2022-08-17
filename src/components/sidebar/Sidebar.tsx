@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import TwitterSvg from '../icons/TwitterSvg';
 import { Link } from 'react-router-dom';
 import { TwitterButton } from '../buttons/TwitterButton';
@@ -83,10 +83,10 @@ const DotsSVG = styled(Dots)`
 export const Sidebar: React.FC = () => {
 	const [shouldOpen, setShouldOpen] = useState(false);
 	const div = useRef<HTMLDivElement | null>(null);
-	const show = useCallback(() => setShouldOpen(!shouldOpen), [
-		shouldOpen,
-		setShouldOpen,
-	]);
+	const show = useCallback(
+		() => setShouldOpen(!shouldOpen),
+		[shouldOpen, setShouldOpen]
+	);
 	useClickOutside(div, show);
 	return (
 		<SidebarWrapper>

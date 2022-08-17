@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 
 export type UserInfoWrapperProps = {
 	padding?: string;

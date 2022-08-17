@@ -1,5 +1,5 @@
 import { useCallback, useContext } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import {
 	accountService,
 	DateOfBirth,
@@ -15,7 +15,7 @@ const CountriesByName = new Map([
 
 export const useAuth = () => {
 	const { user, setUser } = useContext(UserContext);
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	const login = useCallback(
 		async (username: string, password: string) => {
@@ -27,7 +27,7 @@ export const useAuth = () => {
 			const country = CountriesByName.get(response.user?.country!);
 			if (response.user) {
 				setUser({ ...response.user, country: country });
-				history.push('/home');
+				navigate('/home');
 			}
 
 			return response;
@@ -59,7 +59,7 @@ export const useAuth = () => {
 			if (response.user) {
 				setUser({ ...response.user, country: country });
 				localStorage.setItem('user', JSON.stringify(response.user));
-				history.push('/home');
+				navigate('/home');
 			}
 
 			return response;

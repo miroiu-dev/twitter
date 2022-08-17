@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { AnimatePresence } from 'framer-motion';
 import { useCallback, useRef, useState } from 'react';
 import { AnimatedHeart } from '../../components/icons/AnimatedHeart';
@@ -186,10 +186,10 @@ export const TweetInteractions: React.FC<TweetInteractionsProps> = ({
 
 	const [isToggled, setIsToggled] = useState(false);
 
-	const toggle = useCallback(() => setIsToggled(!isToggled), [
-		isToggled,
-		setIsToggled,
-	]);
+	const toggle = useCallback(
+		() => setIsToggled(!isToggled),
+		[isToggled, setIsToggled]
+	);
 
 	const [isOpen, setIsOpen] = useState(false);
 

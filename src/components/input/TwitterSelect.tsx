@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { ArrowDown } from '../icons/ArrowDown';
 
 const Arrow = styled(ArrowDown)`

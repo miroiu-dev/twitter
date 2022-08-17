@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { ReactNode } from 'react';
 
 export const ImageWrapper = styled.div<{ url?: string }>`
 	display: flex;
@@ -19,6 +20,7 @@ export const RealImage = styled.img<{ maxWidth?: boolean }>`
 `;
 
 export const ResponsiveImage: React.FC<{
+	children?: ReactNode;
 	src?: string;
 	className?: string;
 	maxWidth?: boolean;

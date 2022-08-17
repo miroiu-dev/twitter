@@ -22,6 +22,7 @@ type TweetsResponse = {
 	results: TweetPreview[];
 	offset: number;
 	limit: number;
+	totalTweets: number;
 };
 
 const getTweets = async (offset: number, limit: number) => {

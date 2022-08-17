@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Arrow } from '../../../components/icons/Arrow';
 import {

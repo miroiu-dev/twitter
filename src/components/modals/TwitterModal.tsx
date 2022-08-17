@@ -1,4 +1,5 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
+import { ReactNode } from 'react';
 import { CloseX } from '../icons/CloseX';
 import { IconWrapper } from '../side-panel/Atoms';
 import { BaseModal } from './BaseModal';
@@ -19,6 +20,7 @@ const CloseXSVG = styled(CloseX)`
 `;
 
 export const TwitterModal: React.FC<{
+	children: ReactNode;
 	onClose: () => void;
 	isOpen: boolean;
 }> = ({ children, isOpen, onClose }) => {

@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import { Lists } from '../../components/icons/Lists';
 import { Profile } from '../../components/icons/Profile';

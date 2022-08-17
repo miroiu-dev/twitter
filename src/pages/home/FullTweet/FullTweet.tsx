@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import Loader from 'react-loader-spinner';
-import { useHistory, useParams } from 'react-router';
 import { ConfirmDeletionModal } from '../../../components/modals/ConfirmDeletionModal';
 import { IconWrapper } from '../../../components/side-panel/Atoms';
 import { TweetsContext } from '../../../hooks/TweetsContext';
@@ -18,12 +17,13 @@ import { Comment } from './Comment';
 import { TweetData } from './FullTweetData';
 import { FullTweetInteractions } from './FullTweetInteractions';
 import { useTweet } from '../../../hooks/useTweet';
+import { useNavigate, useParams } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
 export const FullTweet: React.FC = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const { id: tweetId } = useParams<{ id: string }>();
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	const {
 		tweet,
@@ -35,7 +35,7 @@ export const FullTweet: React.FC = () => {
 		fetchComments,
 		createComment,
 		deleteComment,
-	} = useTweet(tweetId);
+	} = useTweet(tweetId!);
 
 	const closeDeletionModal = () => {
 		setIsOpen(false);
@@ -66,7 +66,7 @@ export const FullTweet: React.FC = () => {
 			)}
 			<TweetWrapper>
 				<Header>
-					<IconWrapper onClick={() => history.push('/home')}>
+					<IconWrapper onClick={() => navigate('/home')}>
 						<Icon />
 					</IconWrapper>
 					<Title>Tweet</Title>

@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { TwitterLink } from '../../components/buttons/TwitterButton';
 import TwitterSvg from '../../components/icons/TwitterSvg';
 
